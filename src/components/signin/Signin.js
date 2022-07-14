@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Signin.css";
 import dollarInBirdCage from "../images/dollarInBirdCage.png";
 import { useNavigate, Link } from "react-router-dom";
@@ -9,9 +9,11 @@ export const Signin = () => {
     const [loginPassword, setLoginPassword] = useState("");
     const [user, setUser] = useState({});
     const navigate = useNavigate();
+    useEffect (() => {
     onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser);
     });
+}, [])
     const handleSignin = async () => {
         try {
             const user = await signInWithEmailAndPassword(
