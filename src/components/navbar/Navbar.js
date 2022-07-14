@@ -11,7 +11,7 @@ export const Navbar = () => {
         onAuthStateChanged(auth, (user) => {
             setUser(user);
         });
-    });
+    }, [user]);
     const navigate = useNavigate();
     const handleLogout = () => {
         signOut(auth);
@@ -20,20 +20,11 @@ export const Navbar = () => {
         sessionStorage.removeItem("uid");
         sessionStorage.removeItem("email");
     };
-    const navLinkStyles = ({ isActive }) => {
-        return {
-            fontWeight: isActive ? "bold" : "normal",
-            textDecoration: isActive ? "none" : "underline",
-        };
-    };
     console.log(user);
     //Note: If user is not logged in navbar is empty
     return ( 
         user ? 
         <nav className="primary--nav">
-            <NavLink className="links" to="/">
-                Home
-            </NavLink>
             <NavLink className="links" to="/dashboard">
                 Dashboard
             </NavLink>
@@ -43,19 +34,11 @@ export const Navbar = () => {
             <NavLink className="links" to="/settings">
                 Settings
             </NavLink>
-
-            {!user && (
-                <NavLink className="links" to="/signin">
-                    <div>Sign in</div>
-                </NavLink>
-            )}
-            {user && (
                 <NavLink className="links" to="/">
                     <div onClick={handleLogout} >
                         Log out
                     </div>
                 </NavLink>
-            )}
         </nav>
         : <nav></nav>
     );

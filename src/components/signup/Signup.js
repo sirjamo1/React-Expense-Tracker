@@ -17,7 +17,7 @@ export function Signup() {
     onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser);
     });
-    const register = async () => {
+    const handleRegister = async () => {
         try {
             const user = await createUserWithEmailAndPassword(
                 auth,
@@ -27,7 +27,7 @@ export function Signup() {
             sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
             sessionStorage.setItem("uid", auth.currentUser.uid);
             sessionStorage.setItem("email", auth.currentUser.email);
-            navigate("/");
+            navigate("/dashboard");
         } catch (error) {
             console.log(error.message);
         }
@@ -69,7 +69,7 @@ export function Signup() {
                 ></input>
 
                 <button
-                    onClick={register}
+                    onClick={handleRegister}
                     className="signup--submit"
                     type="submit"
                 >

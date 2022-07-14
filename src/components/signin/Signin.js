@@ -1,17 +1,14 @@
 import React, { useState } from "react";
 import "./Signin.css";
 import dollarInBirdCage from "../images/dollarInBirdCage.png";
-import { useNavigate, useLocation, Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { auth } from "../../firebase-config";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-//Waiting on routes for navigate and location
 export const Signin = () => {
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     const [user, setUser] = useState({});
     const navigate = useNavigate();
-    //const location = useLocation();
-   // const redirectPath = location.state?.path || "/";
     onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser);
     });
