@@ -2,7 +2,6 @@ import "./App.css";
 import {useState} from "react"
 import { Route, Routes } from "react-router-dom";
 import { Navbar } from "./components/navbar/Navbar.js";
-//import { Home } from "./components/home/Home.js";
 import { Signin } from "./components/signin/Signin";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { AuthProvider } from "./Auth";
