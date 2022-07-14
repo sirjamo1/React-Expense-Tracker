@@ -6,6 +6,7 @@ import {
     createUserWithEmailAndPassword,
     onAuthStateChanged,
 } from "firebase/auth";
+import { Link } from "react-router-dom";
 import { auth } from "../../firebase-config";
 export function Signup() {
     const [registerEmail, setRegisterEmail] = useState("");
@@ -35,8 +36,8 @@ export function Signup() {
 
     return (
         <div className="main--container">
-            
-            <div className="signup-container">
+            <div className="signup--container">
+                <h1>Sign up</h1>
                 <label>
                     Email<span className="asterisk">*</span>
                     <span className="instructions">
@@ -75,6 +76,9 @@ export function Signup() {
                 >
                     Sign Up
                 </button>
+                <h4>
+                    <Link to="/"> Back to sign in page</Link>
+                </h4>
             </div>
             <img src={dollarInBirdCage} alt="dollar bill in a bird cage" />
         </div>

@@ -1,19 +1,36 @@
 .main--container {
     display: flex;
     flex-direction: row;
+    background-color: antiquewhite;
 }
 .signup--container {
- display: flex;
- flex-direction: column;
+    display: flex;
+    flex-direction: column;
+    width: 40vw;
+    margin: 15px;
+    padding: 20px;
 }
-.asterisk {
-    color: red;
+h1 {
+    align-self: center;
 }
 .instructions {
-    color: lightgray;
+    color: rgb(102, 98, 98);
     font-size: 0.7rem;
 }
-
-.main--container img{
- height: 100vh;
+label {
+    padding: 10px;
+    padding-left: 0px;
+    margin-top: 20px;
+}
+input {
+    width: 60%;
+    padding: 10px;
+}
+button {
+    width: 70px;
+    margin-top: 30px;
+}
+.main--container img {
+    max-height: 100vh;
+    width: 60vw;
 }

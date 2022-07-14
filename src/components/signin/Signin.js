@@ -32,6 +32,7 @@ export const Signin = () => {
     return (
         <div className="main--container">
             <div className="signin--container">
+                <h1>Sign in</h1>
                 <label>
                     Email<span className="asterisk">*</span>
                     <span className="instructions">
