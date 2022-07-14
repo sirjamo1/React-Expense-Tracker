@@ -1,0 +1,30 @@
+.main--container {
+    display: flex;
+    flex-direction: row;
+   
+}
+.signin--container {
+    display: flex;
+    flex-direction: column;
+    min-width: 400px;
+     margin: 10px;
+     padding: 20px;
+}
+.asterisk {
+    color: red;
+}
+.instructions {
+    color: lightgray;
+    font-size: 0.7rem;
+}
+label {
+    padding:10px;
+}
+button {
+    width: 60px;
+}
+.main--container img{
+ max-height: 100vh;
+ max-width: 60vw;
+ align-self:flex-end;
+}

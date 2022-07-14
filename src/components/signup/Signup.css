@@ -1,0 +1,19 @@
+.main--container {
+    display: flex;
+    flex-direction: row;
+}
+.signup--container {
+ display: flex;
+ flex-direction: column;
+}
+.asterisk {
+    color: red;
+}
+.instructions {
+    color: lightgray;
+    font-size: 0.7rem;
+}
+
+.main--container img{
+ height: 100vh;
+}

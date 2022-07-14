@@ -1,8 +1,82 @@
-import React from 'react'
-import "./Signup.css"
+import { React, useState } from "react";
+import "./Signup.css";
+import { useNavigate, useLocation } from "react-router-dom";
+import dollarInBirdCage from "../images/dollarInBirdCage.png";
+import {
+    createUserWithEmailAndPassword,
+    onAuthStateChanged,
+} from "firebase/auth";
+import { auth } from "../../firebase-config";
+export function Signup() {
+    const [registerEmail, setRegisterEmail] = useState("");
+    const [registerPassword, setRegisterPassword] = useState("");
+    const [user, setUser] = useState({});
+    const navigate = useNavigate();
+    const location = useLocation();
+    //const redirectPath = location.state?.path || "/";
+    onAuthStateChanged(auth, (currentUser) => {
+        setUser(currentUser);
+    });
+    const register = async () => {
+        try {
+            const user = await createUserWithEmailAndPassword(
+                auth,
+                registerEmail,
+                registerPassword
+            );
+            sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
+            sessionStorage.setItem("uid", auth.currentUser.uid);
+            sessionStorage.setItem("email", auth.currentUser.email);
+            navigate("/");
+        } catch (error) {
+            console.log(error.message);
+        }
+    };
 
-export const Signup = () => {
-  return (
-    <div>Signup</div>
-  )
+    return (
+        <div className="main--container">
+            
+            <div className="signup-container">
+                <label>
+                    Email<span className="asterisk">*</span>
+                    <span className="instructions">
+                        (Must be a valid e-mail address)
+                    </span>
+                </label>
+                <input
+                    onChange={(event) => {
+                        setRegisterEmail(event.target.value);
+                    }}
+                    type="email"
+                    placeholder="Email"
+                    required
+                ></input>
+                <label>
+                    Password<span className="asterisk">*</span>
+                    <span className="instructions">
+                        (Minimum eight characters, at least one letter and one
+                        number)
+                    </span>
+                </label>
+                <input
+                    onChange={(event) => {
+                        setRegisterPassword(event.target.value);
+                    }}
+                    type="password"
+                    placeholder="password"
+                    pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                    required
+                ></input>
+
+                <button
+                    onClick={register}
+                    className="signup--submit"
+                    type="submit"
+                >
+                    Sign Up
+                </button>
+            </div>
+            <img src={dollarInBirdCage} alt="dollar bill in a bird cage" />
+        </div>
+    );
 }

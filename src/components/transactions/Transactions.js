@@ -1,8 +1,6 @@
-import React from 'react'
-import "./Transactions.css"
+import React from "react";
+import "./Transactions.css";
 
 export const Transactions = () => {
-  return (
-    <div>Transactions</div>
-  )
-}
+    return <div>Transactions</div>;
+};
