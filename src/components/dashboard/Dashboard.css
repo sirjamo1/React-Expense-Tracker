@@ -1,0 +1,30 @@
+.popup--container {
+ width: 600px;
+ height: 600px;
+ display: flex;
+ align-items: center;
+ flex-direction: column;
+}
+.popup-title {
+ width: 400px;
+ border-radius: 10px;
+}
+.popup-amount {
+ width: 400px;
+ border-radius: 10px;
+}
+.popup-select {
+ width: 422px;
+ height: 40px;
+ border-radius: 10px;
+}
+.popup-date {
+ width: 200px;
+ border-radius: 10px;
+ 
+}
+.popup-submit {
+ width: 400px;
+ height: 40px;
+ border-radius: 10px;
+}
