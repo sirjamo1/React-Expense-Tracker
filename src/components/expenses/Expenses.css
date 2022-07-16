@@ -20,7 +20,6 @@
 .nav-line2-left {
     border: 1px yellow solid;
     display: flex;
-
 }
 .search-btn {
     background-color: antiquewhite;
@@ -45,70 +44,92 @@
     display: flex;
 }
 .create-expense-btn {
-     margin: 0;
+    margin: 0;
     padding: 0;
     width: 120px;
     height: 35px;
     cursor: pointer;
 }
 .filter-btn {
-     margin: 0px 10px 0px 10px;
+    margin: 0px 10px 0px 10px;
     padding: 0;
     height: 35px;
     cursor: pointer;
 }
 .row-header {
- margin:0;
- display: flex;
- justify-content: space-evenly;
- 
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr) minmax(
+            150px,
+            1fr
+        ) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr);
 }
 .row-header p {
- margin: 10px 10px
+    margin: 10px 10px;
 }
-
+.row-data {
+    display: grid;
+    grid-template-columns: minmax(150px, 1fr) minmax(150px, 1fr) minmax(
+            150px,
+            1fr
+        ) minmax(150px, 1fr) minmax(150px, 1fr) minmax(150px, 1fr);
+    margin-left: 10px;
+    border-bottom: 1px solid lightgrey;
+}
+.row-data div {
+    margin: 0;
+    display: flex;
+    align-items: center;
+}
+.row-data div > p {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    color: green;
+}
+.row-data button {
+    margin: 0;
+}
+.edit-expense-btn {
+}
 /*👉POPUPZONE👈*/
 
 .popup--container {
-  position: fixed;
+    position: fixed;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); 
-    background-color: rgba(236, 236, 236, 0.8);
- width:550px;
- height: 550px;
- display: flex;
- align-items: center;
- flex-direction: column;
- border-radius: 10px;
+    transform: translate(-50%, -50%);
+    background-color: rgba(236, 236, 236, 0.9);
+    width: 550px;
+    height: 550px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 10px;
 }
 .popup-title {
- width: 400px;
- border-radius: 10px;
- margin-top: 30px;
- 
-
+    width: 400px;
+    border-radius: 10px;
+    margin-top: 50px;
 }
 .popup-amount {
- width: 400px;
- border-radius: 10px;
- margin-top: 20px;
+    width: 400px;
+    border-radius: 10px;
+    margin-top: 20px;
 }
 .popup-select {
- width: 422px;
- height: 40px;
- border-radius: 10px;
- margin-top: 20px;
+    width: 422px;
+    height: 40px;
+    border-radius: 10px;
+    margin-top: 20px;
+    background-color: white;
 }
 .popup-date {
- width: 200px;
- border-radius: 10px;
- margin-top: 20px;
- 
+    width: 200px;
+    border-radius: 10px;
+    margin-top: 20px;
 }
 .popup-submit {
- width: 400px;
- height: 40px;
- border-radius: 10px;
- margin-top: 100px;
+    width: 400px;
+    height: 40px;
+    border-radius: 10px;
+    margin-top: 100px;
 }
