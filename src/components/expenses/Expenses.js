@@ -11,7 +11,11 @@ import {
     updateDoc,
     doc,
     deleteDoc,
-    //query,
+    onSnapshot,
+    query,
+    setDoc,
+    where,
+    orderBy,
     // serverTimestamp
 } from "firebase/firestore";
 
@@ -29,6 +33,16 @@ export const Expenses = () => {
     const [dataRecurring, setDataRecurring] = useState(false);
     const expenseDataRef = collection(db, "expenseData");
     const [editBtnId, setEditBtnId] = useState();
+    const [isCreateOpen, setIsCreateOpen] = useState(false);
+    const createOpen = () => {
+        setIsCreateOpen(true);
+    };
+    const [isEditOpen, setIsEditOpen] = useState(false);
+
+    const editPopupOpen = () => {
+        setIsEditOpen(true);
+    };
+
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
     };
@@ -39,34 +53,41 @@ export const Expenses = () => {
             amount: dataAmount,
             date: dataDate,
             recurring: dataRecurring,
-            id: nanoid(),
             key: nanoid(),
         });
-        console.log(expenseDataRef);
+        setIsCreateOpen(false);
     };
+    console.log(isCreateOpen);
     const handleEditData = async () => {
-        await updateDoc(expenseDataRef, {
+        const updateCurrent = doc(db, "expenseData", editBtnId);
+        await updateDoc(updateCurrent, {
             title: dataTitle,
             type: dataType,
             amount: dataAmount,
             date: dataDate,
             recurring: dataRecurring,
-            id: nanoid(),
-            
+            id: editBtnId,
         });
-        console.log(expenseDataRef);
+        setIsEditOpen(false);
     };
-    const [currentExpense, setCurrentExpense] = useState([])
-        const changeExpense = () => {
-            let checked = "checked"
-            for(let i = 0; i < expenseData.length; i++) {
-                if (expenseData[i].id == editBtnId) {
-                    setCurrentExpense(expenseData[i])
-                    
-                } 
-            }          
-        };
-console.log({currentExpense})
+    const handleDeleteData = async () => {
+        await deleteDoc(doc(db, "expenseData", editBtnId));
+        setIsEditOpen(false);
+    };
+    const [currentExpense, setCurrentExpense] = useState([]);
+    const changeExpense = () => {
+        for (let i = 0; i < expenseData.length; i++) {
+            if (expenseData[i].id === editBtnId) {
+                setCurrentExpense(expenseData[i]);
+                setDataTitle(expenseData[i].title);
+                setDataAmount(expenseData[i].amount);
+                setDataType(expenseData[i].type);
+                setDataDate(expenseData[i].date);
+                setDataRecurring(expenseData[i].recurring);
+            }
+        }
+    };
+
     useEffect(() => {
         const getExpenseData = async () => {
             const data = await getDocs(expenseDataRef);
@@ -74,14 +95,19 @@ console.log({currentExpense})
                 data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
             );
         };
+
         getExpenseData();
-    }, []);
-  
+    }, [isCreateOpen, isEditOpen]);
+
     const createPopup = (
         <Popup
+            open={isCreateOpen}
+            closeOnDocumentClick
             offset={offset}
             show={true}
             className="popup-main"
+            //onClose={createClose}
+            onOpen={createOpen}
             trigger={
                 <button className="create-expense-btn">Create Expense</button>
             }
@@ -131,6 +157,7 @@ console.log({currentExpense})
                             setDataRecurring(event.target.value);
                         }}
                         type="checkbox"
+                        value="true"
                     ></input>
                     <label>Recurring</label>
                 </span>
@@ -142,9 +169,12 @@ console.log({currentExpense})
     );
     const editPopup = (
         <Popup
+            open={isEditOpen}
             offset={offset}
             show={true}
+            closeOnDocumentClick
             className="popup-main"
+            onOpen={editPopupOpen}
             trigger={
                 <button
                     onMouseDown={changeExpense}
@@ -160,8 +190,8 @@ console.log({currentExpense})
                         setDataTitle(event.target.value);
                     }}
                     className="popup-title"
-                    placeholder="Title"
-                    value={currentExpense.title}
+                    placeholder={currentExpense.title}
+                    // value={currentExpense.title}
                 ></input>
                 <input
                     onChange={(event) => {
@@ -169,8 +199,8 @@ console.log({currentExpense})
                     }}
                     type="number"
                     className="popup-amount"
-                    placeholder="Amount"
-                    value={currentExpense.amount}
+                    placeholder={currentExpense.amount}
+                    // value={currentExpense.amount}
                 ></input>
                 <select
                     onChange={(event) => {
@@ -178,7 +208,7 @@ console.log({currentExpense})
                     }}
                     className="popup-select"
                     name="type"
-                    value={currentExpense.type}
+                    // value={currentExpense.type}
                     id="type"
                 >
                     <option value="Mobile">Mobile</option>
@@ -203,12 +233,16 @@ console.log({currentExpense})
                         }}
                         type="checkbox"
                         defaultChecked={currentExpense.recurring}
+                        value="1"
                     ></input>
                     <label>Recurring</label>
                 </span>
                 <p>{currentExpense.recurring}</p>
                 <button className="popup-submit" onClick={handleEditData}>
                     Edit
+                </button>
+                <button className="popup-submit" onClick={handleDeleteData}>
+                    Delete
                 </button>
             </div>
         </Popup>
@@ -230,10 +264,11 @@ console.log({currentExpense})
             <div>
                 <p>{data.id}</p>
             </div>
-            <div onMouseEnter={handleCurrentId} id={data.id}>{editPopup}</div>
+            <div onMouseEnter={handleCurrentId} id={data.id}>
+                {editPopup}
+            </div>
         </div>
     ));
-    //NEED TO :
     return (
         <div className="expenses--container">
             <div className="expenses-nav">
@@ -262,10 +297,13 @@ console.log({currentExpense})
                 {expenseDataElements}
                 <h1>NEED TO: </h1>
                 <ul>
-                    <li>update firebase expense</li>
-                    <li>after creating expense popup goes away</li>
-                    <li>delete expense button</li>
-                    <li>after creating page update</li>
+                    <li>get checkbox to return a boolean</li>
+                    <li>
+                        when clicking edit it opens all popups (sometimes) and
+                        doesn't edit/delete the one that is clicked
+                    </li>
+                    <li></li>
+                    <li></li>
                     <li></li>
                 </ul>
             </div>
