@@ -169,7 +169,7 @@ export const Expenses = () => {
     );
     const editPopup = (
         <Popup
-            open={isEditOpen}
+            open={isEditOpen} //here be dragons////////////////////
             offset={offset}
             show={true}
             closeOnDocumentClick
