@@ -3,9 +3,24 @@ import "./Signup.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import dollarInBirdCage from "../images/dollarInBirdCage.png";
 import {
+    collection,
+    getDocs,
+    addDoc,
+    updateDoc,
+    doc,
+    deleteDoc,
+    onSnapshot,
+    query,
+    setDoc,
+    where,
+    orderBy,
+    // serverTimestamp
+} from "firebase/firestore";
+import {
     createUserWithEmailAndPassword,
     onAuthStateChanged,
 } from "firebase/auth";
+import { db } from "../../firebase-config";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase-config";
 export function Signup() {
@@ -14,6 +29,7 @@ export function Signup() {
     const [user, setUser] = useState({});
     const navigate = useNavigate();
     const location = useLocation();
+    const usersRef = collection(db, "users");
     //const redirectPath = location.state?.path || "/";
     onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser);
@@ -25,6 +41,10 @@ export function Signup() {
                 registerEmail,
                 registerPassword
             );
+            await addDoc(usersRef, {
+                email: auth.currentUser.email,
+                uid: auth.currentUser.uid,
+            });
             sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
             sessionStorage.setItem("uid", auth.currentUser.uid);
             sessionStorage.setItem("email", auth.currentUser.email);

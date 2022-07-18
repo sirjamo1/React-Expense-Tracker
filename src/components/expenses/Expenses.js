@@ -21,6 +21,7 @@ import {
 
 export const Expenses = () => {
     const userEmail = sessionStorage.getItem("email");
+    const userUid = sessionStorage.getItem("uid");
     const offset = {
         right: 400,
         bottom: 50,
@@ -37,12 +38,17 @@ export const Expenses = () => {
     const createOpen = () => {
         setIsCreateOpen(true);
     };
+    const createClose = () => {
+        setIsCreateOpen(false);
+    };
     const [isEditOpen, setIsEditOpen] = useState(false);
 
     const editPopupOpen = () => {
         setIsEditOpen(true);
     };
-
+    const editPopupClose = () => {
+        setIsEditOpen(false);
+    };
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
     };
@@ -54,10 +60,12 @@ export const Expenses = () => {
             date: dataDate,
             recurring: dataRecurring,
             key: nanoid(),
+            uid: userUid,
         });
         setIsCreateOpen(false);
     };
-    console.log(isCreateOpen);
+    // console.log({isCreateOpen});
+    // console.log({isEditOpen})
     const handleEditData = async () => {
         const updateCurrent = doc(db, "expenseData", editBtnId);
         await updateDoc(updateCurrent, {
@@ -91,9 +99,18 @@ export const Expenses = () => {
     useEffect(() => {
         const getExpenseData = async () => {
             const data = await getDocs(expenseDataRef);
-            setExpenseData(
-                data.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-            );
+            const userData = data.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            }));
+            const currentUserData = [];
+            for (let i = 0; i < userData.length; i++) {
+                if (userData[i].uid === userUid) {
+                    currentUserData.push(userData[i]);
+                }
+            }
+            console.log(userData[0].uid);
+            setExpenseData(currentUserData);
         };
 
         getExpenseData();
@@ -102,14 +119,17 @@ export const Expenses = () => {
     const createPopup = (
         <Popup
             open={isCreateOpen}
+            modal={true}
             closeOnDocumentClick
             offset={offset}
             show={true}
             className="popup-main"
-            //onClose={createClose}
+            onClose={createClose}
             onOpen={createOpen}
             trigger={
-                <button className="create-expense-btn">Create Expense</button>
+                <button className="create-expense-btn">
+                    <i class="fa-solid fa-file-plus"></i>Create Expense
+                </button>
             }
         >
             <div className="popup--container">
@@ -136,6 +156,9 @@ export const Expenses = () => {
                     name="type"
                     id="type"
                 >
+                    <option value="" disabled selected>
+                        Select your option
+                    </option>
                     <option value="Mobile">Mobile</option>
                     <option value="Entertainment">Entertainment</option>
                     <option value="Software">Software</option>
@@ -169,12 +192,14 @@ export const Expenses = () => {
     );
     const editPopup = (
         <Popup
-            open={isEditOpen} //here be dragons////////////////////
+            //open={isEditOpen} //here be dragons////////////////////
+            modal={true}
             offset={offset}
             show={true}
             closeOnDocumentClick
             className="popup-main"
             onOpen={editPopupOpen}
+            onClose={editPopupClose}
             trigger={
                 <button
                     onMouseDown={changeExpense}
@@ -209,6 +234,7 @@ export const Expenses = () => {
                     className="popup-select"
                     name="type"
                     // value={currentExpense.type}
+
                     id="type"
                 >
                     <option value="Mobile">Mobile</option>
@@ -256,7 +282,7 @@ export const Expenses = () => {
                 <p>{data.type}</p>
             </div>
             <div>
-                <p>{data.amount}</p>
+                <p>${data.amount}</p>
             </div>
             <div>
                 <p>{data.date}</p>
@@ -278,7 +304,9 @@ export const Expenses = () => {
                 </div>
                 <div className="nav-line2">
                     <div className="nav-line2-left">
-                        <button className="search-btn">O</button>
+                        <button className="search-btn">
+                            <i class="fa-solid fa-magnifying-glass-dollar"></i>
+                        </button>
                         <input className="search" placeholder="Search"></input>
                     </div>
                     <div className="nav-line2-right">
@@ -302,8 +330,8 @@ export const Expenses = () => {
                         when clicking edit it opens all popups (sometimes) and
                         doesn't edit/delete the one that is clicked
                     </li>
-                    <li></li>
-                    <li></li>
+                    <li>search bar</li>
+                    <li>filter bar</li>
                     <li></li>
                 </ul>
             </div>
