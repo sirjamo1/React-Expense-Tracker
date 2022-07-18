@@ -22,10 +22,6 @@ import {
 export const Expenses = () => {
     const userEmail = sessionStorage.getItem("email");
     const userUid = sessionStorage.getItem("uid");
-    const offset = {
-        right: 400,
-        bottom: 50,
-    };
     const [expenseData, setExpenseData] = useState([]);
     const [dataTitle, setDataTitle] = useState();
     const [dataAmount, setDataAmount] = useState(0);
@@ -52,6 +48,7 @@ export const Expenses = () => {
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
     };
+    //userUid is from session storage
     const handleCreateData = async () => {
         await addDoc(expenseDataRef, {
             title: dataTitle,
@@ -64,8 +61,6 @@ export const Expenses = () => {
         });
         setIsCreateOpen(false);
     };
-    // console.log({isCreateOpen});
-    // console.log({isEditOpen})
     const handleEditData = async () => {
         const updateCurrent = doc(db, "expenseData", editBtnId);
         await updateDoc(updateCurrent, {
@@ -83,6 +78,7 @@ export const Expenses = () => {
         setIsEditOpen(false);
     };
     const [currentExpense, setCurrentExpense] = useState([]);
+    //when mouse enters the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
     const changeExpense = () => {
         for (let i = 0; i < expenseData.length; i++) {
             if (expenseData[i].id === editBtnId) {
@@ -95,7 +91,7 @@ export const Expenses = () => {
             }
         }
     };
-
+    //renders rows of data each time edit or create expense popup is closed
     useEffect(() => {
         const getExpenseData = async () => {
             const data = await getDocs(expenseDataRef);
@@ -103,6 +99,7 @@ export const Expenses = () => {
                 ...doc.data(),
                 id: doc.id,
             }));
+            //only grabs the user who is logged in data
             const currentUserData = [];
             for (let i = 0; i < userData.length; i++) {
                 if (userData[i].uid === userUid) {
@@ -115,7 +112,11 @@ export const Expenses = () => {
 
         getExpenseData();
     }, [isCreateOpen, isEditOpen]);
-
+    //offset is for popups placement
+    const offset = {
+        right: 400,
+        bottom: 50,
+    };
     const createPopup = (
         <Popup
             open={isCreateOpen}
@@ -128,7 +129,7 @@ export const Expenses = () => {
             onOpen={createOpen}
             trigger={
                 <button className="create-expense-btn">
-                    <i class="fa-solid fa-file-plus"></i>Create Expense
+                    <i className="fa-solid fa-file-plus"></i>Create Expense
                 </button>
             }
         >
@@ -273,6 +274,8 @@ export const Expenses = () => {
             </div>
         </Popup>
     );
+
+    //rows of expense data
     const expenseDataElements = expenseData.map((data) => (
         <div className="row-data">
             <div>

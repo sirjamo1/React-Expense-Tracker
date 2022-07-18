@@ -4,16 +4,20 @@
 }
 .expenses-nav {
     margin: 0px 10px;
+    
 }
 .nav-line1 {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
 }
 .nav-line2 {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-top: -10px;
+    margin-bottom: 5px;
 }
 .nav-line2-left {
 
@@ -35,7 +39,7 @@
     padding: 0;
     text-indent: 6px;
     height: 35px;
-    width: 150px;
+    width: 170px;
     border-radius: 0px 10px 10px 0px;
     border: none;
     background-color: antiquewhite;
@@ -57,6 +61,7 @@
     cursor: pointer;
 }
 .row-header {
+    background-color: rgba(0, 255, 255, 0.267);
     display: grid;
     grid-template-columns:
         minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
