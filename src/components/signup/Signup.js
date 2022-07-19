@@ -28,6 +28,8 @@ export function Signup() {
     const [registerPassword, setRegisterPassword] = useState("");
     const [registerFirstName, setRegisterFirstName] = useState("");
     const [registerLastName, setRegisterLastName] = useState("");
+    const [registerDOB, setRegisterDOB] = useState("")
+    const [registerMobile, setRegisterMobile] = useState(0);
     const [user, setUser] = useState({});
     const navigate = useNavigate();
     const location = useLocation();
@@ -48,6 +50,8 @@ export function Signup() {
                 uid: auth.currentUser.uid,
                 firstName: registerFirstName,
                 lastName: registerLastName,
+                DOB: registerDOB,
+                mobile: registerMobile,
             });
             sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
             sessionStorage.setItem("uid", auth.currentUser.uid);
@@ -66,9 +70,7 @@ export function Signup() {
                 <h1>Sign up</h1>
                 <label>
                     First Name<span className="asterisk">*</span>
-                    <span className="instructions">
-                        
-                    </span>
+                    <span className="instructions"></span>
                 </label>
                 <input
                     onChange={(event) => {
@@ -80,9 +82,7 @@ export function Signup() {
                 ></input>
                 <label>
                     Last Name<span className="asterisk">*</span>
-                    <span className="instructions">
-                        
-                    </span>
+                    <span className="instructions"></span>
                 </label>
                 <input
                     onChange={(event) => {
@@ -91,6 +91,30 @@ export function Signup() {
                     type="text"
                     placeholder="Last name"
                     required
+                ></input>
+                <label>
+                    Mobile<span className="asterisk">*</span>
+                    <span className="instructions"></span>
+                </label>
+                <input
+                    onChange={(event) => {
+                        setRegisterMobile(event.target.value);
+                    }}
+                    type="text"
+                    placeholder="Mobile"
+                    required
+                ></input>
+                <label>
+                    Date of Birth<span className="asterisk">*</span>
+                    <span className="instructions"></span>
+                </label>
+                <input
+                    onChange={(event) => {
+                        setRegisterDOB(event.target.value);
+                    }}
+                    className="popup-date"
+                    type="date"
+                    placeholder="Title"
                 ></input>
                 <label>
                     Email<span className="asterisk">*</span>

@@ -24,8 +24,7 @@ export const Navbar = () => {
     };
     //console.log(user);
     //Note: If user is not logged in navbar is empty
-    return ( 
-        user ? 
+    return user ? (
         <nav className="primary--nav">
             <NavLink className="links" to="/dashboard">
                 Dashboard
@@ -36,12 +35,11 @@ export const Navbar = () => {
             <NavLink className="links" to="/settings">
                 Settings
             </NavLink>
-                <NavLink className="links" to="/">
-                    <div onClick={handleLogout} >
-                        Log out
-                    </div>
-                </NavLink>
+            <NavLink className="links" to="/">
+                <div onClick={handleLogout}>Log out</div>
+            </NavLink>
         </nav>
-        : <nav></nav>
+    ) : (
+        <nav></nav>
     );
 };

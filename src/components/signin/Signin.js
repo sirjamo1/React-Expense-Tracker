@@ -29,7 +29,7 @@ export const Signin = () => {
             setUser(currentUser);
         });
     }, []);
-    
+
     const handleSignin = async () => {
         try {
             const user = await signInWithEmailAndPassword(
@@ -37,30 +37,25 @@ export const Signin = () => {
                 loginEmail,
                 loginPassword
             );
-                sessionStorage.setItem(
-                    "Auth Token",
-                    auth.currentUser.accessToken
-                );
-                sessionStorage.setItem("uid", auth.currentUser.uid);
-                sessionStorage.setItem("email", auth.currentUser.email);
-                const allUsers = []
-                const userUid = auth.currentUser.uid
-                const q = query(collection(db, "users"))
-                const querSnapshot = await getDocs(q);
-                querSnapshot.forEach((doc) => {
-                 allUsers.push(doc.id, doc.data())
-                }) 
-                for (let i = 0; i < allUsers.length; i++) {
-                    if (allUsers[i].uid === userUid) {
-                        sessionStorage.setItem("firstName", allUsers[i].firstName);
-                        sessionStorage.setItem(
-                            "lastName",
-                            allUsers[i].lastName
-                        );
-                
-                }}
+            sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
+            sessionStorage.setItem("uid", auth.currentUser.uid);
+            sessionStorage.setItem("email", auth.currentUser.email);
+            const allUsers = [];
+            const userUid = auth.currentUser.uid;
+            const q = query(collection(db, "users"));
+            const querSnapshot = await getDocs(q);
+            querSnapshot.forEach((doc) => {
+                allUsers.push(doc.id, doc.data());
+            });
+            for (let i = 0; i < allUsers.length; i++) {
+                if (allUsers[i].uid === userUid) {
+                    sessionStorage.setItem("firstName", allUsers[i].firstName);
+                    sessionStorage.setItem("lastName", allUsers[i].lastName);
+                    sessionStorage.setItem("DOB", allUsers[i].DOB);
+                    sessionStorage.setItem("mobile", allUsers[i].mobile);
+                }
+            }
             navigate("/dashboard");
-           
         } catch (error) {
             console.log(error.message);
         }

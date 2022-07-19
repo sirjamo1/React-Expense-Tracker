@@ -22,6 +22,8 @@ import {
 export const Expenses = () => {
     const userEmail = sessionStorage.getItem("email");
     const userUid = sessionStorage.getItem("uid");
+    const userFirstName = sessionStorage.getItem("firstName");
+    const userLastName = sessionStorage.getItem("lastName");
     const [expenseData, setExpenseData] = useState([]);
     const [dataTitle, setDataTitle] = useState();
     const [dataAmount, setDataAmount] = useState(0);
@@ -303,7 +305,7 @@ export const Expenses = () => {
             <div className="expenses-nav">
                 <div className="nav-line1">
                     <h2>Expenses</h2>
-                    <h5>{userEmail}</h5>
+                    <h5>Welcome {userFirstName}</h5>
                 </div>
                 <div className="nav-line2">
                     <div className="nav-line2-left">
