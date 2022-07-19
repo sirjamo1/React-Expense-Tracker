@@ -4,16 +4,32 @@ import dollarInBirdCage from "../images/dollarInBirdCage.png";
 import { useNavigate, Link } from "react-router-dom";
 import { auth } from "../../firebase-config";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import {
+    collection,
+    getDocs,
+    addDoc,
+    updateDoc,
+    doc,
+    deleteDoc,
+    onSnapshot,
+    query,
+    setDoc,
+    where,
+    orderBy,
+    // serverTimestamp
+} from "firebase/firestore";
+import { db } from "../../firebase-config";
 export const Signin = () => {
     const [loginEmail, setLoginEmail] = useState("");
     const [loginPassword, setLoginPassword] = useState("");
     const [user, setUser] = useState({});
     const navigate = useNavigate();
-    useEffect (() => {
-    onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-    });
-}, [])
+    useEffect(() => {
+        onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+        });
+    }, []);
+    
     const handleSignin = async () => {
         try {
             const user = await signInWithEmailAndPassword(
@@ -21,14 +37,35 @@ export const Signin = () => {
                 loginEmail,
                 loginPassword
             );
-            sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
-            sessionStorage.setItem("uid", auth.currentUser.uid);
-            sessionStorage.setItem("email", auth.currentUser.email);
+                sessionStorage.setItem(
+                    "Auth Token",
+                    auth.currentUser.accessToken
+                );
+                sessionStorage.setItem("uid", auth.currentUser.uid);
+                sessionStorage.setItem("email", auth.currentUser.email);
+                const allUsers = []
+                const userUid = auth.currentUser.uid
+                const q = query(collection(db, "users"))
+                const querSnapshot = await getDocs(q);
+                querSnapshot.forEach((doc) => {
+                 allUsers.push(doc.id, doc.data())
+                }) 
+                for (let i = 0; i < allUsers.length; i++) {
+                    if (allUsers[i].uid === userUid) {
+                        sessionStorage.setItem("firstName", allUsers[i].firstName);
+                        sessionStorage.setItem(
+                            "lastName",
+                            allUsers[i].lastName
+                        );
+                
+                }}
             navigate("/dashboard");
+           
         } catch (error) {
             console.log(error.message);
         }
     };
+
     return (
         <div className="main--container">
             <div className="signin--container">

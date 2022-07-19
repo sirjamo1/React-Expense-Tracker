@@ -26,6 +26,8 @@ import { auth } from "../../firebase-config";
 export function Signup() {
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
+    const [registerFirstName, setRegisterFirstName] = useState("");
+    const [registerLastName, setRegisterLastName] = useState("");
     const [user, setUser] = useState({});
     const navigate = useNavigate();
     const location = useLocation();
@@ -44,10 +46,14 @@ export function Signup() {
             await addDoc(usersRef, {
                 email: auth.currentUser.email,
                 uid: auth.currentUser.uid,
+                firstName: registerFirstName,
+                lastName: registerLastName,
             });
             sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
             sessionStorage.setItem("uid", auth.currentUser.uid);
             sessionStorage.setItem("email", auth.currentUser.email);
+            sessionStorage.setItem("firstName", registerFirstName);
+            sessionStorage.setItem("lastName", registerLastName);
             navigate("/dashboard");
         } catch (error) {
             console.log(error.message);
@@ -58,6 +64,34 @@ export function Signup() {
         <div className="main--container">
             <div className="signup--container">
                 <h1>Sign up</h1>
+                <label>
+                    First Name<span className="asterisk">*</span>
+                    <span className="instructions">
+                        
+                    </span>
+                </label>
+                <input
+                    onChange={(event) => {
+                        setRegisterFirstName(event.target.value);
+                    }}
+                    type="text"
+                    placeholder="First name"
+                    required
+                ></input>
+                <label>
+                    Last Name<span className="asterisk">*</span>
+                    <span className="instructions">
+                        
+                    </span>
+                </label>
+                <input
+                    onChange={(event) => {
+                        setRegisterLastName(event.target.value);
+                    }}
+                    type="text"
+                    placeholder="Last name"
+                    required
+                ></input>
                 <label>
                     Email<span className="asterisk">*</span>
                     <span className="instructions">
