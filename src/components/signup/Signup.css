@@ -1,36 +1,43 @@
 .main--container {
-    display: flex;
-    flex-direction: row;
-    background-color: antiquewhite;
+  display: flex;
+  flex-direction: row;
+  background-color: antiquewhite;
 }
 .signup--container {
-    display: flex;
-    flex-direction: column;
-    width: 40vw;
-    margin: 15px;
-    padding: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 40vw;
+  margin: 15px;
+  padding: 20px;
 }
 h1 {
-    align-self: center;
+  align-self: center;
 }
 .instructions {
-    color: rgb(102, 98, 98);
-    font-size: 0.7rem;
+  color: rgb(102, 98, 98);
+  font-size: 0.7rem;
 }
 label {
-    padding: 10px;
-    padding-left: 0px;
-    margin-top: 20px;
+  padding: 10px;
+  padding-left: 0px;
+  margin-top: 20px;
 }
 input {
-    width: 60%;
-    padding: 10px;
+  width: 60%;
+  padding: 10px;
 }
 button {
-    width: 70px;
-    margin-top: 30px;
+  width: 70px;
+  margin-top: 30px;
 }
 .main--container img {
-    max-height: 100vh;
-    width: 60vw;
+  max-height: 100vh;
+  width: 60vw;
+}
+
+.google-btn {
+  width: 100%;
+  height: 40px;
+  line-height: 40px;
+  font-size: 15px;
 }
