@@ -55,7 +55,9 @@ export const Settings = () => {
         <div className="settings--container">
             <div className="header">
                 <h1>Settings</h1>
-                <h4>{userFirstName}</h4>
+                <h4>
+                    {userFirstName} {userLastName}
+                </h4>
             </div>
             <div className="account-info">
                 <h3>Account Information</h3>
