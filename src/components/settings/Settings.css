@@ -1,0 +1,47 @@
+.settings--container{
+ border: 1px red solid;
+ width:100vw;
+ margin: 0px 10px;
+}
+.header {
+display: flex;
+justify-content: space-between;
+}
+.account-info{
+margin: 0px 30px;
+}
+.personal-info-editBtn-row{
+display: flex;
+justify-content: space-between;
+margin: 0px 70px 0px 30px;
+}
+.names-row{
+display: flex;
+margin: 0px 70px 0px 30px;
+}
+.first-name{
+display: flex;
+flex-direction: column;
+}
+.last-name{
+display: flex;
+flex-direction: column;
+}
+.DOB-mobile-row{
+display: flex;
+margin: 0px 70px 0px 30px;
+}
+.DOB{
+display: flex;
+flex-direction: column;
+}
+.mobile{
+display: flex;
+flex-direction: column;
+}
+.email-row{
+ display: flex;
+ flex-direction: column;
+ margin: 0px 70px 0px 30px;
+
+}

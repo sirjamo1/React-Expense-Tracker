@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Component } from "react";
 import "./Settings.css";
 import { db } from "../../firebase-config";
 import {
@@ -23,7 +23,7 @@ export const Settings = () => {
     const userLastName = sessionStorage.getItem("lastName");
     const userDOB = sessionStorage.getItem("DOB");
     const userMobile = sessionStorage.getItem("mobile");
-    const [userData, setUserData] = useState(null);
+    const [userData, setUserData] = useState("");
     const userRef = collection(db, "users");
 
     useEffect(() => {
@@ -42,7 +42,7 @@ export const Settings = () => {
             }
             setUserData(currentUserData);
 
-            //NOTE: this is not working because it trys to render before userData is defined
+            //NOTE: this is not working because it try's to render before userData is defined
         };
 
         getUserData();
@@ -50,17 +50,50 @@ export const Settings = () => {
 
     //  console.log(userData[0].lastName)
     console.log(userData);
-    
+
     return (
-        <div>
-            <h1>Settings</h1>
-            <h3>Account Information</h3>
-            <p>Update your account information</p>
-            <h4>Personal Information</h4>
-            <label>First Name</label>
-            <input placeholder={userData}></input>
-            <label>Last Name</label>
-            <input placeholder="lastName user data here"></input>
+        <div className="settings--container">
+            <div className="header">
+                <h1>Settings</h1>
+                <h4>{userFirstName}</h4>
+            </div>
+            <div className="account-info">
+                <h3>Account Information</h3>
+                <p>Update your account information</p>
+            </div>
+            <div className="personal-info-editBtn-row">
+                <h4>Personal Information</h4>
+                <button>Edit</button>
+            </div>
+            <div className="names-row">
+                <div className="first-name">
+                    <label type="text">First Name</label>
+                    <input placeholder={userFirstName}></input>
+                </div>
+                <div className="last-name">
+                    <label type="text">Last Name</label>
+                    <input placeholder={userLastName}></input>
+                </div>
+            </div>
+            <div className="DOB-mobile-row">
+                <div className="DOB">
+                    <label>Date of Birth</label>
+                    <input type="date" placeholder={userDOB}></input>
+                </div>
+                <div className="mobile">
+                    <label>Mobile</label>
+                    <input type="number" placeholder={userMobile}></input>
+                </div>
+            </div>
+            <div className="email-row">
+                <label>
+                    Email
+                    <span className="instructions">
+                        (Must be a valid e-mail address)
+                    </span>
+                </label>
+                <input type="email" placeholder={userEmail}></input>
+            </div>
             <h1></h1>
         </div>
     );

@@ -131,7 +131,8 @@ export const Expenses = () => {
             onOpen={createOpen}
             trigger={
                 <button className="create-expense-btn">
-                    <i className="fa-solid fa-file-plus"></i>Create Expense
+                  
+                    Create Expense
                 </button>
             }
         >
@@ -310,7 +311,7 @@ export const Expenses = () => {
                 <div className="nav-line2">
                     <div className="nav-line2-left">
                         <button className="search-btn">
-                            <i class="fa-solid fa-magnifying-glass-dollar"></i>
+                            {/* <i class="fa-solid fa-magnifying-glass-dollar"></i> */}
                         </button>
                         <input className="search" placeholder="Search"></input>
                     </div>

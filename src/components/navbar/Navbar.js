@@ -10,6 +10,7 @@ export const Navbar = () => {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             setUser(user);
+            
         });
     }, [user]);
     const navigate = useNavigate();
@@ -22,7 +23,7 @@ export const Navbar = () => {
         sessionStorage.removeItem("firstName");
         sessionStorage.removeItem("lastName");
     };
-    console.log(user);
+     console.log(user);
     //Note: If user is not logged in navbar is empty
     return user ? (
         <nav className="primary--nav">
