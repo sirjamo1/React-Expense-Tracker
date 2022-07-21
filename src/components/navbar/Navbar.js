@@ -20,6 +20,9 @@ export const Navbar = () => {
         sessionStorage.removeItem("email");
         sessionStorage.removeItem("firstName");
         sessionStorage.removeItem("lastName");
+        sessionStorage.removeItem("DOB");
+        sessionStorage.removeItem("mobile");
+
         navigate("/");
     };
     console.log(user);

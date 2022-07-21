@@ -39,8 +39,6 @@ export function Signup() {
     const location = useLocation();
     const usersRef = collection(db, "users");
     const { googleSignIn } = useAuth();
-
-    //const redirectPath = location.state?.path || "/";
     onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser);
     });
@@ -74,6 +72,7 @@ export function Signup() {
         e.preventDefault();
         try {
             await googleSignIn();
+            console.log({user})
             navigate("/dashboard");
         } catch (erorr) {
             setError(error.message);
