@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Dashboard.css";
 import { db } from "../../firebase-config";
+import moment from "moment";
 import {
     collection,
     getDocs,
@@ -41,31 +42,41 @@ export const Dashboard = () => {
 
     const getTotal = () => {
         let total = 0;
-        // const amount = expenseData;
         for (let i = 0; i < expenseData.length; i++) {
             let number = parseInt(expenseData[i].amount);
             total += number;
         }
         return total;
     };
-const date = new Date();
-const month = date.getMonth();
-console.log(month)
+
     const getMonthly = () => {
         let total = 0;
-        for (let i = 0; i < expenseData.length; i++) 
-        if (expenseData[i].date[5,6] == month +1) {
-            let number = parseInt(expenseData[i].amount);
-            total += number
-        }
-        return total
-    }
-    const monthly = getMonthly()
+        for (let i = 0; i < expenseData.length; i++)
+            if (expenseData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
+                let number = parseInt(expenseData[i].amount);
+                total += number;
+            }
+        return total;
+    };
+
+    const getDaily = () => {
+        let total = 0;
+        for (let i = 0; i < expenseData.length; i++)
+            if (expenseData[i].date === theDate) {
+                let number = parseInt(expenseData[i].amount);
+                total += number;
+            }
+        return total;
+    };
+    const theDate = moment().format("YYYY-MM-DD");
     const total = getTotal();
+    const monthly = getMonthly();
+    const daily = getDaily();
     return (
         <div>
             <h1>Total:{total}</h1>
             <h1>Monthly Total:{monthly}</h1>
+            <h1>Daily Total:{daily}</h1>
         </div>
     );
 };
