@@ -22,8 +22,8 @@ import {
 export const Expenses = () => {
     const userEmail = sessionStorage.getItem("email");
     const userUid = sessionStorage.getItem("uid");
-       const userFirstName = sessionStorage.getItem("firstName");
-       const userLastName = sessionStorage.getItem("lastName");
+    const userFirstName = sessionStorage.getItem("firstName");
+    const userLastName = sessionStorage.getItem("lastName");
     const [expenseData, setExpenseData] = useState([]);
     const [dataTitle, setDataTitle] = useState();
     const [dataAmount, setDataAmount] = useState(0);
@@ -130,10 +130,7 @@ export const Expenses = () => {
             onClose={createClose}
             onOpen={createOpen}
             trigger={
-                <button className="create-expense-btn">
-                  
-                    Create Expense
-                </button>
+                <button className="create-expense-btn">Create Expense</button>
             }
         >
             <div className="popup--container">
