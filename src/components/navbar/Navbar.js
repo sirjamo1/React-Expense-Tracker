@@ -10,20 +10,19 @@ export const Navbar = () => {
     useEffect(() => {
         onAuthStateChanged(auth, (user) => {
             setUser(user);
-            
         });
-    }, [user]);
+    }, [user, auth]);
     const navigate = useNavigate();
     const handleLogout = () => {
         signOut(auth);
-        navigate("/");
         sessionStorage.removeItem("Auth Token");
         sessionStorage.removeItem("uid");
         sessionStorage.removeItem("email");
         sessionStorage.removeItem("firstName");
         sessionStorage.removeItem("lastName");
+        navigate("/");
     };
-     console.log(user);
+    console.log(user);
     //Note: If user is not logged in navbar is empty
     return user ? (
         <nav className="primary--nav">
