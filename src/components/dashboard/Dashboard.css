@@ -1,0 +1,15 @@
+.three-totals {
+ display: flex;
+ justify-content: space-evenly;
+}
+.three-totals > h1 {
+ border: red 1px solid;
+ border-radius: 10px;
+ height: 100px;
+}
+
+.recent-expenses-header {
+ display: flex;
+ justify-content: space-between;
+
+}
