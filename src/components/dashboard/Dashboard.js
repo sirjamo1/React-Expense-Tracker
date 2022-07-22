@@ -44,7 +44,7 @@ export const Dashboard = () => {
         };
         getThreeRecent();
     }, []);
-    console.log(threeRecent);
+
     useEffect(() => {
         const getExpenseData = async () => {
             const data = await getDocs(expenseDataRef);
@@ -91,7 +91,9 @@ export const Dashboard = () => {
             }
         return total;
     };
-    console.log(expenseDataRef);
+    const getRecurring = () => {
+        
+    };
 
     const theDate = moment().format("YYYY-MM-DD");
     const total = getTotal();
@@ -115,7 +117,8 @@ export const Dashboard = () => {
         </div>
     ));
     return (
-        <div><h1>Dashboard</h1>
+        <div>
+            <h1>Dashboard</h1>
             <div className="three-totals">
                 <h1>Total:{total}</h1>
                 <h1>Monthly Total:{monthly}</h1>
