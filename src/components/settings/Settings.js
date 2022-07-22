@@ -23,40 +23,34 @@ export const Settings = () => {
     const userLastName = sessionStorage.getItem("lastName");
     const userDOB = sessionStorage.getItem("DOB");
     const userMobile = sessionStorage.getItem("mobile");
-    const [userData, setUserData] = useState("");
+    const [userData, setUserData] = useState([]);
     const userRef = collection(db, "users");
 
     useEffect(() => {
         const getUserData = async () => {
             const data = await getDocs(userRef);
-            const currentUserData = [];
+
             const usersData = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
             }));
-            //only grabs the user who is logged in data
+            const currentUserData = [];
             for (let i = 0; i < usersData.length; i++) {
                 if (usersData[i].uid === userUid) {
                     currentUserData.push(usersData[i]);
                 }
             }
             setUserData(currentUserData);
-
-            //NOTE: this is not working because it try's to render before userData is defined
         };
-
         getUserData();
     }, []);
 
-    //  console.log(userData[0].lastName)
-    console.log(userData);
-
-    return (
-        <div className="settings--container">
+    const userAccount = userData.map((data) => (
+        <div>
             <div className="header">
                 <h1>Settings</h1>
                 <h4>
-                    {userFirstName} {userLastName}
+                    {data.firstName} {data.lastName}
                 </h4>
             </div>
             <div className="account-info">
@@ -70,21 +64,21 @@ export const Settings = () => {
             <div className="names-row">
                 <div className="first-name">
                     <label type="text">First Name</label>
-                    <input placeholder={userFirstName}></input>
+                    <input placeholder={data.firstName}></input>
                 </div>
                 <div className="last-name">
                     <label type="text">Last Name</label>
-                    <input placeholder={userLastName}></input>
+                    <input placeholder={data.lastName}></input>
                 </div>
             </div>
             <div className="DOB-mobile-row">
                 <div className="DOB">
                     <label>Date of Birth</label>
-                    <input type="date" placeholder={userDOB}></input>
+                    <input type="date" placeholder={data.DOB}></input>
                 </div>
                 <div className="mobile">
                     <label>Mobile</label>
-                    <input type="number" placeholder={userMobile}></input>
+                    <input type="number" placeholder={data.mobile}></input>
                 </div>
             </div>
             <div className="email-row">
@@ -94,9 +88,9 @@ export const Settings = () => {
                         (Must be a valid e-mail address)
                     </span>
                 </label>
-                <input type="email" placeholder={userEmail}></input>
+                <input type="email" placeholder={data.email}></input>
             </div>
-            <h1></h1>
         </div>
-    );
+    ));
+    return <div className="settings--container">{userAccount}</div>;
 };

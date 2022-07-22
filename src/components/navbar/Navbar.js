@@ -25,7 +25,7 @@ export const Navbar = () => {
 
         navigate("/");
     };
-    console.log(user);
+    // console.log(user);
     //Note: If user is not logged in navbar is empty
     return user ? (
         <nav className="primary--nav">
