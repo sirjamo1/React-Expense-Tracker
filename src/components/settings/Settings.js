@@ -17,14 +17,15 @@ import {
 } from "firebase/firestore";
 
 export const Settings = () => {
-    const userEmail = sessionStorage.getItem("email");
     const userUid = sessionStorage.getItem("uid");
-    const userFirstName = sessionStorage.getItem("firstName");
-    const userLastName = sessionStorage.getItem("lastName");
-    const userDOB = sessionStorage.getItem("DOB");
-    const userMobile = sessionStorage.getItem("mobile");
     const [userData, setUserData] = useState([]);
     const userRef = collection(db, "users");
+    const [userFirstName, setUserFirstName] = useState()
+    const [userLastName, setUserLastName] = useState();
+    const [userDOB, setUserDOB] = useState();
+    const [userMobile, setUserMobile] = useState();
+    const [userEmail, setUserEmail] = useState();
+console.log(userFirstName)
 
     useEffect(() => {
         const getUserData = async () => {
@@ -40,9 +41,25 @@ export const Settings = () => {
                 }
             }
             setUserData(currentUserData);
+            setUserFirstName(currentUserData[0].firstName)
+            setUserLastName(currentUserData[0].lastName);
+            setUserDOB(currentUserData[0].DOB);
+            setUserMobile(currentUserData[0].mobile);
+            setUserEmail(currentUserData[0].email);
         };
         getUserData();
     }, []);
+    console.log(userData[0].id)
+        const handleEditUser = async () => {
+            const updateCurrent = doc(db, "users", userData[0].id);
+            await updateDoc(updateCurrent, {
+                firstName: userFirstName,
+                lastName: userLastName,
+                DOB: userDOB,
+                mobile: userMobile,
+                email: userEmail,
+            });
+        };
 
     const userAccount = userData.map((data) => (
         <div>
@@ -58,26 +75,47 @@ export const Settings = () => {
             </div>
             <div className="personal-info-editBtn-row">
                 <h4>Personal Information</h4>
-                <button>Edit</button>
+                <button onClick={handleEditUser}>Edit</button>
             </div>
             <div className="names-row">
                 <div className="first-name">
                     <label type="text">First Name</label>
-                    <input placeholder={data.firstName}></input>
+                    <input
+                        onChange={(event) => {
+                            setUserFirstName(event.target.value);
+                        }}
+                        placeholder={data.firstName}
+                    ></input>
                 </div>
                 <div className="last-name">
                     <label type="text">Last Name</label>
-                    <input placeholder={data.lastName}></input>
+                    <input
+                        onChange={(event) => {
+                            setUserLastName(event.target.value);
+                        }}
+                        placeholder={data.lastName}
+                    ></input>
                 </div>
             </div>
             <div className="DOB-mobile-row">
                 <div className="DOB">
                     <label>Date of Birth</label>
-                    <input type="date"></input>
+                    <input
+                        onChange={(event) => {
+                            setUserDOB(event.target.value);
+                        }}
+                        type="date"
+                    ></input>
                 </div>
                 <div className="mobile">
                     <label>Mobile</label>
-                    <input type="number" placeholder={data.mobile}></input>
+                    <input
+                        onChange={(event) => {
+                            setUserMobile(event.target.value);
+                        }}
+                        
+                        placeholder={data.mobile}
+                    ></input>
                 </div>
             </div>
             <div className="email-row">
@@ -87,7 +125,13 @@ export const Settings = () => {
                         (Must be a valid e-mail address)
                     </span>
                 </label>
-                <input type="email" placeholder={data.email}></input>
+                <input
+                    onChange={(event) => {
+                        setUserEmail(event.target.value);
+                    }}
+                    type="email"
+                    placeholder={data.email}
+                ></input>
             </div>
         </div>
     ));
