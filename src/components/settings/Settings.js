@@ -74,7 +74,7 @@ export const Settings = () => {
             <div className="DOB-mobile-row">
                 <div className="DOB">
                     <label>Date of Birth</label>
-                    <input type="date" placeholder={data.DOB}></input>
+                    <input type="date"></input>
                 </div>
                 <div className="mobile">
                     <label>Mobile</label>

@@ -69,6 +69,7 @@ export const Signin = () => {
     e.preventDefault();
     try {
       await googleSignIn();
+      
       navigate("/dashboard");
     } catch (erorr) {
       setError(error.message);

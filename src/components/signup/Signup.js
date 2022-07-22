@@ -72,7 +72,19 @@ export function Signup() {
         e.preventDefault();
         try {
             await googleSignIn();
-            console.log(user)
+            await addDoc(usersRef, {
+                email: auth.currentUser.email,
+                uid: auth.currentUser.uid,
+                firstName: auth.currentUser.displayName.substring(
+                    0,
+                    auth.currentUser.displayName.indexOf(" ")
+                ),
+                lastName: auth.currentUser.displayName.substring(
+                    auth.currentUser.displayName.indexOf(" ") + 1
+                ),
+                DOB: "DOB",
+                mobile: registerMobile,
+            });
             navigate("/dashboard");
         } catch (erorr) {
             setError(error.message);
