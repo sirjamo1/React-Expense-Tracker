@@ -93,10 +93,11 @@ export const Expenses = () => {
             }
         }
     };
+    
     //renders rows of data each time edit or create expense popup is closed
     useEffect(() => {
         const getExpenseData = async () => {
-            const data = await getDocs(expenseDataRef);
+            const data = await getDocs(query(expenseDataRef, orderBy("date", "desc")));
             const userData = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
