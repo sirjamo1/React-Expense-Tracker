@@ -69,6 +69,9 @@ export const Signin = () => {
     e.preventDefault();
     try {
       await googleSignIn();
+       sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
+       sessionStorage.setItem("uid", auth.currentUser.uid);
+       sessionStorage.setItem("email", auth.currentUser.email);
       
       navigate("/dashboard");
     } catch (erorr) {

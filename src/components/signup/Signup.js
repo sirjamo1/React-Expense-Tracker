@@ -2,6 +2,7 @@ import { React, useState } from "react";
 import "./Signup.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import dollarInBirdCage from "../images/dollarInBirdCage.png";
+import moment from "moment";
 import {
     collection,
     getDocs,
@@ -38,6 +39,7 @@ export function Signup() {
     const navigate = useNavigate();
     const location = useLocation();
     const usersRef = collection(db, "users");
+    const todaysDate = moment().format("YYYY-MM-DD");
     const { googleSignIn } = useAuth();
     onAuthStateChanged(auth, (currentUser) => {
         setUser(currentUser);
@@ -82,9 +84,12 @@ export function Signup() {
                 lastName: auth.currentUser.displayName.substring(
                     auth.currentUser.displayName.indexOf(" ") + 1
                 ),
-                DOB: "DOB",
-                mobile: registerMobile,
+                DOB: "0",
+                mobile: 0,
             });
+            sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
+            sessionStorage.setItem("uid", auth.currentUser.uid);
+            sessionStorage.setItem("email", auth.currentUser.email);
             navigate("/dashboard");
         } catch (erorr) {
             setError(error.message);
