@@ -29,7 +29,6 @@ export const Settings = () => {
     useEffect(() => {
         const getUserData = async () => {
             const data = await getDocs(userRef);
-
             const usersData = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
