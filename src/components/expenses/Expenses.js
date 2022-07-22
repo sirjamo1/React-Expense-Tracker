@@ -16,7 +16,7 @@ import {
     setDoc,
     where,
     orderBy,
-    // serverTimestamp
+    serverTimestamp
 } from "firebase/firestore";
 
 export const Expenses = () => {
@@ -57,6 +57,7 @@ export const Expenses = () => {
             type: dataType,
             amount: dataAmount,
             date: dataDate,
+            created: serverTimestamp(),
             recurring: dataRecurring,
             key: nanoid(),
             uid: userUid,
