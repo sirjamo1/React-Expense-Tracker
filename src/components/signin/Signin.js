@@ -7,18 +7,18 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import GoogleButton from "react-google-button";
 import { useAuth } from "../../Auth";
 import {
-    collection,
-    getDocs,
-    addDoc,
-    updateDoc,
-    doc,
-    deleteDoc,
-    onSnapshot,
-    query,
-    setDoc,
-    where,
-    orderBy,
-    // serverTimestamp
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+  deleteDoc,
+  onSnapshot,
+  query,
+  setDoc,
+  where,
+  orderBy,
+  // serverTimestamp
 } from "firebase/firestore";
 import { db } from "../../firebase-config";
 export const Signin = () => {
@@ -49,15 +49,15 @@ export const Signin = () => {
       const q = query(collection(db, "users"));
       const querSnapshot = await getDocs(q);
       querSnapshot.forEach((doc) => {
-          allUsers.push(doc.id, doc.data());
+        allUsers.push(doc.id, doc.data());
       });
       for (let i = 0; i < allUsers.length; i++) {
-          if (allUsers[i].uid === userUid) {
-              sessionStorage.setItem("firstName", allUsers[i].firstName);
-              sessionStorage.setItem("lastName", allUsers[i].lastName);
-              sessionStorage.setItem("DOB", allUsers[i].DOB);
-              sessionStorage.setItem("mobile", allUsers[i].mobile);
-          }
+        if (allUsers[i].uid === userUid) {
+          sessionStorage.setItem("firstName", allUsers[i].firstName);
+          sessionStorage.setItem("lastName", allUsers[i].lastName);
+          sessionStorage.setItem("DOB", allUsers[i].DOB);
+          sessionStorage.setItem("mobile", allUsers[i].mobile);
+        }
       }
       navigate("/dashboard");
     } catch (error) {
@@ -69,10 +69,10 @@ export const Signin = () => {
     e.preventDefault();
     try {
       await googleSignIn();
-       sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
-       sessionStorage.setItem("uid", auth.currentUser.uid);
-       sessionStorage.setItem("email", auth.currentUser.email);
-      
+      sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
+      sessionStorage.setItem("uid", auth.currentUser.uid);
+      sessionStorage.setItem("email", auth.currentUser.email);
+
       navigate("/dashboard");
     } catch (erorr) {
       setError(error.message);
