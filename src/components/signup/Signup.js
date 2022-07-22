@@ -72,7 +72,7 @@ export function Signup() {
         e.preventDefault();
         try {
             await googleSignIn();
-            console.log({user})
+            console.log(user)
             navigate("/dashboard");
         } catch (erorr) {
             setError(error.message);
