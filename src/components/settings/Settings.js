@@ -49,7 +49,7 @@ console.log(userFirstName)
         };
         getUserData();
     }, []);
-    console.log(userData[0].id)
+    
         const handleEditUser = async () => {
             const updateCurrent = doc(db, "users", userData[0].id);
             await updateDoc(updateCurrent, {
