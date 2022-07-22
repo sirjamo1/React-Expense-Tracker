@@ -3,6 +3,7 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { useState, createContext, useContext } from "react";
 
@@ -18,8 +19,12 @@ export const AuthProvider = ({ children }) => {
     const googleAuthProvider = new GoogleAuthProvider();
     return signInWithPopup(auth, googleAuthProvider);
   }
+
+  function resetPassword(email) {
+    return sendPasswordResetEmail(auth, email);
+  }
   return (
-    <AuthContext.Provider value={{ user, googleSignIn }}>
+    <AuthContext.Provider value={{ user, resetPassword, googleSignIn }}>
       {children}
     </AuthContext.Provider>
   );
