@@ -71,22 +71,40 @@ export function Signup() {
     };
 
     const handleGoogleSignIn = async (e) => {
+        const data = await getDocs(usersRef);
+        const usersData = data.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+        }));
         e.preventDefault();
         try {
             await googleSignIn();
-            await addDoc(usersRef, {
-                email: auth.currentUser.email,
-                uid: auth.currentUser.uid,
-                firstName: auth.currentUser.displayName.substring(
-                    0,
-                    auth.currentUser.displayName.indexOf(" ")
-                ),
-                lastName: auth.currentUser.displayName.substring(
-                    auth.currentUser.displayName.indexOf(" ") + 1
-                ),
-                DOB: "0",
-                mobile: 0,
-            });
+            sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
+            sessionStorage.setItem("uid", auth.currentUser.uid);
+            sessionStorage.setItem("email", auth.currentUser.email);
+            navigate("/dashboard");
+            const tally = 0;
+            for (let i = 0; i < usersData.length; i++) {
+                if (usersData[i].email === auth.currentUser.email) {
+                    tally += 1;
+                    console.log(tally);
+                }
+            }
+            if (tally === 0) {
+                await addDoc(usersRef, {
+                    email: auth.currentUser.email,
+                    uid: auth.currentUser.uid,
+                    firstName: auth.currentUser.displayName.substring(
+                        0,
+                        auth.currentUser.displayName.indexOf(" ")
+                    ),
+                    lastName: auth.currentUser.displayName.substring(
+                        auth.currentUser.displayName.indexOf(" ") + 1
+                    ),
+                    DOB: "0",
+                    mobile: 0,
+                });
+            }
             sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
             sessionStorage.setItem("uid", auth.currentUser.uid);
             sessionStorage.setItem("email", auth.currentUser.email);
