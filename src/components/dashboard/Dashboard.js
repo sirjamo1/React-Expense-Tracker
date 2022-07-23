@@ -92,9 +92,15 @@ export const Dashboard = () => {
         return total;
     };
     const getRecurring = () => {
+        const recurringList = []
+        for (let i = 0; i < expenseData.length; i++) {
+            if (expenseData[i].recurring == "on") {
+                recurringList.push(expenseData[i])
+            }
+        }   return recurringList
         
     };
-
+    console.log(getRecurring())
     const theDate = moment().format("YYYY-MM-DD");
     const total = getTotal();
     const monthly = getMonthly();

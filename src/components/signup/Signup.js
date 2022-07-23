@@ -15,7 +15,7 @@ import {
     setDoc,
     where,
     orderBy,
-    serverTimestamp
+    serverTimestamp,
 } from "firebase/firestore";
 import {
     createUserWithEmailAndPassword,
@@ -109,25 +109,24 @@ export function Signup() {
                     key: nanoid(),
                     created: serverTimestamp(),
                 });
+                await sessionStorage.setItem(
+                    "firstName",
+                    auth.currentUser.displayName.substring(
+                        0,
+                        auth.currentUser.displayName.indexOf(" ")
+                    )
+                );
+                await sessionStorage.setItem(
+                    "lastName",
+                    auth.currentUser.displayName.substring(
+                        auth.currentUser.displayName.indexOf(" ") + 1
+                    )
+                );
             }
             sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
             sessionStorage.setItem("uid", auth.currentUser.uid);
             sessionStorage.setItem("email", auth.currentUser.email);
-            const allUsers = [];
-            const userUid = auth.currentUser.uid;
-            const q = query(collection(db, "users"));
-            const querSnapshot = await getDocs(q);
-            querSnapshot.forEach((doc) => {
-                allUsers.push(doc.id, doc.data());
-            });
-            for (let i = 0; i < allUsers.length; i++) {
-                if (allUsers[i].uid === userUid) {
-                    sessionStorage.setItem("firstName", allUsers[i].firstName);
-                    sessionStorage.setItem("lastName", allUsers[i].lastName);
-                    sessionStorage.setItem("DOB", allUsers[i].DOB);
-                    sessionStorage.setItem("mobile", allUsers[i].mobile);
-                }
-            }
+
             navigate("/dashboard");
         } catch (error) {
             setError(error.message);
