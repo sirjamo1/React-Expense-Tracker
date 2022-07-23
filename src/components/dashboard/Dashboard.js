@@ -24,6 +24,9 @@ export const Dashboard = () => {
     const [expenseData, setExpenseData] = useState([]);
     const userUid = sessionStorage.getItem("uid");
     const [threeRecent, setThreeRecent] = useState([]);
+    const [recurringData, setRecurringData] = useState([]);
+     const userFirstName = sessionStorage.getItem("firstName");
+     const userLastName = sessionStorage.getItem("lastName");
 
     useEffect(() => {
         const getThreeRecent = async () => {
@@ -42,6 +45,7 @@ export const Dashboard = () => {
             }
             setThreeRecent(currentUserData);
         };
+
         getThreeRecent();
     }, []);
 
@@ -91,23 +95,30 @@ export const Dashboard = () => {
             }
         return total;
     };
-    const getRecurring = () => {
-        const recurringList = []
-        for (let i = 0; i < expenseData.length; i++) {
-            if (expenseData[i].recurring == "on") {
-                recurringList.push(expenseData[i])
+    useEffect(() => {
+        const getRecurring = () => {
+            const recurringList = [];
+            for (let i = 0; i < expenseData.length; i++) {
+                if (expenseData[i].recurring) {
+                    recurringList.push(expenseData[i]);
+                }
             }
-        }   return recurringList
-        
-    };
-    console.log(getRecurring())
+            setRecurringData(recurringList);
+        };
+        getRecurring();
+    }, [expenseData]);
     const theDate = moment().format("YYYY-MM-DD");
     const total = getTotal();
     const monthly = getMonthly();
     const daily = getDaily();
-
+    const recurring = recurringData.map((data) => (
+        <div className="recurring-div">
+            <p>{data.title}</p>
+            <p>${data.amount}</p>
+        </div>
+    ));
     const threeMostRecent = threeRecent.map((data) => (
-        <div className="row-data">
+        <div className="recent-expenses-data">
             <div>
                 <p>{data.title}</p>
             </div>
@@ -123,26 +134,34 @@ export const Dashboard = () => {
         </div>
     ));
     return (
-        <div>
-            <h1>Dashboard</h1>
-            <div className="three-totals">
-                <h1>Total:{total}</h1>
-                <h1>Monthly Total:{monthly}</h1>
-                <h1>Daily Total:{daily}</h1>
+        <div className="dashboard-container">
+            <div className="dashboard-header">
+                <h1>Dashboard</h1>
+                <h4>{userFirstName} {userLastName}</h4>
             </div>
-            <div className="recent-expenses-header">
-                <h4>Recent Expenses</h4>
-                <button>
-                    <Link to="/expenses">View All</Link>
-                </button>
+            <div className="left-and-right-container">
+                <div className="leftside-container">
+                    <div className="three-totals">
+                        <h1>Total:{total}</h1>
+                        <h1>Monthly Total:{monthly}</h1>
+                        <h1>Daily Total:{daily}</h1>
+                    </div>
+                    <div className="recent-expenses-title">
+                        <h4>Recent Expenses</h4>
+                        <button>
+                            <Link to="/expenses">View All</Link>
+                        </button>
+                    </div>
+                    <div className="recent-expense-header">
+                        <p>NAME/BUSINESS</p>
+                        <p>TYPE</p>
+                        <p>AMOUNT</p>
+                        <p>DATE</p>
+                    </div>
+                    {threeMostRecent}
+                </div>
+                <div className="rightside-container"><h4>Recurring Expenses</h4>{recurring}</div>
             </div>
-            <div className="row-header">
-                <p>NAME/BUSINESS</p>
-                <p>TYPE</p>
-                <p>AMOUNT</p>
-                <p>DATE</p>
-            </div>
-            {threeMostRecent}
         </div>
     );
 };
