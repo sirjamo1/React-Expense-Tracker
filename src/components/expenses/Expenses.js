@@ -16,7 +16,7 @@ import {
     setDoc,
     where,
     orderBy,
-    // serverTimestamp
+    serverTimestamp,
 } from "firebase/firestore";
 
 export const Expenses = () => {
@@ -29,7 +29,7 @@ export const Expenses = () => {
     const [dataAmount, setDataAmount] = useState(0);
     const [dataType, setDataType] = useState();
     const [dataDate, setDataDate] = useState();
-    const [dataRecurring, setDataRecurring] = useState(false);
+    const [dataRecurring, setDataRecurring] = useState("off");
     const expenseDataRef = collection(db, "expenseData");
     const [editBtnId, setEditBtnId] = useState();
     const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -57,6 +57,7 @@ export const Expenses = () => {
             type: dataType,
             amount: dataAmount,
             date: dataDate,
+            created: serverTimestamp(),
             recurring: dataRecurring,
             key: nanoid(),
             uid: userUid,
@@ -93,11 +94,13 @@ export const Expenses = () => {
             }
         }
     };
-    
+
     //renders rows of data each time edit or create expense popup is closed
     useEffect(() => {
         const getExpenseData = async () => {
-            const data = await getDocs(query(expenseDataRef, orderBy("date", "desc")));
+            const data = await getDocs(
+                query(expenseDataRef, orderBy("date", "desc"))
+            );
             const userData = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
@@ -109,7 +112,6 @@ export const Expenses = () => {
                     currentUserData.push(userData[i]);
                 }
             }
-            console.log(userData[0].uid);
             setExpenseData(currentUserData);
         };
 
@@ -158,7 +160,7 @@ export const Expenses = () => {
                     name="type"
                     id="type"
                 >
-                    <option value="" disabled selected>
+                    <option defaultValue="" disabled selected>
                         Select your option
                     </option>
                     <option value="Mobile">Mobile</option>
@@ -178,11 +180,11 @@ export const Expenses = () => {
                         placeholder="Title"
                     ></input>
                     <input
+                        name="recurring"
                         onChange={(event) => {
-                            setDataRecurring(event.target.value);
+                            setDataRecurring(event.target.checked);
                         }}
                         type="checkbox"
-                        value="true"
                     ></input>
                     <label>Recurring</label>
                 </span>
@@ -255,13 +257,14 @@ export const Expenses = () => {
                         type="date"
                         value={currentExpense.date}
                     ></input>
+
                     <input
+                        name="recurring"
                         onChange={(event) => {
-                            setDataRecurring(event.target.value);
+                            setDataRecurring(event.target.checked);
                         }}
                         type="checkbox"
                         defaultChecked={currentExpense.recurring}
-                        value="1"
                     ></input>
                     <label>Recurring</label>
                 </span>

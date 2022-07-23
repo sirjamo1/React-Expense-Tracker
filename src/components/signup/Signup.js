@@ -15,7 +15,7 @@ import {
     setDoc,
     where,
     orderBy,
-    // serverTimestamp
+    serverTimestamp,
 } from "firebase/firestore";
 import {
     createUserWithEmailAndPassword,
@@ -26,6 +26,7 @@ import { Link } from "react-router-dom";
 import { auth } from "../../firebase-config";
 import GoogleButton from "react-google-button";
 import { useAuth } from "../../Auth";
+import { nanoid } from "nanoid";
 
 export function Signup() {
     const [registerEmail, setRegisterEmail] = useState("");
@@ -58,6 +59,8 @@ export function Signup() {
                 lastName: registerLastName,
                 DOB: registerDOB,
                 mobile: registerMobile,
+                created: serverTimestamp(),
+                key: nanoid(),
             });
             sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
             sessionStorage.setItem("uid", auth.currentUser.uid);
@@ -103,13 +106,29 @@ export function Signup() {
                     ),
                     DOB: "0",
                     mobile: 0,
+                    key: nanoid(),
+                    created: serverTimestamp(),
                 });
+                await sessionStorage.setItem(
+                    "firstName",
+                    auth.currentUser.displayName.substring(
+                        0,
+                        auth.currentUser.displayName.indexOf(" ")
+                    )
+                );
+                await sessionStorage.setItem(
+                    "lastName",
+                    auth.currentUser.displayName.substring(
+                        auth.currentUser.displayName.indexOf(" ") + 1
+                    )
+                );
             }
             sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
             sessionStorage.setItem("uid", auth.currentUser.uid);
             sessionStorage.setItem("email", auth.currentUser.email);
+
             navigate("/dashboard");
-        } catch (erorr) {
+        } catch (error) {
             setError(error.message);
         }
     };
