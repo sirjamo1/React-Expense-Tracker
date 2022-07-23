@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import "./Signup.css";
 import { useNavigate, useLocation } from "react-router-dom";
 import dollarInBirdCage from "../images/dollarInBirdCage.png";
@@ -42,9 +42,11 @@ export function Signup() {
     const usersRef = collection(db, "users");
     const todaysDate = moment().format("YYYY-MM-DD");
     const { googleSignIn } = useAuth();
-    onAuthStateChanged(auth, (currentUser) => {
-        setUser(currentUser);
-    });
+    useEffect(() => {
+        onAuthStateChanged(auth, (currentUser) => {
+            setUser(currentUser);
+        });
+    },[]);
     const handleRegister = async () => {
         try {
             const user = await createUserWithEmailAndPassword(
@@ -53,7 +55,7 @@ export function Signup() {
                 registerPassword
             );
             await addDoc(usersRef, {
-                email: auth.currentUser.email,
+                email: registerEmail,
                 uid: auth.currentUser.uid,
                 firstName: registerFirstName,
                 lastName: registerLastName,
