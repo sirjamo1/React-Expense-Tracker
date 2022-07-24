@@ -17,7 +17,7 @@ export const Dashboard = () => {
     const [threeRecent, setThreeRecent] = useState([]);
     const [recurringData, setRecurringData] = useState([]);
 
-    useEffect(() => {
+    // useEffect(() => {
         if (user.displayName == null) {
             const getUserData = async () => {
                 const data = await getDocs(userDataRef);
@@ -37,7 +37,7 @@ export const Dashboard = () => {
             };
             getUserData();
         }
-    }, []);
+    // }, [expenseData]);
 
     useEffect(() => {
         const getThreeRecent = async () => {

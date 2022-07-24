@@ -123,7 +123,6 @@ export const Settings = () => {
             </div>
         </Popup>
     );
-    console.log(reAuthPassword);
     const userAccount = (
         <div>
             <div className="header">

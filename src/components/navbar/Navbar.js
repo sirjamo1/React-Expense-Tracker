@@ -15,8 +15,8 @@ export const Navbar = () => {
     //     });
     // }, [user, auth]);
     const navigate = useNavigate();
-    const handleLogout = () => {
-        signOut(auth);
+    const handleLogout = async () => {
+        await signOut(auth);
         sessionStorage.removeItem("Auth Token");
         sessionStorage.removeItem("uid");
         sessionStorage.removeItem("email");
@@ -36,9 +36,9 @@ export const Navbar = () => {
             <NavLink className="links" to="/settings">
                 Settings
             </NavLink>
-            <NavLink className="links" to="/">
-                <div onClick={handleLogout}>Log out</div>
-            </NavLink>
+            <div className="links logout" onClick={handleLogout}>
+                Log out
+            </div>
         </nav>
     ) : (
         <nav></nav>

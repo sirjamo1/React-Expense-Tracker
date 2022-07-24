@@ -303,8 +303,8 @@ export const Expenses = () => {
         <div className="expenses--container">
             <div className="expenses-nav">
                 <div className="nav-line1">
-                    <h2>Expenses</h2>
-                    <h5>Welcome {userDisplayName}</h5>
+                    <h1>Expenses</h1>
+                    <h4>{userDisplayName}</h4>
                 </div>
                 <div className="nav-line2">
                     <div className="nav-line2-left">

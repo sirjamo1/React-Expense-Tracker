@@ -1,55 +1,49 @@
 .dashboard-container {
- width: 100vw;
- margin: 0px 10px;
- position: relative;
+    width: 100vw;
+    margin: 0px 10px;
+    position: relative;
 }
 /*👉*********HEADER*********👈*/
 .dashboard-header {
-  display: flex;
+    display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    border: yellow solid 1px;
-    
 }
 .left-and-right-container {
- display: flex;
- position: relative;
- 
+    display: flex;
+    position: relative;
 }
 
 .leftside-container {
-width: 70%;
+    width: 70%;
 }
 .three-totals {
- display: flex;
- justify-content: space-evenly;
- border: 1px green solid;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .three-totals > h1 {
- background-color: rgba(0, 255, 255, 0.267);
- border-radius: 10px;
- height: 100px;
+    background-color: rgba(0, 255, 255, 0.267);
+    border-radius: 10px;
+    height: 100px;
 }
-.three-totals >h1:hover{
- background-color: aqua;
+.three-totals > h1:hover {
+    background-color: aqua;
 }
 
 .recent-expenses-title {
- display: flex;
- justify-content: space-between;
-border: 1px green solid;
+    display: flex;
+    justify-content: space-between;
 }
 .recent-expense-header {
- border: 1px green solid;
-     background-color: rgba(0, 255, 255, 0.267);
+    background-color: rgba(0, 255, 255, 0.267);
     display: grid;
     grid-template-columns:
         minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
         minmax(80px, 1fr);
 }
-.recent-expenses-data{
+.recent-expenses-data {
     display: grid;
     grid-template-columns:
         minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
@@ -63,34 +57,29 @@ border: 1px green solid;
     display: flex;
     align-items: center;
     max-height: 40px;
-     overflow: hidden;
-     white-space: nowrap;
-    
+    overflow: hidden;
+    white-space: nowrap;
 }
 .recent-expenses-data div > p {
     text-overflow: ellipsis;
     overflow: hidden;
     color: green;
-   
 }
 
 .rightside-container {
-border: 1px blue solid;
-width: 30%;
-
+    width: 30%;
+    margin-left: 10px;
 }
 .recurring-div {
- display: flex;
- justify-content: space-between;
-background-color: rgba(0, 255, 255, 0.267);
-border-radius: 10px;
-margin-top:10px;
- 
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 255, 255, 0.267);
+    border-radius: 10px;
+    margin-top: 10px;
 }
-.recurring-div:hover{
- background-color: aqua;
+.recurring-div:hover {
+    background-color: aqua;
 }
 .recurring-div > p {
- margin: 10px 10px;
- 
+    margin: 10px 10px;
 }
