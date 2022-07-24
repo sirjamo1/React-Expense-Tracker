@@ -3,26 +3,24 @@ import { NavLink } from "react-router-dom";
 import { onAuthStateChanged, getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import "./Navbar.css";
+import { useAuth } from "../../Auth";
 
 export const Navbar = () => {
-    const [user, setUser] = useState(null);
+    const { user } = useAuth();
+    // const [user, setUser] = useState(null);
     const auth = getAuth();
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-            setUser(user);
-        });
-    }, [user, auth]);
+    // useEffect(() => {
+    //     onAuthStateChanged(auth, (user) => {
+    //         setUser(user);
+    //     });
+    // }, [user, auth]);
     const navigate = useNavigate();
     const handleLogout = () => {
         signOut(auth);
         sessionStorage.removeItem("Auth Token");
         sessionStorage.removeItem("uid");
         sessionStorage.removeItem("email");
-        sessionStorage.removeItem("firstName");
-        sessionStorage.removeItem("lastName");
-        sessionStorage.removeItem("DOB");
-        sessionStorage.removeItem("mobile");
-
+        sessionStorage.removeItem("displayName");
         navigate("/");
     };
     console.log(user);

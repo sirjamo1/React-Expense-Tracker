@@ -4,6 +4,7 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import { nanoid } from "nanoid";
 import { db } from "../../firebase-config";
+import { useAuth } from "../../Auth";
 import {
     collection,
     getDocs,
@@ -11,19 +12,16 @@ import {
     updateDoc,
     doc,
     deleteDoc,
-    onSnapshot,
     query,
-    setDoc,
-    where,
     orderBy,
     serverTimestamp,
 } from "firebase/firestore";
 
 export const Expenses = () => {
-    const userEmail = sessionStorage.getItem("email");
+    const { user } = useAuth();
+    const [userDisplayName, setUserDisplayName] = useState(user.displayName);
+    const [userEmail, setUserEmail] = useState(user.email);
     const userUid = sessionStorage.getItem("uid");
-    const userFirstName = sessionStorage.getItem("firstName");
-    const userLastName = sessionStorage.getItem("lastName");
     const [expenseData, setExpenseData] = useState([]);
     const [dataTitle, setDataTitle] = useState();
     const [dataAmount, setDataAmount] = useState(0);
@@ -50,7 +48,6 @@ export const Expenses = () => {
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
     };
-    //userUid is from session storage
     const handleCreateData = async () => {
         await addDoc(expenseDataRef, {
             title: dataTitle,
@@ -307,7 +304,7 @@ export const Expenses = () => {
             <div className="expenses-nav">
                 <div className="nav-line1">
                     <h2>Expenses</h2>
-                    <h5>Welcome {userFirstName}</h5>
+                    <h5>Welcome {userDisplayName}</h5>
                 </div>
                 <div className="nav-line2">
                     <div className="nav-line2-left">
