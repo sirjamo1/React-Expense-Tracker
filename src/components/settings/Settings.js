@@ -56,6 +56,11 @@ export const Settings = () => {
     //     //console.log("  Phone Number: " + profile.phoneNumber); //not sure about this
     // });
     //update profile can only update displayName and photoUrl
+    //
+    ///   **********NOTE:*************
+    //update email and password get an error 400 (below) to do with and should wait for the popup to close before resuming function
+    //
+    //https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDR90b1grij9mZjZkX_W1eEzk70pX-T1Ww 400     <--error
     const handleUpdate = () => {
         if (user.email !== userEmail) {
             setAuthPopup(true);
@@ -92,13 +97,22 @@ export const Settings = () => {
             );
         }
         if (userNewPassword) {
-            updatePassword(user, { userNewPassword })
-                .then(() => {
-                    alert("Password Updated!");
-                })
-                .catch((error) => {
-                    alert("Oh O!");
-                });
+            setAuthPopup(true);
+            const credential = EmailAuthProvider.credential(
+                user.email,
+                reAuthPassword,
+                user.providerData.tenantId
+            );
+            console.log(credential);
+            reauthenticateWithCredential(user, credential).then(() => {
+                updatePassword(user, { userNewPassword })
+                    .then(() => {
+                        alert("Password Updated!");
+                    })
+                    .catch((error) => {
+                        alert("Oh O!");
+                    });
+            });
         }
     };
     const changeAuthPopupState = () => {
@@ -109,7 +123,7 @@ export const Settings = () => {
             open={authPopup}
             onClose={changeAuthPopupState}
             // modal={true}
-        
+
             show={true}
             // className="popup-main"
         >
