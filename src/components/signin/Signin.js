@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { auth } from "../../firebase-config";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import GoogleButton from "react-google-button";
-import { useAuth } from "../../Auth";
+import { useAuth, user } from "../../Auth";
 import {
   collection,
   getDocs,

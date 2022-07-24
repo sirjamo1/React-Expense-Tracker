@@ -1,5 +1,15 @@
 import React, { useState, useEffect, Component } from "react";
 import "./Settings.css";
+import Popup from "reactjs-popup";
+import {
+    getAuth,
+    onAuthStateChanged,
+    updateProfile,
+    updateEmail,
+    updatePassword,
+    reauthenticateWithCredential,
+    EmailAuthProvider,
+} from "firebase/auth";
 import { db } from "../../firebase-config";
 import {
     collection,
@@ -15,61 +25,119 @@ import {
     orderBy,
     // serverTimestamp
 } from "firebase/firestore";
+import { useAuth } from "../../Auth";
 
 export const Settings = () => {
-    const userUid = sessionStorage.getItem("uid");
-    const [userData, setUserData] = useState([]);
-    const userRef = collection(db, "users");
-    const [userFirstName, setUserFirstName] = useState();
-    const [userLastName, setUserLastName] = useState();
+    const { user } = useAuth();
+
+    const [userDisplayName, setUserDisplayName] = useState(user.displayName);
+    const [userEmail, setUserEmail] = useState(user.email);
+    const [userMobile, setUserMobile] = useState(user.phoneNumber);
+    const [userPhoto, setUserPhoto] = useState(user.photoUrl);
+    const [userFirstName, setUserFirstName] = useState(
+        user.displayName.substring(0, user.displayName.indexOf(" "))
+    );
+    const [userLastName, setUserLastName] = useState(
+        user.displayName.substring(user.displayName.indexOf(" ") + 1)
+    );
     const [userDOB, setUserDOB] = useState();
-    const [userMobile, setUserMobile] = useState();
-    const [userEmail, setUserEmail] = useState();
-    const [userPass, setUserPass] = useState();
+    const [userNewPassword, setUserNewPassword] = useState();
+    const userUid = user.uid;
+    const [authPopup, setAuthPopup] = useState(false);
 
-    useEffect(() => {
-        const getUserData = async () => {
-            const data = await getDocs(userRef);
-            const usersData = data.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            const currentUserData = [];
-            for (let i = 0; i < usersData.length; i++) {
-                if (usersData[i].uid === userUid) {
-                    currentUserData.push(usersData[i]);
+    const [reAuthPassword, setReAuthPassword] = useState("");
+
+    // user.providerData.forEach((profile) => {
+    //     console.log("Sign-in provider: " + profile.providerId);
+    //     console.log("  Provider-specific UID: " + profile.uid);
+    //     console.log("  Name: " + profile.displayName);
+    //     console.log("  Email: " + profile.email);
+    //     console.log("  Photo URL: " + profile.photoURL);
+    //     //console.log("  Phone Number: " + profile.phoneNumber); //not sure about this
+    // });
+    //update profile can only update displayName and photoUrl
+    const handleUpdate = () => {
+        if (user.email !== userEmail) {
+            setAuthPopup(true);
+            console.log(authPopup);
+            console.log(user.email);
+            console.log(reAuthPassword);
+            console.log(user);
+
+            const credential = EmailAuthProvider.credential(
+                user.email,
+                reAuthPassword,
+                user.providerData.tenantId
+            );
+            console.log(credential);
+            reauthenticateWithCredential(user, credential).then(() => {
+                updateEmail(user, { userEmail })
+                    .then(() => {
+                        alert(`Email updated to : ${userEmail}`);
+                    })
+                    .catch((error) => {
+                        alert("something went wrong");
+                    });
+            });
+        }
+        if (user.displayName !== `${userFirstName} ${userLastName}`) {
+            updateProfile(user, {
+                displayName: `${userFirstName} ${userLastName}`,
+                // photoURL: "https://example.com/jane-q-user/profile.jpg", //maybe make it's own function for img
+            }).then(() => {});
+            alert(`Name updated to ${userFirstName} ${userLastName}`).catch(
+                (error) => {
+                    // An error occurred
                 }
-            }
-            setUserData(currentUserData);
-            setUserFirstName(currentUserData[0].firstName);
-            setUserLastName(currentUserData[0].lastName);
-            setUserDOB(currentUserData[0].DOB);
-            setUserMobile(currentUserData[0].mobile);
-            setUserEmail(currentUserData[0].email);
-            setUserPass(currentUserData[0].password);
-        };
-        getUserData();
-    }, []);
-
-    const handleEditUser = async () => {
-        const updateCurrent = doc(db, "users", userData[0].id);
-        await updateDoc(updateCurrent, {
-            firstName: userFirstName,
-            lastName: userLastName,
-            DOB: userDOB,
-            mobile: userMobile,
-            email: userEmail,
-            password: userPass,
-        });
+            );
+        }
+        if (userNewPassword) {
+            updatePassword(user, { userNewPassword })
+                .then(() => {
+                    alert("Password Updated!");
+                })
+                .catch((error) => {
+                    alert("Oh O!");
+                });
+        }
     };
-
-    const userAccount = userData.map((data) => (
+    const changeAuthPopupState = () => {
+        setAuthPopup(false);
+    };
+    const reAuthPopup = (
+        <Popup
+            open={authPopup}
+            onClose={changeAuthPopupState}
+            // modal={true}
+        
+            show={true}
+            // className="popup-main"
+        >
+            <div>
+                <label>
+                    this is for Reauth
+                    <span className="instructions">
+                        (Password must be a match)
+                    </span>
+                </label>
+                <input
+                    onChange={(event) => {
+                        setReAuthPassword(event.target.value);
+                    }}
+                    type="password"
+                    placeholder="re auth pass"
+                    //defaultValue={userPassword}
+                ></input>
+                <button>Edit</button>
+            </div>
+        </Popup>
+    );
+    console.log(reAuthPassword);
+    const userAccount = (
         <div>
             <div className="header">
                 <h1>Settings</h1>
-                <h4>
-                    {data.firstName} {data.lastName}
-                </h4>
+                <h4>{userDisplayName}</h4>
             </div>
             <div className="account-info">
                 <h3>Account Information</h3>
@@ -77,7 +145,8 @@ export const Settings = () => {
             </div>
             <div className="personal-info-editBtn-row">
                 <h4>Personal Information</h4>
-                <button onClick={handleEditUser}>Edit</button>
+                {reAuthPopup}
+                <button onClick={handleUpdate}>Edit</button>
             </div>
             <div className="names-row">
                 <div className="first-name">
@@ -86,7 +155,7 @@ export const Settings = () => {
                         onChange={(event) => {
                             setUserFirstName(event.target.value);
                         }}
-                        placeholder={data.firstName}
+                        placeholder={userFirstName}
                     ></input>
                 </div>
                 <div className="last-name">
@@ -95,7 +164,7 @@ export const Settings = () => {
                         onChange={(event) => {
                             setUserLastName(event.target.value);
                         }}
-                        placeholder={data.lastName}
+                        placeholder={userLastName}
                     ></input>
                 </div>
             </div>
@@ -115,7 +184,7 @@ export const Settings = () => {
                         onChange={(event) => {
                             setUserMobile(event.target.value);
                         }}
-                        placeholder={data.mobile}
+                        placeholder={userMobile}
                     ></input>
                 </div>
             </div>
@@ -131,7 +200,7 @@ export const Settings = () => {
                         setUserEmail(event.target.value);
                     }}
                     type="email"
-                    placeholder={data.email}
+                    placeholder={userEmail}
                     //defaultValue={data.email}
                 ></input>
             </div>
@@ -144,7 +213,7 @@ export const Settings = () => {
                 </label>
                 <input
                     onChange={(event) => {
-                        setUserPass(event.target.value);
+                        setUserNewPassword(event.target.value);
                     }}
                     type="password"
                     placeholder="Password"
@@ -160,14 +229,14 @@ export const Settings = () => {
                 </label>
                 <input
                     onChange={(event) => {
-                        setUserPass(event.target.value);
+                        setUserNewPassword(event.target.value);
                     }}
                     type="password"
                     placeholder="Password Confirmation"
-                    //defaultValue={data.password}
+                    //defaultValue={userPassword}
                 ></input>
             </div>
         </div>
-    ));
+    );
     return <div className="settings--container">{userAccount}</div>;
 };
