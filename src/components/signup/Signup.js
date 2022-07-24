@@ -1,52 +1,38 @@
 import { React, useEffect, useState } from "react";
 import "./Signup.css";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import dollarInBirdCage from "../images/dollarInBirdCage.png";
-import moment from "moment";
+import { db } from "../../firebase-config";
+import { nanoid } from "nanoid";
 import {
     collection,
-    getDocs,
     addDoc,
-    updateDoc,
-    doc,
-    deleteDoc,
-    onSnapshot,
-    query,
-    setDoc,
-    where,
-    orderBy,
-    serverTimestamp,
 } from "firebase/firestore";
 import {
     createUserWithEmailAndPassword,
     onAuthStateChanged,
 } from "firebase/auth";
-import { db } from "../../firebase-config";
 import { Link } from "react-router-dom";
 import { auth } from "../../firebase-config";
 import GoogleButton from "react-google-button";
 import { useAuth } from "../../Auth";
-import { nanoid } from "nanoid";
 
 export function Signup() {
+    const userDataRef = collection(db, "userData");
     const [registerEmail, setRegisterEmail] = useState("");
     const [registerPassword, setRegisterPassword] = useState("");
-    const [registerFirstName, setRegisterFirstName] = useState("");
-    const [registerLastName, setRegisterLastName] = useState("");
-    const [registerDOB, setRegisterDOB] = useState("");
-    const [registerMobile, setRegisterMobile] = useState(0);
+    const [registerFullName, setRegisterFullName] = useState("");
     const [user, setUser] = useState({});
     const [error, setError] = useState("");
     const navigate = useNavigate();
-    const location = useLocation();
-    const usersRef = collection(db, "users");
-    const todaysDate = moment().format("YYYY-MM-DD");
+
     const { googleSignIn } = useAuth();
     useEffect(() => {
         onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
         });
-    },[]);
+    }, []);
+
     const handleRegister = async () => {
         try {
             const user = await createUserWithEmailAndPassword(
@@ -54,21 +40,16 @@ export function Signup() {
                 registerEmail,
                 registerPassword
             );
-            await addDoc(usersRef, {
-                email: registerEmail,
-                uid: auth.currentUser.uid,
-                firstName: registerFirstName,
-                lastName: registerLastName,
-                DOB: registerDOB,
-                mobile: registerMobile,
-                created: serverTimestamp(),
+            await addDoc(userDataRef, {
+                fullName: registerFullName,
+                email: auth.currentUser.email,
                 key: nanoid(),
+                uid: auth.currentUser.uid,
             });
             sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
             sessionStorage.setItem("uid", auth.currentUser.uid);
             sessionStorage.setItem("email", auth.currentUser.email);
-            sessionStorage.setItem("firstName", registerFirstName);
-            sessionStorage.setItem("lastName", registerLastName);
+
             navigate("/dashboard");
         } catch (error) {
             console.log(error.message);
@@ -76,59 +57,12 @@ export function Signup() {
     };
 
     const handleGoogleSignIn = async (e) => {
-        const data = await getDocs(usersRef);
-        const usersData = data.docs.map((doc) => ({
-            ...doc.data(),
-            id: doc.id,
-        }));
         e.preventDefault();
         try {
             await googleSignIn();
             sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
             sessionStorage.setItem("uid", auth.currentUser.uid);
             sessionStorage.setItem("email", auth.currentUser.email);
-            navigate("/dashboard");
-            const tally = 0;
-            for (let i = 0; i < usersData.length; i++) {
-                if (usersData[i].email === auth.currentUser.email) {
-                    tally += 1;
-                    console.log(tally);
-                }
-            }
-            if (tally === 0) {
-                await addDoc(usersRef, {
-                    email: auth.currentUser.email,
-                    uid: auth.currentUser.uid,
-                    firstName: auth.currentUser.displayName.substring(
-                        0,
-                        auth.currentUser.displayName.indexOf(" ")
-                    ),
-                    lastName: auth.currentUser.displayName.substring(
-                        auth.currentUser.displayName.indexOf(" ") + 1
-                    ),
-                    DOB: "0",
-                    mobile: 0,
-                    key: nanoid(),
-                    created: serverTimestamp(),
-                });
-                await sessionStorage.setItem(
-                    "firstName",
-                    auth.currentUser.displayName.substring(
-                        0,
-                        auth.currentUser.displayName.indexOf(" ")
-                    )
-                );
-                await sessionStorage.setItem(
-                    "lastName",
-                    auth.currentUser.displayName.substring(
-                        auth.currentUser.displayName.indexOf(" ") + 1
-                    )
-                );
-            }
-            sessionStorage.setItem("Auth Token", auth.currentUser.accessToken);
-            sessionStorage.setItem("uid", auth.currentUser.uid);
-            sessionStorage.setItem("email", auth.currentUser.email);
-
             navigate("/dashboard");
         } catch (error) {
             setError(error.message);
@@ -140,52 +74,16 @@ export function Signup() {
             <div className="signup--container">
                 <h1>Sign up</h1>
                 <label>
-                    First Name<span className="asterisk">*</span>
+                    Full Name<span className="asterisk">*</span>
                     <span className="instructions"></span>
                 </label>
                 <input
                     onChange={(event) => {
-                        setRegisterFirstName(event.target.value);
+                        setRegisterFullName(event.target.value);
                     }}
                     type="text"
-                    placeholder="First name"
+                    placeholder="Full Name"
                     required
-                ></input>
-                <label>
-                    Last Name<span className="asterisk">*</span>
-                    <span className="instructions"></span>
-                </label>
-                <input
-                    onChange={(event) => {
-                        setRegisterLastName(event.target.value);
-                    }}
-                    type="text"
-                    placeholder="Last name"
-                    required
-                ></input>
-                <label>
-                    Mobile<span className="asterisk">*</span>
-                    <span className="instructions"></span>
-                </label>
-                <input
-                    onChange={(event) => {
-                        setRegisterMobile(event.target.value);
-                    }}
-                    type="text"
-                    placeholder="Mobile"
-                    required
-                ></input>
-                <label>
-                    Date of Birth<span className="asterisk">*</span>
-                    <span className="instructions"></span>
-                </label>
-                <input
-                    onChange={(event) => {
-                        setRegisterDOB(event.target.value);
-                    }}
-                    className="popup-date"
-                    type="date"
-                    placeholder="Title"
                 ></input>
                 <label>
                     Email<span className="asterisk">*</span>

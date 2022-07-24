@@ -2,29 +2,13 @@ import React, { useState, useEffect, Component } from "react";
 import "./Settings.css";
 import Popup from "reactjs-popup";
 import {
-    getAuth,
-    onAuthStateChanged,
     updateProfile,
     updateEmail,
     updatePassword,
     reauthenticateWithCredential,
     EmailAuthProvider,
 } from "firebase/auth";
-import { db } from "../../firebase-config";
-import {
-    collection,
-    getDocs,
-    addDoc,
-    updateDoc,
-    doc,
-    deleteDoc,
-    onSnapshot,
-    query,
-    setDoc,
-    where,
-    orderBy,
-    // serverTimestamp
-} from "firebase/firestore";
+
 import { useAuth } from "../../Auth";
 
 export const Settings = () => {
@@ -89,10 +73,10 @@ export const Settings = () => {
             updateProfile(user, {
                 displayName: `${userFirstName} ${userLastName}`,
                 // photoURL: "https://example.com/jane-q-user/profile.jpg", //maybe make it's own function for img
-            }).then(() => {});
-            alert(`Name updated to ${userFirstName} ${userLastName}`).catch(
+            }).then(() => {alert(`Name updated to ${userFirstName} ${userLastName}`);})
+            .catch(
                 (error) => {
-                    // An error occurred
+                    alert("something went wrong");
                 }
             );
         }
@@ -110,7 +94,7 @@ export const Settings = () => {
                         alert("Password Updated!");
                     })
                     .catch((error) => {
-                        alert("Oh O!");
+                        alert("something went wrong");
                     });
             });
         }
@@ -119,14 +103,7 @@ export const Settings = () => {
         setAuthPopup(false);
     };
     const reAuthPopup = (
-        <Popup
-            open={authPopup}
-            onClose={changeAuthPopupState}
-            // modal={true}
-
-            show={true}
-            // className="popup-main"
-        >
+        <Popup open={authPopup} onClose={changeAuthPopupState} show={true}>
             <div>
                 <label>
                     this is for Reauth

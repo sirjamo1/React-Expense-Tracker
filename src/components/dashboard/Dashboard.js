@@ -3,30 +3,41 @@ import "./Dashboard.css";
 import { db } from "../../firebase-config";
 import moment from "moment";
 import { Link } from "react-router-dom";
-import {
-    collection,
-    getDocs,
-    addDoc,
-    updateDoc,
-    doc,
-    deleteDoc,
-    onSnapshot,
-    query,
-    setDoc,
-    where,
-    orderBy,
-    limit,
-    // serverTimestamp
-} from "firebase/firestore";
+import { updateProfile } from "firebase/auth";
+import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+import { useAuth } from "../../Auth";
 
 export const Dashboard = () => {
+    const { user } = useAuth();
+    const [userDisplayName, setUserDisplayName] = useState(user.displayName);
     const expenseDataRef = collection(db, "expenseData");
+    const userDataRef = collection(db, "userData");
     const [expenseData, setExpenseData] = useState([]);
     const userUid = sessionStorage.getItem("uid");
     const [threeRecent, setThreeRecent] = useState([]);
     const [recurringData, setRecurringData] = useState([]);
-     const userFirstName = sessionStorage.getItem("firstName");
-     const userLastName = sessionStorage.getItem("lastName");
+
+    useEffect(() => {
+        if (user.displayName == null) {
+            const getUserData = async () => {
+                const data = await getDocs(userDataRef);
+                const userData = data.docs.map((doc) => ({
+                    ...doc.data(),
+                    id: doc.id,
+                }));
+                const currentUserData = [];
+                for (let i = 0; i < userData.length; i++) {
+                    if (userData[i].uid === userUid) {
+                        currentUserData.push(userData[i].fullName);
+                    }
+                }
+                updateProfile(user, {
+                    displayName: currentUserData[0],
+                });
+            };
+            getUserData();
+        }
+    }, []);
 
     useEffect(() => {
         const getThreeRecent = async () => {
@@ -99,7 +110,7 @@ export const Dashboard = () => {
         const getRecurring = () => {
             const recurringList = [];
             for (let i = 0; i < expenseData.length; i++) {
-                if (expenseData[i].recurring) {
+                if (expenseData[i].recurring === true) {
                     recurringList.push(expenseData[i]);
                 }
             }
@@ -137,7 +148,7 @@ export const Dashboard = () => {
         <div className="dashboard-container">
             <div className="dashboard-header">
                 <h1>Dashboard</h1>
-                <h4>{userFirstName} {userLastName}</h4>
+                <h4>{userDisplayName}</h4>
             </div>
             <div className="left-and-right-container">
                 <div className="leftside-container">
@@ -160,7 +171,10 @@ export const Dashboard = () => {
                     </div>
                     {threeMostRecent}
                 </div>
-                <div className="rightside-container"><h4>Recurring Expenses</h4>{recurring}</div>
+                <div className="rightside-container">
+                    <h4>Recurring Expenses</h4>
+                    {recurring}
+                </div>
             </div>
         </div>
     );
