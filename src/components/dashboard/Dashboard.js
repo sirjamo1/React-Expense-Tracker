@@ -57,7 +57,7 @@ export const Dashboard = () => {
     useEffect(() => {
         const getThreeRecent = async () => {
             const data = await getDocs(
-                query(expenseDataRef, orderBy("created", "desc"), limit(3))
+                query(expenseDataRef, orderBy("date", "desc"), limit(3))
             );
             const userData = data.docs.map((doc) => ({
                 ...doc.data(),
