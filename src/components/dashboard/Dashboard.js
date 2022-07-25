@@ -19,6 +19,16 @@ export const Dashboard = () => {
     const userUid = sessionStorage.getItem("uid");
     const [threeRecent, setThreeRecent] = useState([]);
     const [recurringData, setRecurringData] = useState([]);
+    const [barData, setBarData] = useState({
+        labels: "No Data",
+        datasets: [
+            {
+                label: "No Data",
+                //fill: true,
+                data: "0",
+            },
+        ],
+    });
     
 
     // useEffect(() => { 
@@ -64,7 +74,7 @@ export const Dashboard = () => {
 
         getThreeRecent();
     }, []);
-const [dataAmount, setDataAmount] = useState({});
+
     useEffect(() => {
         const getExpenseData = async () => {
             const data = await getDocs(expenseDataRef);
@@ -73,19 +83,15 @@ const [dataAmount, setDataAmount] = useState({});
                 id: doc.id,
             }));
             const currentUserExpenseData = [];
-            const expenseAmount = []
             for (let i = 0; i < userData.length; i++) {
                 if (userData[i].uid === userUid) {
                     currentUserExpenseData.push(userData[i]);
-                    expenseAmount.push(String(userData[i].amount))
                 }
             }
             setExpenseData(currentUserExpenseData);
-            setDataAmount(expenseAmount)
         };
         getExpenseData();
     }, []);
-console.log(dataAmount)
     const getTotal = () => {
         let total = 0;
         for (let i = 0; i < expenseData.length; i++) {
@@ -152,42 +158,40 @@ console.log(dataAmount)
             </div>
         </div>
     ));
-const [barData, setBarData] = useState({})
+
 
 useEffect(() => {
-    function getData() {
-        const amount = [];
-        const label = [];
-        for (let i = 0; i < expenseData.length; i++) {
-            amount.push(String(expenseData[i].amount));
-            label.push(expenseData[i].date);
+    const getData = async () => {
+        if (expenseData !== {}) {
+            console.log("larger");
+            setBarData({
+                labels: expenseData.map((data) => data.date),
+                datasets: [
+                    {
+                        label: "Expenses",
+                        //fill: true,
+                        data: expenseData.map((data) => data.amount),
+                    },
+                ],
+            });
+        } else {
+            console.log("less then");
+            setBarData({
+                labels: "No Data",
+                datasets: [
+                    {
+                        label: "No Data",
+                        //fill: true,
+                        data: "0",
+                    },
+                ],
+            });
         }
-        setBarData({
-            labels: label.map((data) => data), //expenseData.map((data) => data.date),
-            datasets: [
-                {
-                    label: "Expenses",
-                    //fill: true,
-                    data: amount.map((data) => data),
-                },
-            ],
-        });
-    } getData()
-});
+    };
+    getData();
+},[expenseData]);
+console.log(barData)
 
-
-
-// const [barData, setBarData] = useState({
-//     labels: expenseData ? expenseData.map((data) => data.date) : "1988", //expenseData.map((data) => data.date),
-//     datasets: [
-//         {
-//             label: "Expenses",
-//             //fill: true,
-//             data: expenseData ? expenseData.map((data) => data.amount) : "23",
-//         },
-//     ],
-// });   console.log(dataAmount[0]);
-// console.log(barData)
 
     
 
@@ -215,6 +219,7 @@ useEffect(() => {
                     </div>
                     <div className="chart-container">
                         <BarChart chartData={barData} />
+                        
                     </div>
                     <div className="recent-expense-header">
                         <p>NAME/BUSINESS</p>
