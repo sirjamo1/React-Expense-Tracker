@@ -111,6 +111,7 @@ export const Dashboard = () => {
         };
         getExpenseData();
     }, []);
+
     const getTotal = () => {
         let total = 0;
         for (let i = 0; i < expenseData.length; i++) {
@@ -176,7 +177,7 @@ export const Dashboard = () => {
                 <p>${data.amount}</p>
             </div>
             <div>
-                <p>{data.date}</p>
+                <p>{data.date.substring(0, 10)}</p>
             </div>
         </div>
     ));
@@ -203,7 +204,7 @@ export const Dashboard = () => {
     // asign current month to chart and  */
     useEffect(() => {
         const getData = async () => {
-            if (expenseData !== {} && dailyMonthlyTotal == "total") {
+            if (expenseData !== {} && dailyMonthlyTotal === "total") {
                 setChartData({
                     labels: expenseData.map((data) => data.title),
                     datasets: [
@@ -215,7 +216,7 @@ export const Dashboard = () => {
                         },
                     ],
                 });
-            } else if (monthlyChart !== {} && dailyMonthlyTotal == "monthly") {
+            } else if (monthlyChart !== {} && dailyMonthlyTotal === "monthly") {
                 setChartData({
                     labels: monthlyChart.map((data) => data.title),
                     // NEED TO FIX :months[parseInt(thisMonth) -1], this will show the current month but only the amount of data to the amount of letters
@@ -228,7 +229,7 @@ export const Dashboard = () => {
                         },
                     ],
                 });
-            } else if (dailyChart !== {} && dailyMonthlyTotal == "daily") {
+            } else if (dailyChart !== {} && dailyMonthlyTotal === "daily") {
                 setChartData({
                     labels: dailyChart.map((data) => data.title),
                     datasets: [
@@ -246,15 +247,6 @@ export const Dashboard = () => {
     }, [expenseData, dailyMonthlyTotal]);
     const hello = () => {
         console.log("hello");
-    };
-    const chartToTotal = () => {
-        setDailyMonthlyTotal("total");
-    };
-    const chartToMonthly = () => {
-        setDailyMonthlyTotal("monthly");
-    };
-    const chartToDaily = () => {
-        setDailyMonthlyTotal("daily");
     };
     const changeLineOrBar = () => {
         if (lineOrBar === "Bar") {
@@ -274,12 +266,15 @@ export const Dashboard = () => {
                 <div className="leftside-container">
                     <div className="three-totals">
                         <div
+                            value="total"
                             className={
                                 dailyMonthlyTotal === "total"
                                     ? "three-totals-activated"
                                     : null
                             }
-                            onClick={chartToTotal}
+                            onClick={() => {
+                                setDailyMonthlyTotal("total");
+                            }}
                         >
                             <h5>Total</h5>
                             <h3>${total}</h3>
@@ -290,7 +285,9 @@ export const Dashboard = () => {
                                     ? "three-totals-activated"
                                     : null
                             }
-                            onClick={chartToMonthly}
+                            onClick={() => {
+                                setDailyMonthlyTotal("monthly");
+                            }}
                         >
                             <h5>Monthly Total</h5> <h3>${monthly}</h3>
                         </div>
@@ -300,7 +297,9 @@ export const Dashboard = () => {
                                     ? "three-totals-activated"
                                     : null
                             }
-                            onClick={chartToDaily}
+                            onClick={() => {
+                                setDailyMonthlyTotal("daily");
+                            }}
                         >
                             <h5>Daily Total</h5> <h3>${daily}</h3>
                         </div>

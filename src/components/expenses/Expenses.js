@@ -173,7 +173,7 @@ export const Expenses = () => {
                             setDataDate(event.target.value);
                         }}
                         className="popup-date"
-                        type="date"
+                        type="datetime-local"
                         placeholder="Title"
                     ></input>
                     <input
@@ -251,7 +251,7 @@ export const Expenses = () => {
                             setDataDate(event.target.value);
                         }}
                         className="popup-date"
-                        type="date"
+                        type="datetime-local"
                         value={currentExpense.date}
                     ></input>
 
@@ -289,7 +289,7 @@ export const Expenses = () => {
                 <p>${data.amount}</p>
             </div>
             <div>
-                <p>{data.date}</p>
+                <p>{data.date.substring(0, 10)}</p>
             </div>
             <div>
                 <p>{data.id}</p>
