@@ -1,7 +1,9 @@
 .dashboard-container {
     width: 100vw;
+    height: 100vh;
     margin: 0px 10px;
     position: relative;
+    border: 1px red solid;
 }
 /*👉*********HEADER*********👈*/
 .dashboard-header {
@@ -21,13 +23,12 @@
 .three-totals {
     display: flex;
     justify-content: space-evenly;
-    
 }
 
 .three-totals > div {
     background-color: rgba(0, 255, 255, 0.267);
     border-radius: 10px;
-    height: 80px;
+    height: 60px;
     cursor: pointer;
     flex-basis: 150px;
     display: flex;
@@ -35,21 +36,38 @@
     align-items: center;
     justify-content: center;
 }
+
 .three-totals h5 {
-  
     margin: 6px;
 }
 .three-totals h3 {
-    
     margin: 0;
 }
 .three-totals > div:hover {
     background-color: aqua;
 }
-
+.three-totals-activated {
+    box-shadow: 0px 0px 242px 5px rgba(0, 255, 255, 0.94) inset;
+    -webkit-box-shadow: 0px 0px 242px 5px rgba(0, 255, 255, 0.94) inset;
+    -moz-box-shadow: 0px 0px 242px 5px rgba(0, 255, 255, 0.94) inset;
+}
+.chart-container {
+}
 .recent-expenses-title {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+}
+.recent-expenses-title h5 {
+    color: darkblue;
+    cursor: pointer;
+}
+.recent-expenses-title button {
+    margin: 0;
+    text-decoration: none;
+    background-color: rgba(0, 255, 255, 0.267);
+    border: none;
+    border-radius: 10px;
 }
 .recent-expense-header {
     background-color: rgba(0, 255, 255, 0.267);
@@ -58,6 +76,7 @@
         minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
         minmax(80px, 1fr);
 }
+
 .recent-expenses-data {
     display: grid;
     grid-template-columns:

@@ -327,17 +327,6 @@ export const Expenses = () => {
                     <p>ACTION</p>
                 </div>
                 {expenseDataElements}
-                <h1>NEED TO: </h1>
-                <ul>
-                    <li>get checkbox to return a boolean</li>
-                    <li>
-                        when clicking edit it opens all popups (sometimes) and
-                        doesn't edit/delete the one that is clicked
-                    </li>
-                    <li>search bar</li>
-                    <li>filter bar</li>
-                    <li></li>
-                </ul>
             </div>
         </div>
     );
