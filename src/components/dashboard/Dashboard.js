@@ -81,7 +81,9 @@ export const Dashboard = () => {
 
     useEffect(() => {
         const getExpenseData = async () => {
-            const data = await getDocs(expenseDataRef);
+            const data = await getDocs(
+                query(expenseDataRef, orderBy("date", "desc"))
+            );
             const userData = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
@@ -106,7 +108,6 @@ export const Dashboard = () => {
         };
         getExpenseData();
     }, []);
-    console.log(monthlyChart);
     const getTotal = () => {
         let total = 0;
         for (let i = 0; i < expenseData.length; i++) {
@@ -176,7 +177,6 @@ export const Dashboard = () => {
             </div>
         </div>
     ));
-    console.log(dailyMonthlyTotal);
 
     useEffect(() => {
         const getData = async () => {
@@ -220,7 +220,6 @@ export const Dashboard = () => {
         };
         getData();
     }, [expenseData, dailyMonthlyTotal]);
-    console.log(chartData);
     const hello = () => {
         console.log("hello");
     };
@@ -234,7 +233,7 @@ export const Dashboard = () => {
         setDailyMonthlyTotal("daily");
     };
     const changeLineOrBar = () => {
-        if (lineOrBar == "Bar") {
+        if (lineOrBar === "Bar") {
             setLineOrBar("Line");
         } else {
             setLineOrBar("Bar");
@@ -250,19 +249,40 @@ export const Dashboard = () => {
             <div className="left-and-right-container">
                 <div className="leftside-container">
                     <div className="three-totals">
-                        <div onClick={chartToTotal}>
+                        <div
+                            className={
+                                dailyMonthlyTotal === "total"
+                                    ? "three-totals-activated"
+                                    : null
+                            }
+                            onClick={chartToTotal}
+                        >
                             <h5>Total</h5>
                             <h3>${total}</h3>
                         </div>
-                        <div onClick={chartToMonthly}>
+                        <div
+                            className={
+                                dailyMonthlyTotal === "monthly"
+                                    ? "three-totals-activated"
+                                    : null
+                            }
+                            onClick={chartToMonthly}
+                        >
                             <h5>Monthly Total</h5> <h3>${monthly}</h3>
                         </div>
-                        <div onClick={chartToDaily}>
+                        <div
+                            className={
+                                dailyMonthlyTotal === "daily"
+                                    ? "three-totals-activated"
+                                    : null
+                            }
+                            onClick={chartToDaily}
+                        >
                             <h5>Daily Total</h5> <h3>${daily}</h3>
                         </div>
                     </div>
                     <div className="chart-container">
-                        {lineOrBar == "Bar" ? (
+                        {lineOrBar === "Bar" ? (
                             <LineChart chartData={chartData} />
                         ) : (
                             <BarChart chartData={chartData} />
