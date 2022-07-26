@@ -8,7 +8,8 @@ import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { useAuth } from "../../Auth";
 // import { Bar } from "react-chartjs-2";
 // import { chart as chartjs} from "chart.js/auto"
-import { BarChart } from "../barChart/BarChart";
+import { BarChart } from "../charts/BarChart";
+import { LineChart } from "../charts/LineChart";
 
 export const Dashboard = () => {
     const { user } = useAuth();
@@ -22,7 +23,8 @@ export const Dashboard = () => {
     const [monthlyChart, setMonthlyChart] = useState();
     const [dailyChart, setDailyChart] = useState();
     const [dailyMonthlyTotal, setDailyMonthlyTotal] = useState("total");
-    const [barData, setBarData] = useState({
+    const [lineOrBar, setLineOrBar] = useState("Bar");
+    const [chartData, setChartData] = useState({
         labels: "No Data",
         datasets: [
             {
@@ -176,47 +178,49 @@ export const Dashboard = () => {
     ));
     console.log(dailyMonthlyTotal);
 
-
-
     useEffect(() => {
         const getData = async () => {
             if (expenseData !== {} && dailyMonthlyTotal == "total") {
-                setBarData({
+                setChartData({
                     labels: expenseData.map((data) => data.date),
                     datasets: [
                         {
                             label: "All Expenses",
                             data: expenseData.map((data) => data.amount),
+                            backgroundColor: ["#f356df", "#50af95"],
+                            borderRadius: 2,
                         },
                     ],
                 });
             } else if (monthlyChart !== {} && dailyMonthlyTotal == "monthly") {
-                setBarData({
+                setChartData({
                     labels: monthlyChart.map((data) => data.title),
                     datasets: [
                         {
                             label: "Monthly Expenses",
                             data: monthlyChart.map((data) => data.amount),
+                            backgroundColor: ["#f356df", "#50af95"],
+                            borderRadius: 2,
                         },
                     ],
                 });
-            }
-            else if (dailyChart !== {} && dailyMonthlyTotal == "daily") {
-                setBarData({
+            } else if (dailyChart !== {} && dailyMonthlyTotal == "daily") {
+                setChartData({
                     labels: dailyChart.map((data) => data.title),
                     datasets: [
                         {
                             label: "Daily Expenses",
                             data: dailyChart.map((data) => data.amount),
+                            backgroundColor: ["#f356df", "#50af95"],
+                            borderRadius: 2,
                         },
                     ],
                 });
             }
-
         };
         getData();
     }, [expenseData, dailyMonthlyTotal]);
-    console.log(barData);
+    console.log(chartData);
     const hello = () => {
         console.log("hello");
     };
@@ -229,6 +233,14 @@ export const Dashboard = () => {
     const chartToDaily = () => {
         setDailyMonthlyTotal("daily");
     };
+    const changeLineOrBar = () => {
+        if (lineOrBar == "Bar") {
+            setLineOrBar("Line");
+        } else {
+            setLineOrBar("Bar");
+        }
+    };
+
     return (
         <div className="dashboard-container">
             <div className="dashboard-header">
@@ -250,10 +262,17 @@ export const Dashboard = () => {
                         </div>
                     </div>
                     <div className="chart-container">
-                        <BarChart chartData={barData} />
+                        {lineOrBar == "Bar" ? (
+                            <LineChart chartData={chartData} />
+                        ) : (
+                            <BarChart chartData={chartData} />
+                        )}
                     </div>
                     <div className="recent-expenses-title">
                         <h4>Recent Expenses</h4>
+                        <h5 onClick={changeLineOrBar}>
+                            Change to {lineOrBar} Chart
+                        </h5>
                         <button>
                             <Link to="/expenses">View All</Link>
                         </button>
