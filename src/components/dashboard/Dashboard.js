@@ -102,6 +102,9 @@ export const Dashboard = () => {
                     }
                 }
             }
+            currentUserExpenseData.reverse();
+            monthlyExpense.reverse();
+            dailyExpense.reverse();
             setExpenseData(currentUserExpenseData);
             setMonthlyChart(monthlyExpense);
             setDailyChart(dailyExpense);
@@ -178,11 +181,31 @@ export const Dashboard = () => {
         </div>
     ));
 
+    const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
+
+    const thisMonth = theDate.slice(5, 7);
+    console.log(months[parseInt(thisMonth) - 1]);
+    // **********************************************************
+    //*********NEED TO:
+    // asign current month to chart and  */
     useEffect(() => {
         const getData = async () => {
             if (expenseData !== {} && dailyMonthlyTotal == "total") {
                 setChartData({
-                    labels: expenseData.map((data) => data.date),
+                    labels: expenseData.map((data) => data.title),
                     datasets: [
                         {
                             label: "All Expenses",
@@ -195,6 +218,7 @@ export const Dashboard = () => {
             } else if (monthlyChart !== {} && dailyMonthlyTotal == "monthly") {
                 setChartData({
                     labels: monthlyChart.map((data) => data.title),
+                    // NEED TO FIX :months[parseInt(thisMonth) -1], this will show the current month but only the amount of data to the amount of letters
                     datasets: [
                         {
                             label: "Monthly Expenses",
