@@ -19,6 +19,9 @@ export const Dashboard = () => {
     const userUid = sessionStorage.getItem("uid");
     const [threeRecent, setThreeRecent] = useState([]);
     const [recurringData, setRecurringData] = useState([]);
+    const [monthlyChart, setMonthlyChart] = useState();
+    const [dailyChart, setDailyChart] = useState();
+    const [dailyMonthlyTotal, setDailyMonthlyTotal] = useState("total");
     const [barData, setBarData] = useState({
         labels: "No Data",
         datasets: [
@@ -29,35 +32,34 @@ export const Dashboard = () => {
             },
         ],
     });
-    
 
-    // useEffect(() => { 
-        // this is to add displayname to account if the user signed up by email 
-        if (user.displayName == null) {
-            const getUserData = async () => {
-                const data = await getDocs(userDataRef);
-                const userData = data.docs.map((doc) => ({
-                    ...doc.data(),
-                    id: doc.id,
-                }));
-                const currentUserData = [];
-                for (let i = 0; i < userData.length; i++) {
-                    if (userData[i].uid === userUid) {
-                        currentUserData.push(userData[i].fullName);
-                    }
+    // useEffect(() => {
+    // this is to add displayname to account if the user signed up by email
+    if (user.displayName == null) {
+        const getUserData = async () => {
+            const data = await getDocs(userDataRef);
+            const userData = data.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            }));
+            const currentUserData = [];
+            for (let i = 0; i < userData.length; i++) {
+                if (userData[i].uid === userUid) {
+                    currentUserData.push(userData[i].fullName);
                 }
-                updateProfile(user, {
-                    displayName: currentUserData[0],
-                });
-            };
-            getUserData();
-        }
+            }
+            updateProfile(user, {
+                displayName: currentUserData[0],
+            });
+        };
+        getUserData();
+    }
     // }, [expenseData]);
 
     useEffect(() => {
         const getThreeRecent = async () => {
             const data = await getDocs(
-                query(expenseDataRef, orderBy("created", "desc"), limit(3))
+                query(expenseDataRef, orderBy("date", "desc"), limit(3))
             );
             const userData = data.docs.map((doc) => ({
                 ...doc.data(),
@@ -83,15 +85,26 @@ export const Dashboard = () => {
                 id: doc.id,
             }));
             const currentUserExpenseData = [];
+            const monthlyExpense = [];
+            const dailyExpense = [];
             for (let i = 0; i < userData.length; i++) {
                 if (userData[i].uid === userUid) {
                     currentUserExpenseData.push(userData[i]);
+                    if (userData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
+                        monthlyExpense.push(userData[i]);
+                    }
+                    if (userData[i].date === theDate) {
+                        dailyExpense.push(userData[i]);
+                    }
                 }
             }
             setExpenseData(currentUserExpenseData);
+            setMonthlyChart(monthlyExpense);
+            setDailyChart(dailyExpense);
         };
         getExpenseData();
     }, []);
+    console.log(monthlyChart);
     const getTotal = () => {
         let total = 0;
         for (let i = 0; i < expenseData.length; i++) {
@@ -103,11 +116,14 @@ export const Dashboard = () => {
 
     const getMonthly = () => {
         let total = 0;
+
         for (let i = 0; i < expenseData.length; i++)
             if (expenseData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
                 let number = parseInt(expenseData[i].amount);
+
                 total += number;
             }
+
         return total;
     };
 
@@ -158,46 +174,61 @@ export const Dashboard = () => {
             </div>
         </div>
     ));
+    console.log(dailyMonthlyTotal);
 
 
-useEffect(() => {
-    const getData = async () => {
-        if (expenseData !== {}) {
-            console.log("larger");
-            setBarData({
-                labels: expenseData.map((data) => data.date),
-                datasets: [
-                    {
-                        label: "Expenses",
-                        //fill: true,
-                        data: expenseData.map((data) => data.amount),
-                    },
-                ],
-            });
-        } else {
-            console.log("less then");
-            setBarData({
-                labels: "No Data",
-                datasets: [
-                    {
-                        label: "No Data",
-                        //fill: true,
-                        data: "0",
-                    },
-                ],
-            });
-        }
+
+    useEffect(() => {
+        const getData = async () => {
+            if (expenseData !== {} && dailyMonthlyTotal == "total") {
+                setBarData({
+                    labels: expenseData.map((data) => data.date),
+                    datasets: [
+                        {
+                            label: "All Expenses",
+                            data: expenseData.map((data) => data.amount),
+                        },
+                    ],
+                });
+            } else if (monthlyChart !== {} && dailyMonthlyTotal == "monthly") {
+                setBarData({
+                    labels: monthlyChart.map((data) => data.title),
+                    datasets: [
+                        {
+                            label: "Monthly Expenses",
+                            data: monthlyChart.map((data) => data.amount),
+                        },
+                    ],
+                });
+            }
+            else if (dailyChart !== {} && dailyMonthlyTotal == "daily") {
+                setBarData({
+                    labels: dailyChart.map((data) => data.title),
+                    datasets: [
+                        {
+                            label: "Daily Expenses",
+                            data: dailyChart.map((data) => data.amount),
+                        },
+                    ],
+                });
+            }
+
+        };
+        getData();
+    }, [expenseData, dailyMonthlyTotal]);
+    console.log(barData);
+    const hello = () => {
+        console.log("hello");
     };
-    getData();
-},[expenseData]);
-console.log(barData)
-
-
-    
-
-
-
-    //CHART ZONE END*******************
+    const chartToTotal = () => {
+        setDailyMonthlyTotal("total");
+    };
+    const chartToMonthly = () => {
+        setDailyMonthlyTotal("monthly");
+    };
+    const chartToDaily = () => {
+        setDailyMonthlyTotal("daily");
+    };
     return (
         <div className="dashboard-container">
             <div className="dashboard-header">
@@ -207,9 +238,19 @@ console.log(barData)
             <div className="left-and-right-container">
                 <div className="leftside-container">
                     <div className="three-totals">
-                        <h1>Total:{total}</h1>
-                        <h1>Monthly Total:{monthly}</h1>
-                        <h1>Daily Total:{daily}</h1>
+                        <div onClick={chartToTotal}>
+                            <h5>Total</h5>
+                            <h3>${total}</h3>
+                        </div>
+                        <div onClick={chartToMonthly}>
+                            <h5>Monthly Total</h5> <h3>${monthly}</h3>
+                        </div>
+                        <div onClick={chartToDaily}>
+                            <h5>Daily Total</h5> <h3>${daily}</h3>
+                        </div>
+                    </div>
+                    <div className="chart-container">
+                        <BarChart chartData={barData} />
                     </div>
                     <div className="recent-expenses-title">
                         <h4>Recent Expenses</h4>
@@ -217,10 +258,7 @@ console.log(barData)
                             <Link to="/expenses">View All</Link>
                         </button>
                     </div>
-                    <div className="chart-container">
-                        <BarChart chartData={barData} />
-                        
-                    </div>
+
                     <div className="recent-expense-header">
                         <p>NAME/BUSINESS</p>
                         <p>TYPE</p>

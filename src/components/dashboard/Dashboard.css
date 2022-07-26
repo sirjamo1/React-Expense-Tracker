@@ -21,14 +21,29 @@
 .three-totals {
     display: flex;
     justify-content: space-evenly;
+    
 }
 
-.three-totals > h1 {
+.three-totals > div {
     background-color: rgba(0, 255, 255, 0.267);
     border-radius: 10px;
-    height: 100px;
+    height: 80px;
+    cursor: pointer;
+    flex-basis: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
-.three-totals > h1:hover {
+.three-totals h5 {
+  
+    margin: 6px;
+}
+.three-totals h3 {
+    
+    margin: 0;
+}
+.three-totals > div:hover {
     background-color: aqua;
 }
 
