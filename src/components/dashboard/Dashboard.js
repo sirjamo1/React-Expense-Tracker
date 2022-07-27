@@ -6,12 +6,13 @@ import { Link } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
 import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
 import { useAuth } from "../../Auth";
-// import { Bar } from "react-chartjs-2";
-// import { chart as chartjs} from "chart.js/auto"
+import { Bar } from "react-chartjs-2";
+import { chart as chartjs } from "chart.js/auto";
 import { BarChart } from "../charts/BarChart";
 import { LineChart } from "../charts/LineChart";
 
 export const Dashboard = () => {
+
     const { user } = useAuth();
     const [userDisplayName, setUserDisplayName] = useState(user.displayName);
     const expenseDataRef = collection(db, "expenseData");
@@ -61,26 +62,48 @@ export const Dashboard = () => {
     }
     // }, [expenseData]);
 
-    useEffect(() => {
-        const getThreeRecent = async () => {
-            const data = await getDocs(
-                query(expenseDataRef, orderBy("date", "desc"), limit(3))
-            );
-            const userData = data.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            const currentUserData = [];
-            for (let i = 0; i < userData.length; i++) {
-                if (userData[i].uid === userUid) {
-                    currentUserData.push(userData[i]);
-                }
-            }
-            setThreeRecent(currentUserData);
-        };
 
-        getThreeRecent();
-    }, []);
+  // useEffect(() => {
+  // this is to add displayname to account if the user signed up by email
+  if (user.displayName == null) {
+    const getUserData = async () => {
+      const data = await getDocs(userDataRef);
+      const userData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      const currentUserData = [];
+      for (let i = 0; i < userData.length; i++) {
+        if (userData[i].uid === userUid) {
+          currentUserData.push(userData[i].fullName);
+        }
+      }
+      updateProfile(user, {
+        displayName: currentUserData[0],
+      });
+    };
+    getUserData();
+  }
+  // }, [expenseData]);
+
+  useEffect(() => {
+    const getThreeRecent = async () => {
+      const data = await getDocs(
+        query(expenseDataRef, orderBy("date", "desc"), limit(3))
+      );
+      const userData = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
+      const currentUserData = [];
+      for (let i = 0; i < userData.length; i++) {
+        if (userData[i].uid === userUid) {
+          currentUserData.push(userData[i]);
+        }
+      }
+      setThreeRecent(currentUserData);
+    };
+
 
     useEffect(() => {
         const getExpenseData = async () => {
@@ -160,20 +183,21 @@ export const Dashboard = () => {
         </div>
     ));
 
-    const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
 
     const thisMonth = theDate.slice(5, 7);
     console.log("this month = " + months[parseInt(thisMonth) - 1]);
@@ -237,13 +261,41 @@ export const Dashboard = () => {
             setLineOrBar("Bar");
         }
     };
+    getData();
+  }, [expenseData, dailyMonthlyTotal]);
+  const hello = () => {
+    console.log("hello");
+  };
+  const changeLineOrBar = () => {
+    if (lineOrBar === "Bar") {
+      setLineOrBar("Line");
+    } else {
+      setLineOrBar("Bar");
+    }
+  };
 
-    return (
-        <div className="dashboard-container">
-            <div className="dashboard-header">
-                <h1>Dashboard</h1>
-                <h4>{userDisplayName}</h4>
+  return (
+    <div className="dashboard-container">
+      <div className="dashboard-header">
+        <h1>Dashboard</h1>
+        <h4>{userDisplayName}</h4>
+      </div>
+      <div className="left-and-right-container">
+        <div className="leftside-container">
+          <div className="three-totals">
+            <div
+              value="total"
+              className={
+                dailyMonthlyTotal === "total" ? "three-totals-activated" : null
+              }
+              onClick={() => {
+                setDailyMonthlyTotal("total");
+              }}
+            >
+              <h5>Total</h5>
+              <h3>${total}</h3>
             </div>
+
             <div className="left-and-right-container">
                 <div className="leftside-container">
                     <div className="three-totals">
@@ -316,6 +368,47 @@ export const Dashboard = () => {
                     {recurring}
                 </div>
             </div>
+            <div
+              className={
+                dailyMonthlyTotal === "daily" ? "three-totals-activated" : null
+              }
+              onClick={() => {
+                setDailyMonthlyTotal("daily");
+              }}
+            >
+              <h5>Daily Total</h5> <h3>${daily}</h3>
+            </div>
+          </div>
+          <div className="chart-container">
+            {lineOrBar === "Bar" ? (
+              <LineChart chartData={chartData} />
+            ) : (
+              <BarChart chartData={chartData} />
+            )}
+          </div>
+          <div className="recent-expenses-title">
+            <h4>Recent Expenses</h4>
+            <h5 onClick={changeLineOrBar}>Change to {lineOrBar} Chart</h5>
+            <button>
+              <Link to="/expenses">View All</Link>
+            </button>
+          </div>
+
+          <div className="recent-expense-header">
+            <p>NAME/BUSINESS</p>
+            <p>TYPE</p>
+            <p>AMOUNT</p>
+            <p>DATE</p>
+          </div>
+          {threeMostRecent}
         </div>
-    );
+        <div className="rightside-container">
+          <h4>Recurring Expenses</h4>
+          {recurring}
+        </div>
+      </div>
+    </div>
+  );
 };
+
+export default Dashboard;
