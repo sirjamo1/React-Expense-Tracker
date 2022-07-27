@@ -70,6 +70,7 @@ export const Expenses = () => {
             date: dataDate,
             recurring: dataRecurring,
             id: editBtnId,
+            editDate: serverTimestamp(),
         });
         setIsEditOpen(false);
     };

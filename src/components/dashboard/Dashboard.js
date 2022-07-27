@@ -20,11 +20,11 @@ export const Dashboard = () => {
     const userUid = sessionStorage.getItem("uid");
     const [threeRecent, setThreeRecent] = useState([]);
     const [recurringData, setRecurringData] = useState([]);
-    const [expenseTotal, setExpenseTotal] = useState()
+    const [expenseTotal, setExpenseTotal] = useState();
     const [monthlyChart, setMonthlyChart] = useState();
-    const [monthlyTotal, setMonthlyTotal] = useState()
+    const [monthlyTotal, setMonthlyTotal] = useState();
     const [dailyChart, setDailyChart] = useState();
-    const [dailyTotal, setDailyTotal] = useState()
+    const [dailyTotal, setDailyTotal] = useState();
     const [dailyMonthlyTotal, setDailyMonthlyTotal] = useState("total");
     const [lineOrBar, setLineOrBar] = useState("Bar");
     const [chartData, setChartData] = useState({
@@ -92,11 +92,11 @@ export const Dashboard = () => {
                 id: doc.id,
             }));
             const currentUserExpenseData = [];
-            let expenseAmount = 0
+            let expenseAmount = 0;
             const monthlyExpense = [];
-            let monthlyAmount = 0
+            let monthlyAmount = 0;
             const dailyExpense = [];
-            let dailyAmount = 0
+            let dailyAmount = 0;
             for (let i = 0; i < userData.length; i++) {
                 if (userData[i].uid === userUid) {
                     currentUserExpenseData.push(userData[i]);
@@ -115,11 +115,11 @@ export const Dashboard = () => {
             monthlyExpense.reverse();
             dailyExpense.reverse();
             setExpenseData(currentUserExpenseData);
-            setExpenseTotal(expenseAmount)
+            setExpenseTotal(expenseAmount);
             setMonthlyChart(monthlyExpense);
-            setMonthlyTotal(monthlyAmount)
+            setMonthlyTotal(monthlyAmount);
             setDailyChart(dailyExpense);
-            setDailyTotal(dailyAmount)
+            setDailyTotal(dailyAmount);
         };
         getExpenseData();
     }, []);
@@ -176,7 +176,7 @@ export const Dashboard = () => {
     ];
 
     const thisMonth = theDate.slice(5, 7);
-    console.log(months[parseInt(thisMonth) - 1]);
+    console.log("this month = " + months[parseInt(thisMonth) - 1]);
     // **********************************************************
     //*********NEED TO:
     // asign current month to chart and  */
@@ -184,12 +184,13 @@ export const Dashboard = () => {
         const getData = async () => {
             if (expenseData !== {} && dailyMonthlyTotal === "total") {
                 setChartData({
-                    labels: expenseData.map((data) => data.title),
+                    labels: months.map((data) => data),
                     datasets: [
                         {
                             label: "All Expenses",
+                            fill: true,
                             data: expenseData.map((data) => data.amount),
-                            backgroundColor: ["#f356df", "#50af95"],
+                            backgroundColor: "rgba(243, 86, 223, 0.5)",
                             borderRadius: 2,
                         },
                     ],
@@ -197,12 +198,12 @@ export const Dashboard = () => {
             } else if (monthlyChart !== {} && dailyMonthlyTotal === "monthly") {
                 setChartData({
                     labels: monthlyChart.map((data) => data.title),
-                    // NEED TO FIX :months[parseInt(thisMonth) -1], this will show the current month but only the amount of data to the amount of letters
                     datasets: [
                         {
                             label: "Monthly Expenses",
                             data: monthlyChart.map((data) => data.amount),
-                            backgroundColor: ["#f356df", "#50af95"],
+                            fill: true,
+                            backgroundColor: "rgba(243, 86, 223, 0.5)",
                             borderRadius: 2,
                         },
                     ],
@@ -210,12 +211,15 @@ export const Dashboard = () => {
             } else if (dailyChart !== {} && dailyMonthlyTotal === "daily") {
                 setChartData({
                     labels: dailyChart.map((data) => data.title),
+
                     datasets: [
                         {
                             label: "Daily Expenses",
                             data: dailyChart.map((data) => data.amount),
-                            backgroundColor: ["#f356df", "#50af95"],
+                            fill: true,
+                            backgroundColor: "rgba(243, 86, 223, 0.5)",
                             borderRadius: 2,
+                            active: true,
                         },
                     ],
                 });
