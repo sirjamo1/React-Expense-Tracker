@@ -20,8 +20,11 @@ export const Dashboard = () => {
     const userUid = sessionStorage.getItem("uid");
     const [threeRecent, setThreeRecent] = useState([]);
     const [recurringData, setRecurringData] = useState([]);
+    const [expenseTotal, setExpenseTotal] = useState()
     const [monthlyChart, setMonthlyChart] = useState();
+    const [monthlyTotal, setMonthlyTotal] = useState()
     const [dailyChart, setDailyChart] = useState();
+    const [dailyTotal, setDailyTotal] = useState()
     const [dailyMonthlyTotal, setDailyMonthlyTotal] = useState("total");
     const [lineOrBar, setLineOrBar] = useState("Bar");
     const [chartData, setChartData] = useState({
@@ -89,16 +92,22 @@ export const Dashboard = () => {
                 id: doc.id,
             }));
             const currentUserExpenseData = [];
+            let expenseAmount = 0
             const monthlyExpense = [];
+            let monthlyAmount = 0
             const dailyExpense = [];
+            let dailyAmount = 0
             for (let i = 0; i < userData.length; i++) {
                 if (userData[i].uid === userUid) {
                     currentUserExpenseData.push(userData[i]);
+                    expenseAmount += parseInt(userData[i].amount);
                     if (userData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
                         monthlyExpense.push(userData[i]);
+                        monthlyAmount += parseInt(userData[i].amount);
                     }
-                    if (userData[i].date === theDate) {
+                    if (userData[i].date.slice(0, 10) === theDate) {
                         dailyExpense.push(userData[i]);
+                        dailyAmount += parseInt(userData[i].amount);
                     }
                 }
             }
@@ -106,43 +115,14 @@ export const Dashboard = () => {
             monthlyExpense.reverse();
             dailyExpense.reverse();
             setExpenseData(currentUserExpenseData);
+            setExpenseTotal(expenseAmount)
             setMonthlyChart(monthlyExpense);
+            setMonthlyTotal(monthlyAmount)
             setDailyChart(dailyExpense);
+            setDailyTotal(dailyAmount)
         };
         getExpenseData();
     }, []);
-
-    const getTotal = () => {
-        let total = 0;
-        for (let i = 0; i < expenseData.length; i++) {
-            let number = parseInt(expenseData[i].amount);
-            total += number;
-        }
-        return total;
-    };
-
-    const getMonthly = () => {
-        let total = 0;
-
-        for (let i = 0; i < expenseData.length; i++)
-            if (expenseData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
-                let number = parseInt(expenseData[i].amount);
-
-                total += number;
-            }
-
-        return total;
-    };
-
-    const getDaily = () => {
-        let total = 0;
-        for (let i = 0; i < expenseData.length; i++)
-            if (expenseData[i].date === theDate) {
-                let number = parseInt(expenseData[i].amount);
-                total += number;
-            }
-        return total;
-    };
     useEffect(() => {
         const getRecurring = () => {
             const recurringList = [];
@@ -156,9 +136,7 @@ export const Dashboard = () => {
         getRecurring();
     }, [expenseData]);
     const theDate = moment().format("YYYY-MM-DD");
-    const total = getTotal();
-    const monthly = getMonthly();
-    const daily = getDaily();
+    console.log(theDate);
     const recurring = recurringData.map((data) => (
         <div className="recurring-div">
             <p>{data.title}</p>
@@ -277,7 +255,7 @@ export const Dashboard = () => {
                             }}
                         >
                             <h5>Total</h5>
-                            <h3>${total}</h3>
+                            <h3>${expenseTotal}</h3>
                         </div>
                         <div
                             className={
@@ -289,7 +267,7 @@ export const Dashboard = () => {
                                 setDailyMonthlyTotal("monthly");
                             }}
                         >
-                            <h5>Monthly Total</h5> <h3>${monthly}</h3>
+                            <h5>Monthly Total</h5> <h3>${monthlyTotal}</h3>
                         </div>
                         <div
                             className={
@@ -301,7 +279,7 @@ export const Dashboard = () => {
                                 setDailyMonthlyTotal("daily");
                             }}
                         >
-                            <h5>Daily Total</h5> <h3>${daily}</h3>
+                            <h5>Daily Total</h5> <h3>${dailyTotal}</h3>
                         </div>
                     </div>
                     <div className="chart-container">
