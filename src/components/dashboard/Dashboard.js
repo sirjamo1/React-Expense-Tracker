@@ -11,7 +11,7 @@ import { useAuth } from "../../Auth";
 import { BarChart } from "../charts/BarChart";
 import { LineChart } from "../charts/LineChart";
 
-export  const Dashboard = () => {
+const Dashboard = () => {
     const { user } = useAuth();
     const [userDisplayName, setUserDisplayName] = useState(user.displayName);
     const expenseDataRef = collection(db, "expenseData");
@@ -319,3 +319,5 @@ export  const Dashboard = () => {
         </div>
     );
 };
+
+export default Dashboard
