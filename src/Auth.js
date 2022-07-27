@@ -12,11 +12,12 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const auth = getAuth();
   React.useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-          setUser(user);
-      });
-      return unsubscribe
-  },[]);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      setUser(user);
+    });
+    return unsubscribe;
+  }, [auth]);
+
   function googleSignIn() {
     const googleAuthProvider = new GoogleAuthProvider();
     return signInWithPopup(auth, googleAuthProvider);
