@@ -4,7 +4,14 @@ import { db } from "../../firebase-config";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
-import { collection, getDocs, query, orderBy, limit } from "firebase/firestore";
+import {
+    collection,
+    getDocs,
+    query,
+    orderBy,
+    limit,
+    where,
+} from "firebase/firestore";
 import { useAuth } from "../../Auth";
 // import { Bar } from "react-chartjs-2";
 // import { chart as chartjs} from "chart.js/auto"
@@ -18,8 +25,8 @@ const Dashboard = () => {
     const userDataRef = collection(db, "userData");
     const [expenseData, setExpenseData] = useState([]);
     const userUid = sessionStorage.getItem("uid");
-    const [threeRecent, setThreeRecent] = useState([]);
     const [recurringData, setRecurringData] = useState([]);
+    const [threeRecent, setThreeRecent] = useState([]);
     const [expenseTotal, setExpenseTotal] = useState();
     const [monthlyChart, setMonthlyChart] = useState();
     const [monthlyTotal, setMonthlyTotal] = useState();
@@ -32,17 +39,17 @@ const Dashboard = () => {
         datasets: [
             {
                 label: "No Data",
-                //fill: true,
                 data: "0",
             },
         ],
     });
 
-    // useEffect(() => {
-    // this is to add displayname to account if the user signed up by email
     if (user.displayName == null) {
         const getUserData = async () => {
-            const data = await getDocs(userDataRef);
+            const data = await getDocs(
+                query(userDataRef, where("uid", "==", userUid))
+            );
+            console.log(data);
             const userData = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
@@ -59,33 +66,15 @@ const Dashboard = () => {
         };
         getUserData();
     }
-    // }, [expenseData]);
-
-    useEffect(() => {
-        const getThreeRecent = async () => {
-            const data = await getDocs(
-                query(expenseDataRef, orderBy("date", "desc"), limit(3))
-            );
-            const userData = data.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            const currentUserData = [];
-            for (let i = 0; i < userData.length; i++) {
-                if (userData[i].uid === userUid) {
-                    currentUserData.push(userData[i]);
-                }
-            }
-            setThreeRecent(currentUserData);
-        };
-
-        getThreeRecent();
-    }, []);
 
     useEffect(() => {
         const getExpenseData = async () => {
             const data = await getDocs(
-                query(expenseDataRef, orderBy("date", "desc"))
+                query(
+                    expenseDataRef,
+                    where("uid", "==", userUid),
+                    orderBy("date", "desc")
+                )
             );
             const userData = data.docs.map((doc) => ({
                 ...doc.data(),
@@ -97,32 +86,31 @@ const Dashboard = () => {
             let monthlyAmount = 0;
             const dailyExpense = [];
             let dailyAmount = 0;
+            const three = [];
             for (let i = 0; i < userData.length; i++) {
-                if (userData[i].uid === userUid) {
-                    currentUserExpenseData.push(userData[i]);
-                    expenseAmount += parseInt(userData[i].amount);
-                    if (userData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
-                        monthlyExpense.push(userData[i]);
-                        monthlyAmount += parseInt(userData[i].amount);
-                    }
-                    if (userData[i].date.slice(0, 10) === theDate) {
-                        dailyExpense.push(userData[i]);
-                        dailyAmount += parseInt(userData[i].amount);
-                    }
+                currentUserExpenseData.push(userData[i]);
+                three.push(userData[i]);
+                expenseAmount += parseInt(userData[i].amount);
+                if (userData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
+                    monthlyExpense.push(userData[i]);
+                    monthlyAmount += parseInt(userData[i].amount);
+                }
+                if (userData[i].date.slice(0, 10) === theDate) {
+                    dailyExpense.push(userData[i]);
+                    dailyAmount += parseInt(userData[i].amount);
                 }
             }
-            currentUserExpenseData.reverse();
-            monthlyExpense.reverse();
-            dailyExpense.reverse();
-            setExpenseData(currentUserExpenseData);
+            setExpenseData(currentUserExpenseData.reverse());
             setExpenseTotal(expenseAmount);
-            setMonthlyChart(monthlyExpense);
+            setMonthlyChart(monthlyExpense.reverse());
             setMonthlyTotal(monthlyAmount);
-            setDailyChart(dailyExpense);
+            setDailyChart(dailyExpense.reverse());
             setDailyTotal(dailyAmount);
+            setThreeRecent(three);
         };
         getExpenseData();
     }, []);
+
     useEffect(() => {
         const getRecurring = () => {
             const recurringList = [];
@@ -143,7 +131,7 @@ const Dashboard = () => {
             <p>${data.amount}</p>
         </div>
     ));
-    const threeMostRecent = threeRecent.map((data) => (
+    const threeMostRecent = threeRecent.slice(0, 3).map((data) => (
         <div className="recent-expenses-data">
             <div>
                 <p>{data.title}</p>
@@ -184,7 +172,8 @@ const Dashboard = () => {
         const getData = async () => {
             if (expenseData !== {} && dailyMonthlyTotal === "total") {
                 setChartData({
-                    labels: months.map((data) => data),
+                    labels: expenseData.map((data) => data.title),
+                    //months.map((data) => data),
                     datasets: [
                         {
                             label: "All Expenses",
@@ -320,4 +309,4 @@ const Dashboard = () => {
     );
 };
 
-export default Dashboard
+export default Dashboard;

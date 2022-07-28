@@ -5,6 +5,9 @@ import "reactjs-popup/dist/index.css";
 import { nanoid } from "nanoid";
 import { db } from "../../firebase-config";
 import { useAuth } from "../../Auth";
+import magnifyingGlass from "../icons/magnifyingGlass.png";
+import filter from "../icons/filter.png";
+import create from "../icons/create.png";
 import {
     collection,
     getDocs,
@@ -14,14 +17,13 @@ import {
     deleteDoc,
     query,
     orderBy,
+    where,
     serverTimestamp,
 } from "firebase/firestore";
 
 export const Expenses = () => {
     const { user } = useAuth();
     const [userDisplayName, setUserDisplayName] = useState(user.displayName);
-    const [userEmail, setUserEmail] = useState(user.email);
-    const userUid = sessionStorage.getItem("uid");
     const [expenseData, setExpenseData] = useState([]);
     const [dataTitle, setDataTitle] = useState();
     const [dataAmount, setDataAmount] = useState(0);
@@ -30,21 +32,8 @@ export const Expenses = () => {
     const [dataRecurring, setDataRecurring] = useState("off");
     const expenseDataRef = collection(db, "expenseData");
     const [editBtnId, setEditBtnId] = useState();
-    const [isCreateOpen, setIsCreateOpen] = useState(false);
-    const createOpen = () => {
-        setIsCreateOpen(true);
-    };
-    const createClose = () => {
-        setIsCreateOpen(false);
-    };
-    const [isEditOpen, setIsEditOpen] = useState(false);
+    const [refresh, setRefresh] = useState(false);
 
-    const editPopupOpen = () => {
-        setIsEditOpen(true);
-    };
-    const editPopupClose = () => {
-        setIsEditOpen(false);
-    };
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
     };
@@ -57,9 +46,10 @@ export const Expenses = () => {
             created: serverTimestamp(),
             recurring: dataRecurring,
             key: nanoid(),
-            uid: userUid,
+            uid: user.uid,
+            email: user.email,
         });
-        setIsCreateOpen(false);
+        setRefresh(!refresh);
     };
     const handleEditData = async () => {
         const updateCurrent = doc(db, "expenseData", editBtnId);
@@ -72,11 +62,11 @@ export const Expenses = () => {
             id: editBtnId,
             editDate: serverTimestamp(),
         });
-        setIsEditOpen(false);
+        setRefresh(!refresh);
     };
     const handleDeleteData = async () => {
         await deleteDoc(doc(db, "expenseData", editBtnId));
-        setIsEditOpen(false);
+        setRefresh(!refresh);
     };
     const [currentExpense, setCurrentExpense] = useState([]);
     //when mouse enters the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
@@ -92,116 +82,127 @@ export const Expenses = () => {
             }
         }
     };
-
     //renders rows of data each time edit or create expense popup is closed
     useEffect(() => {
+        console.log("i am getting data");
+        console.log({ user });
+        const userUid = user.uid;
         const getExpenseData = async () => {
             const data = await getDocs(
-                query(expenseDataRef, orderBy("date", "desc"))
+                query(
+                    expenseDataRef,
+                    where("uid", "==", userUid),
+                    orderBy("date", "desc")
+                )
             );
             const userData = data.docs.map((doc) => ({
                 ...doc.data(),
                 id: doc.id,
             }));
-            //only grabs the user who is logged in data
-            const currentUserData = [];
-            for (let i = 0; i < userData.length; i++) {
-                if (userData[i].uid === userUid) {
-                    currentUserData.push(userData[i]);
-                }
-            }
-            setExpenseData(currentUserData);
+            console.log({ userData });
+            setExpenseData(userData);
         };
 
         getExpenseData();
-    }, [isCreateOpen, isEditOpen]);
+    }, [refresh]); //refresh should go here
+    console.log({ expenseData });
+    console.log(user)
     //offset is for popups placement
-    const offset = {
+    const offsetPopup = {
         right: 400,
         bottom: 50,
     };
     const createPopup = (
         <Popup
-            open={isCreateOpen}
             modal={true}
             closeOnDocumentClick
-            offset={offset}
+            offset={offsetPopup}
             show={true}
             className="popup-main"
-            onClose={createClose}
-            onOpen={createOpen}
+            // onClose={createClose}
+            // onOpen={createOpen}
             trigger={
-                <button className="create-expense-btn">Create Expense</button>
+                <button className="create-expense-btn">
+                    <img src={create} className="create-icon" />
+                    Create Expense
+                </button>
             }
         >
-            <div className="popup--container">
-                <input
-                    onChange={(event) => {
-                        setDataTitle(event.target.value);
-                    }}
-                    className="popup-title"
-                    placeholder="Title"
-                ></input>
-                <input
-                    onChange={(event) => {
-                        setDataAmount(event.target.value);
-                    }}
-                    type="number"
-                    className="popup-amount"
-                    placeholder="Amount"
-                ></input>
-                <select
-                    onChange={(event) => {
-                        setDataType(event.target.value);
-                    }}
-                    className="popup-select"
-                    name="type"
-                    id="type"
-                >
-                    <option defaultValue="" disabled selected>
-                        Select your option
-                    </option>
-                    <option value="Mobile">Mobile</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Software">Software</option>
-                    <option value="Technology">Technology</option>
-                    <option value="Withdraw">Withdraw</option>
-                    <option value="Payment">Payment</option>
-                </select>
-                <span>
+            {(close) => (
+                <div className="popup--container">
                     <input
                         onChange={(event) => {
-                            setDataDate(event.target.value);
+                            setDataTitle(event.target.value);
                         }}
-                        className="popup-date"
-                        type="datetime-local"
+                        className="popup-title"
                         placeholder="Title"
                     ></input>
                     <input
-                        name="recurring"
                         onChange={(event) => {
-                            setDataRecurring(event.target.checked);
+                            setDataAmount(event.target.value);
                         }}
-                        type="checkbox"
+                        type="number"
+                        className="popup-amount"
+                        placeholder="Amount"
                     ></input>
-                    <label>Recurring</label>
-                </span>
-                <button className="popup-submit" onClick={handleCreateData}>
-                    Add
-                </button>
-            </div>
+                    <select
+                        onChange={(event) => {
+                            setDataType(event.target.value);
+                        }}
+                        className="popup-select"
+                        name="type"
+                        id="type"
+                    >
+                        <option defaultValue="" disabled selected>
+                            Select your option
+                        </option>
+                        <option value="Mobile">Mobile</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Software">Software</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Withdraw">Withdraw</option>
+                        <option value="Payment">Payment</option>
+                    </select>
+                    <span>
+                        <input
+                            onChange={(event) => {
+                                setDataDate(event.target.value);
+                            }}
+                            className="popup-date"
+                            type="datetime-local"
+                            placeholder="Title"
+                        ></input>
+                        <input
+                            className="recurring"
+                            name="recurring"
+                            onChange={(event) => {
+                                setDataRecurring(event.target.checked);
+                            }}
+                            type="checkbox"
+                        ></input>
+                        <label>Recurring</label>
+                    </span>
+                    <button
+                        className="popup-add"
+                        onClick={() => {
+                            handleCreateData();
+                            close();
+                        }}
+                    >
+                        Add
+                    </button>
+                </div>
+            )}
         </Popup>
     );
     const editPopup = (
         <Popup
-            //open={isEditOpen} //here be dragons////////////////////
             modal={true}
-            offset={offset}
-            show={true}
+            offset={offsetPopup}
+            show={false}
             closeOnDocumentClick
             className="popup-main"
-            onOpen={editPopupOpen}
-            onClose={editPopupClose}
+            nested
             trigger={
                 <button
                     onMouseDown={changeExpense}
@@ -211,69 +212,101 @@ export const Expenses = () => {
                 </button>
             }
         >
-            <div className="popup--container">
-                <input
-                    onChange={(event) => {
-                        setDataTitle(event.target.value);
-                    }}
-                    className="popup-title"
-                    placeholder={currentExpense.title}
-                    // value={currentExpense.title}
-                ></input>
-                <input
-                    onChange={(event) => {
-                        setDataAmount(event.target.value);
-                    }}
-                    type="number"
-                    className="popup-amount"
-                    placeholder={currentExpense.amount}
-                    // value={currentExpense.amount}
-                ></input>
-                <select
-                    onChange={(event) => {
-                        setDataType(event.target.value);
-                    }}
-                    className="popup-select"
-                    name="type"
-                    // value={currentExpense.type}
-
-                    id="type"
-                >
-                    <option value="Mobile">Mobile</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Software">Software</option>
-                    <option value="Technology">Technology</option>
-                    <option value="Withdraw">Withdraw</option>
-                    <option value="Payment">Payment</option>
-                </select>
-                <span>
+            {(close) => (
+                <div className="popup--container">
                     <input
                         onChange={(event) => {
-                            setDataDate(event.target.value);
+                            setDataTitle(event.target.value);
                         }}
-                        className="popup-date"
-                        type="datetime-local"
-                        value={currentExpense.date}
+                        className="popup-title"
+                        placeholder={currentExpense.title}
+                        // value={currentExpense.title}
                     ></input>
-
                     <input
-                        name="recurring"
                         onChange={(event) => {
-                            setDataRecurring(event.target.checked);
+                            setDataAmount(event.target.value);
                         }}
-                        type="checkbox"
-                        defaultChecked={currentExpense.recurring}
+                        type="number"
+                        className="popup-amount"
+                        placeholder={currentExpense.amount}
+                        // value={currentExpense.amount}
                     ></input>
-                    <label>Recurring</label>
-                </span>
-                <p>{currentExpense.recurring}</p>
-                <button className="popup-submit" onClick={handleEditData}>
-                    Edit
-                </button>
-                <button className="popup-submit" onClick={handleDeleteData}>
-                    Delete
-                </button>
-            </div>
+                    <select
+                        onChange={(event) => {
+                            setDataType(event.target.value);
+                        }}
+                        className="popup-select"
+                        name="type"
+                        // value={currentExpense.type}
+
+                        id="type"
+                    >
+                        <option value="Mobile">Mobile</option>
+                        <option value="Entertainment">Entertainment</option>
+                        <option value="Software">Software</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Withdraw">Withdraw</option>
+                        <option value="Payment">Payment</option>
+                    </select>
+                    <span>
+                        <input
+                            onChange={(event) => {
+                                setDataDate(event.target.value);
+                            }}
+                            className="popup-date"
+                            type="datetime-local"
+                            value={currentExpense.date}
+                        ></input>
+                        <input
+                            className="recurring"
+                            name="recurring"
+                            onChange={(event) => {
+                                setDataRecurring(event.target.checked);
+                            }}
+                            type="checkbox"
+                            defaultChecked={currentExpense.recurring}
+                        ></input>
+                        <label>Recurring</label>
+                    </span>
+                    <button
+                        className="popup-edit"
+                        onClick={() => {
+                            handleEditData();
+                            close();
+                        }}
+                    >
+                        Edit
+                    </button>
+                    <Popup
+                        trigger={
+                            <button className="popup-delete">Delete</button>
+                        }
+                        position="top"
+                    >
+                        <div className="RUSure-container">
+                            <p>Are you sure?</p>
+                            <span>
+                                {" "}
+                                <button
+                                    className="RUSure-yes-btn"
+                                    onClick={() => {
+                                        handleDeleteData();
+                                        close();
+                                    }}
+                                >
+                                    Yes
+                                </button>
+                                <button
+                                    className="RUSure-no-btn"
+                                    onClick={close}
+                                >
+                                    No
+                                </button>
+                            </span>
+                        </div>
+                    </Popup>
+                </div>
+            )}
         </Popup>
     );
 
@@ -310,15 +343,19 @@ export const Expenses = () => {
                 <div className="nav-line2">
                     <div className="nav-line2-left">
                         <button className="search-btn">
-                            {/* <i class="fa-solid fa-magnifying-glass-dollar"></i> */}
+                            <img src={magnifyingGlass} />
                         </button>
                         <input className="search" placeholder="Search"></input>
                     </div>
                     <div className="nav-line2-right">
                         {createPopup}
-                        <button className="filter-btn">Filters</button>
+                        <button className="filter-btn">
+                            <img src={filter} className="filter-icon" />
+                            Filters
+                        </button>
                     </div>
                 </div>
+
                 <div className="row-header">
                     <p>NAME/BUSINESS</p>
                     <p>TYPE</p>

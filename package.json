@@ -16,6 +16,7 @@
     "react-google-button": "^0.7.2",
     "react-lazy": "^1.1.0",
     "react-lazy-load": "^3.1.14",
+    "react-native-vector-icons": "^9.2.0",
     "react-router-dom": "^6.3.0",
     "react-scripts": "5.0.1",
     "reactjs-popup": "^2.0.5",
