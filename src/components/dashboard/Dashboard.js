@@ -218,6 +218,7 @@ const Dashboard = () => {
                     let tChart = {
                         x: expenseData.date.substring(0, 10),
                         y: expenseData.amount,
+                        label: expenseData.title,
                     };
                     totalFinal.push(tChart);
                 });
@@ -232,7 +233,7 @@ const Dashboard = () => {
                             fill: true,
                             data: totalFinal,
                             backgroundColor: "rgba(243, 86, 223, 0.5)",
-                            borderRadius: 2,
+                            borderRadius: 2,                    
                         },
                     ],
                 });
@@ -242,6 +243,7 @@ const Dashboard = () => {
                     let chart = {
                         x: monthlyChart.date.substring(0, 10),
                         y: monthlyChart.amount,
+                        label: monthlyChart.title,
                     };
                     monthlyFinal.push(chart);
                 });
@@ -264,6 +266,7 @@ const Dashboard = () => {
                     let chart = {
                         x: dailyChart.date.substring(11, 13),
                         y: dailyChart.amount,
+                        label: dailyChart.title,
                     };
                     dailyFinal.push(chart);
                 });
