@@ -57,7 +57,32 @@ const Dashboard = () => {
         "November",
         "December",
     ];
-
+    const time = [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23",
+        "24",
+    ];
     if (user.displayName == null) {
         const getUserData = async () => {
             const data = await getDocs(
@@ -183,7 +208,8 @@ const Dashboard = () => {
         return result;
     };
     const currentMonth = getCurrentMonth();
-
+//**********************************NEED TO:***************************************
+//change labels to repersent what expense they were for */
     useEffect(() => {
         const getData = async () => {
             if (expenseData !== {} && dailyMonthlyTotal === "total") {
@@ -226,16 +252,6 @@ const Dashboard = () => {
                         {
                             label: months[parseInt(thisMonth) - 1],
                             data: monthlyFinal,
-                            // [
-                            //     {
-                            //         x: monthlyChart[0].date,
-                            //         y: monthlyChart[0].amount,
-                            //     },
-                            //     { x: monthlyChart[1].date, y: monthlyChart[1].amount },
-                            //     // { x: "2022-07-27", y: 30 },
-                            // ],
-
-                            // monthlyChart.map((data) => data.amount),
                             fill: true,
                             backgroundColor: "rgba(243, 86, 223, 0.5)",
                             borderRadius: 2,
@@ -243,13 +259,21 @@ const Dashboard = () => {
                     ],
                 });
             } else if (dailyChart !== {} && dailyMonthlyTotal === "daily") {
+                const dailyFinal = [];
+                dailyChart.forEach(function (dailyChart) {
+                    let chart = {
+                        x: dailyChart.date.substring(11, 13),
+                        y: dailyChart.amount,
+                    };
+                    dailyFinal.push(chart);
+                });
                 setChartData({
-                    labels: dailyChart.map((data) => data.title),
+                    labels: time.map((data) => data),
 
                     datasets: [
                         {
                             label: "Daily Expenses",
-                            data: dailyChart.map((data) => data.amount),
+                            data: dailyFinal,
                             fill: true,
                             backgroundColor: "rgba(243, 86, 223, 0.5)",
                             borderRadius: 2,
