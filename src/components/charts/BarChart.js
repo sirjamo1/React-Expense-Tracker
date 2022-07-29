@@ -14,7 +14,21 @@ import {
 
 export function BarChart({chartData})  {
   return (
-    <Bar data={chartData} options={{responsive: true, plugins:{ title:{ display: true,
-    text: "bar chart"}}}}/>
-  )
+      <Bar
+          data={chartData}
+          options={{
+              responsive: true,
+              plugins: {
+                  tooltip: {
+                      callbacks: {
+                          label: (context) => {
+                              console.log(context.raw.label);
+                              return `${context.raw.label} $${context.raw.y}`;
+                          },
+                      },
+                  },
+              },
+          }}
+      />
+  );
 }
