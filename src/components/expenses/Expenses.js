@@ -123,7 +123,7 @@ export const Expenses = () => {
             // onOpen={createOpen}
             trigger={
                 <button className="create-expense-btn">
-                    <img src={create} className="create-icon" />
+                    <img src={create} className="create-icon" alt="create expense icon"/>
                     Create Expense
                 </button>
             }
@@ -343,14 +343,14 @@ export const Expenses = () => {
                 <div className="nav-line2">
                     <div className="nav-line2-left">
                         <button className="search-btn">
-                            <img src={magnifyingGlass} />
+                            <img src={magnifyingGlass} alt="magnifying glass icon"/>
                         </button>
                         <input className="search" placeholder="Search"></input>
                     </div>
                     <div className="nav-line2-right">
                         {createPopup}
                         <button className="filter-btn">
-                            <img src={filter} className="filter-icon" />
+                            <img src={filter} alt="filter -icon"className="filter-icon" />
                             Filters
                         </button>
                     </div>

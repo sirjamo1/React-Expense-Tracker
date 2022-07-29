@@ -43,6 +43,20 @@ const Dashboard = () => {
             },
         ],
     });
+    const months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+    ];
 
     if (user.displayName == null) {
         const getUserData = async () => {
@@ -148,49 +162,80 @@ const Dashboard = () => {
         </div>
     ));
 
-    const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
-
     const thisMonth = theDate.slice(5, 7);
-    console.log("this month = " + months[parseInt(thisMonth) - 1]);
-    // **********************************************************
-    //*********NEED TO:
-    // asign current month to chart and  */
+    const getCurrentMonth = () => {
+        let today = new Date();
+        let end = new Date(
+            today.getFullYear(),
+            today.getMonth() + 1,
+            0
+        ).getDate();
+        let result = [];
+        for (let i = 1; i <= end; i++) {
+            result.push(
+                today.getFullYear() +
+                    "-" +
+                    thisMonth +
+                    "-" +
+                    (i < 10 ? "0" + i : i)
+            );
+        }
+        return result;
+    };
+    const currentMonth = getCurrentMonth();
+
     useEffect(() => {
         const getData = async () => {
             if (expenseData !== {} && dailyMonthlyTotal === "total") {
+                const totalFinal = [];
+                expenseData.forEach(function (expenseData) {
+                    let tChart = {
+                        x: expenseData.date.substring(0, 10),
+                        y: expenseData.amount,
+                    };
+                    totalFinal.push(tChart);
+                });
+                console.log(totalFinal);
                 setChartData({
-                    labels: expenseData.map((data) => data.title),
-                    //months.map((data) => data),
+                    labels: expenseData.map((data) =>
+                        data.date.substring(0, 10)
+                    ),
                     datasets: [
                         {
                             label: "All Expenses",
                             fill: true,
-                            data: expenseData.map((data) => data.amount),
+                            data: totalFinal,
                             backgroundColor: "rgba(243, 86, 223, 0.5)",
                             borderRadius: 2,
                         },
                     ],
                 });
             } else if (monthlyChart !== {} && dailyMonthlyTotal === "monthly") {
+                const monthlyFinal = [];
+                monthlyChart.forEach(function (monthlyChart) {
+                    let chart = {
+                        x: monthlyChart.date.substring(0, 10),
+                        y: monthlyChart.amount,
+                    };
+                    monthlyFinal.push(chart);
+                });
+                console.log(monthlyFinal);
                 setChartData({
-                    labels: monthlyChart.map((data) => data.title),
+                    labels: currentMonth.map((data) => data),
                     datasets: [
                         {
-                            label: "Monthly Expenses",
-                            data: monthlyChart.map((data) => data.amount),
+                            label: months[parseInt(thisMonth) - 1],
+                            data: monthlyFinal,
+                            // [
+                            //     {
+                            //         x: monthlyChart[0].date,
+                            //         y: monthlyChart[0].amount,
+                            //     },
+                            //     { x: monthlyChart[1].date, y: monthlyChart[1].amount },
+                            //     // { x: "2022-07-27", y: 30 },
+                            // ],
+
+                            // monthlyChart.map((data) => data.amount),
                             fill: true,
                             backgroundColor: "rgba(243, 86, 223, 0.5)",
                             borderRadius: 2,
@@ -216,9 +261,6 @@ const Dashboard = () => {
         };
         getData();
     }, [expenseData, dailyMonthlyTotal]);
-    const hello = () => {
-        console.log("hello");
-    };
     const changeLineOrBar = () => {
         if (lineOrBar === "Bar") {
             setLineOrBar("Line");
