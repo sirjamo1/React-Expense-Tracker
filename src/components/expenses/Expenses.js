@@ -11,6 +11,7 @@ import filter from "../icons/filter.png";
 import create from "../icons/create.png";
 import userIcon from "../icons/userIcon.png";
 import Schedule from "react-schedule-job";
+import moment from "moment";
 
 import {
     collection,
@@ -89,7 +90,7 @@ export const Expenses = () => {
     //renders rows of data each time edit or create expense popup is closed
     useEffect(() => {
         console.log("i am getting data");
-        console.log({ user });
+        //  console.log({ user });
         const userUid = user.uid;
         const getExpenseData = async () => {
             const data = await getDocs(
@@ -103,7 +104,7 @@ export const Expenses = () => {
                 ...doc.data(),
                 id: doc.id,
             }));
-            console.log({ userData });
+            //console.log({ userData });
             setExpenseData(userData);
         };
 
@@ -111,32 +112,54 @@ export const Expenses = () => {
     }, [refresh]); //refresh should go here
 
     //RECURRING ZONE************************
+    const theDate = moment().format("YYYY-MM-DD");
     const addRecurring = () => {
-        //  addDoc(expenseDataRef, {
-        //     title: "trying Recurring",
-        //     type: "recurring",
-        //     amount: "4",
-        //     date: "2012-12-12",
-        //     created: serverTimestamp(),
-        //     recurring: false,
-        //     key: nanoid(),
-        //     uid: user.uid,
-        //     email: user.email,
-        // });
-        // setRefresh(!refresh);
+        for (let i = 0; i < expenseData.length; i++) {
+            //NEED TO: take away the option to edit recurring on the updated expense.
+                //      change the if statement to include if date has changed by one month.
+            //CURRENT STATUS: if recurring == true, create duplicate, then update old expense (change recurring to false and add hasRecurre: true)
+            //CURRENT PROBLEM: function creates two duplicates (maybe because of react being in strict mode)
+            //MAYBE: might not need <Schedule /> 
+            if (expenseData[i].recurring === true) {
+                // addDoc(expenseDataRef, {
+                //     title: expenseData[i].title,
+                //     type: expenseData[i].type,
+                //     amount: expenseData[i].amount,
+                //     date: theDate,
+                //     created: serverTimestamp(),
+                //     recurring: true,
+                //     key: nanoid(),
+                //     uid: user.uid,
+                //     email: user.email,
+                // });
+                // const updateCurrent = doc(db, "expenseData", expenseData[i].id);
+                // updateDoc(updateCurrent, {
+                //     title: expenseData[i].title,
+                //     type: expenseData[i].type,
+                //     amount: expenseData[i].amount,
+                //     date: expenseData[i].date,
+                //     recurring: false,
+                //     hasRecurred: true,
+                //     editDate: serverTimestamp(),
+                // });
 
-        console.log("called ! ");
+                
+
+                console.log("this ran "[i]);
+            }
+        }
+       // setRefresh(!refresh);
     };
     const jobs = [
-      {
-        fn: addRecurring,
-        id: '1',
-        schedule: '* * * * *',
-      }]
-      //********************************************** */
-    console.log({ expenseData });
-    console.log(user)
-    //offset is for popups placement
+        {
+            fn: addRecurring,
+            id: "1",
+            schedule: "* * * * *",
+        },
+    ];
+    //********************************************** */
+    // console.log({ expenseData });
+    // console.log(user)
     const offsetPopup = {
         right: 400,
         bottom: 50,
@@ -152,7 +175,11 @@ export const Expenses = () => {
             // onOpen={createOpen}
             trigger={
                 <button className="create-expense-btn">
-                    <img src={create} className="create-icon" alt="create expense icon"/>
+                    <img
+                        src={create}
+                        className="create-icon"
+                        alt="create expense icon"
+                    />
                     Create Expense
                 </button>
             }
@@ -373,7 +400,7 @@ export const Expenses = () => {
                             alt="user icon"
                             className="user-icon"
                         />
-                         {userDisplayName}
+                        {userDisplayName}
                     </h4>
                 </div>
                 <div className="nav-line2">
