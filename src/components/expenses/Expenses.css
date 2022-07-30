@@ -10,6 +10,10 @@
     align-items: center;
     justify-content: space-between;
 }
+.user-icon {
+    width: 20px;
+    margin-right: 4px;
+}
 .nav-line2 {
     display: flex;
     align-items: center;

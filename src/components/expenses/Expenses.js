@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+//import "react-schedule-job/dist/index.css";
 import "./Expenses.css";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -8,6 +9,9 @@ import { useAuth } from "../../Auth";
 import magnifyingGlass from "../icons/magnifyingGlass.png";
 import filter from "../icons/filter.png";
 import create from "../icons/create.png";
+import userIcon from "../icons/userIcon.png";
+import Schedule from "react-schedule-job";
+
 import {
     collection,
     getDocs,
@@ -105,6 +109,31 @@ export const Expenses = () => {
 
         getExpenseData();
     }, [refresh]); //refresh should go here
+
+    //RECURRING ZONE************************
+    const addRecurring = () => {
+        //  addDoc(expenseDataRef, {
+        //     title: "trying Recurring",
+        //     type: "recurring",
+        //     amount: "4",
+        //     date: "2012-12-12",
+        //     created: serverTimestamp(),
+        //     recurring: false,
+        //     key: nanoid(),
+        //     uid: user.uid,
+        //     email: user.email,
+        // });
+        // setRefresh(!refresh);
+
+        console.log("called ! ");
+    };
+    const jobs = [
+      {
+        fn: addRecurring,
+        id: '1',
+        schedule: '* * * * *',
+      }]
+      //********************************************** */
     console.log({ expenseData });
     console.log(user)
     //offset is for popups placement
@@ -338,19 +367,33 @@ export const Expenses = () => {
             <div className="expenses-nav">
                 <div className="nav-line1">
                     <h1>Expenses</h1>
-                    <h4>{userDisplayName}</h4>
+                    <h4>
+                        <img
+                            src={userIcon}
+                            alt="user icon"
+                            className="user-icon"
+                        />
+                         {userDisplayName}
+                    </h4>
                 </div>
                 <div className="nav-line2">
                     <div className="nav-line2-left">
                         <button className="search-btn">
-                            <img src={magnifyingGlass} alt="magnifying glass icon"/>
+                            <img
+                                src={magnifyingGlass}
+                                alt="magnifying glass icon"
+                            />
                         </button>
                         <input className="search" placeholder="Search"></input>
                     </div>
                     <div className="nav-line2-right">
                         {createPopup}
                         <button className="filter-btn">
-                            <img src={filter} alt="filter -icon"className="filter-icon" />
+                            <img
+                                src={filter}
+                                alt="filter -icon"
+                                className="filter-icon"
+                            />
                             Filters
                         </button>
                     </div>
@@ -365,6 +408,11 @@ export const Expenses = () => {
                     <p>ACTION</p>
                 </div>
                 {expenseDataElements}
+                <Schedule
+                    jobs={jobs}
+                    timeZone="UTC"
+                    dashboard={{ hidden: true }}
+                />
             </div>
         </div>
     );
