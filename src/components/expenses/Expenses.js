@@ -64,6 +64,7 @@ export const Expenses = () => {
             amount: dataAmount,
             date: dataDate,
             recurring: dataRecurring,
+
             id: editBtnId,
             editDate: serverTimestamp(),
         });
@@ -112,54 +113,50 @@ export const Expenses = () => {
     }, [refresh]); //refresh should go here
 
     //RECURRING ZONE************************
-    const theDate = moment().format("YYYY-MM-DD");
+
+    const monthBeforeDate = moment().subtract(1, "months").format("YYYY-MM-DD");
     const addRecurring = () => {
+        console.log("starting recurring");
+
         for (let i = 0; i < expenseData.length; i++) {
-            //NEED TO: take away the option to edit recurring on the updated expense.
-                //      change the if statement to include if date has changed by one month.
-            //CURRENT STATUS: if recurring == true, create duplicate, then update old expense (change recurring to false and add hasRecurre: true)
-            //CURRENT PROBLEM: function creates two duplicates (maybe because of react being in strict mode)
-            //MAYBE: might not need <Schedule /> 
-            if (expenseData[i].recurring === true) {
-                // addDoc(expenseDataRef, {
-                //     title: expenseData[i].title,
-                //     type: expenseData[i].type,
-                //     amount: expenseData[i].amount,
-                //     date: theDate,
-                //     created: serverTimestamp(),
-                //     recurring: true,
-                //     key: nanoid(),
-                //     uid: user.uid,
-                //     email: user.email,
-                // });
-                // const updateCurrent = doc(db, "expenseData", expenseData[i].id);
-                // updateDoc(updateCurrent, {
-                //     title: expenseData[i].title,
-                //     type: expenseData[i].type,
-                //     amount: expenseData[i].amount,
-                //     date: expenseData[i].date,
-                //     recurring: false,
-                //     hasRecurred: true,
-                //     editDate: serverTimestamp(),
-                // });
-
-                
-
-                console.log("this ran "[i]);
+            let date1 = new Date(expenseData[i].date.slice(0, 10));
+            let date2 = new Date(monthBeforeDate);
+            if (expenseData[i].recurring === true && date1 - date2 == 0) {
+                addDoc(expenseDataRef, {
+                    title: expenseData[i].title,
+                    type: expenseData[i].type,
+                    amount: expenseData[i].amount,
+                    date: moment().format("YYYY-MM-DD"),
+                    created: serverTimestamp(),
+                    recurring: true,
+                    key: nanoid(),
+                    uid: user.uid,
+                    email: user.email,
+                });
+                const updateCurrent = doc(db, "expenseData", expenseData[i].id);
+                updateDoc(updateCurrent, {
+                    title: expenseData[i].title,
+                    type: expenseData[i].type,
+                    amount: expenseData[i].amount,
+                    date: expenseData[i].date,
+                    recurring: false,
+                    hasRecurred: true,
+                    recurredDate: serverTimestamp(),
+                });
             }
         }
-       // setRefresh(!refresh);
+        // setRefresh(!refresh);
     };
-    const jobs = [
-        {
-            fn: addRecurring,
-            id: "1",
-            schedule: "* * * * *",
-        },
-    ];
+    addRecurring();
+    // const jobs = [
+    //     {
+    //         fn: addRecurring,
+    //         id: "1",
+    //         schedule: "* * * * *",
+    //     },
+    // ];
     //********************************************** */
-    // console.log({ expenseData });
-    // console.log(user)
+
     const offsetPopup = {
         right: 400,
         bottom: 50,
@@ -435,11 +432,11 @@ export const Expenses = () => {
                     <p>ACTION</p>
                 </div>
                 {expenseDataElements}
-                <Schedule
+                {/* <Schedule
                     jobs={jobs}
                     timeZone="UTC"
                     dashboard={{ hidden: true }}
-                />
+                /> */}
             </div>
         </div>
     );
