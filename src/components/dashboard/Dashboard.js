@@ -4,6 +4,7 @@ import { db } from "../../firebase-config";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
+import userIcon from "../icons/userIcon.png";
 import {
     collection,
     getDocs,
@@ -300,7 +301,15 @@ const Dashboard = () => {
         <div className="dashboard-container">
             <div className="dashboard-header">
                 <h1>Dashboard</h1>
-                <h4>{userDisplayName}</h4>
+                <h4>
+                   
+                    <img
+                        src={userIcon}
+                        alt="user icon"
+                        className="user-icon"
+                    />
+                    {userDisplayName}
+                </h4>
             </div>
             <div className="left-and-right-container">
                 <div className="leftside-container">

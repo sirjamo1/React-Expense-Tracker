@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+//import "react-schedule-job/dist/index.css";
 import "./Expenses.css";
 import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
@@ -8,6 +9,10 @@ import { useAuth } from "../../Auth";
 import magnifyingGlass from "../icons/magnifyingGlass.png";
 import filter from "../icons/filter.png";
 import create from "../icons/create.png";
+import userIcon from "../icons/userIcon.png";
+import Schedule from "react-schedule-job";
+import moment from "moment";
+
 import {
     collection,
     getDocs,
@@ -59,6 +64,7 @@ export const Expenses = () => {
             amount: dataAmount,
             date: dataDate,
             recurring: dataRecurring,
+
             id: editBtnId,
             editDate: serverTimestamp(),
         });
@@ -85,7 +91,7 @@ export const Expenses = () => {
     //renders rows of data each time edit or create expense popup is closed
     useEffect(() => {
         console.log("i am getting data");
-        console.log({ user });
+        //  console.log({ user });
         const userUid = user.uid;
         const getExpenseData = async () => {
             const data = await getDocs(
@@ -99,15 +105,58 @@ export const Expenses = () => {
                 ...doc.data(),
                 id: doc.id,
             }));
-            console.log({ userData });
+            //console.log({ userData });
             setExpenseData(userData);
         };
 
         getExpenseData();
     }, [refresh]); //refresh should go here
-    console.log({ expenseData });
-    console.log(user)
-    //offset is for popups placement
+
+    //RECURRING ZONE************************
+
+    const monthBeforeDate = moment().subtract(1, "months").format("YYYY-MM-DD");
+    const addRecurring = () => {
+        console.log("starting recurring");
+
+        for (let i = 0; i < expenseData.length; i++) {
+            let date1 = new Date(expenseData[i].date.slice(0, 10));
+            let date2 = new Date(monthBeforeDate);
+            if (expenseData[i].recurring === true && date1 - date2 == 0) {
+                addDoc(expenseDataRef, {
+                    title: expenseData[i].title,
+                    type: expenseData[i].type,
+                    amount: expenseData[i].amount,
+                    date: moment().format("YYYY-MM-DD"),
+                    created: serverTimestamp(),
+                    recurring: true,
+                    key: nanoid(),
+                    uid: user.uid,
+                    email: user.email,
+                });
+                const updateCurrent = doc(db, "expenseData", expenseData[i].id);
+                updateDoc(updateCurrent, {
+                    title: expenseData[i].title,
+                    type: expenseData[i].type,
+                    amount: expenseData[i].amount,
+                    date: expenseData[i].date,
+                    recurring: false,
+                    hasRecurred: true,
+                    recurredDate: serverTimestamp(),
+                });
+            }
+        }
+        // setRefresh(!refresh);
+    };
+    addRecurring();
+    // const jobs = [
+    //     {
+    //         fn: addRecurring,
+    //         id: "1",
+    //         schedule: "* * * * *",
+    //     },
+    // ];
+    //********************************************** */
+
     const offsetPopup = {
         right: 400,
         bottom: 50,
@@ -123,7 +172,11 @@ export const Expenses = () => {
             // onOpen={createOpen}
             trigger={
                 <button className="create-expense-btn">
-                    <img src={create} className="create-icon" alt="create expense icon"/>
+                    <img
+                        src={create}
+                        className="create-icon"
+                        alt="create expense icon"
+                    />
                     Create Expense
                 </button>
             }
@@ -338,19 +391,33 @@ export const Expenses = () => {
             <div className="expenses-nav">
                 <div className="nav-line1">
                     <h1>Expenses</h1>
-                    <h4>{userDisplayName}</h4>
+                    <h4>
+                        <img
+                            src={userIcon}
+                            alt="user icon"
+                            className="user-icon"
+                        />
+                        {userDisplayName}
+                    </h4>
                 </div>
                 <div className="nav-line2">
                     <div className="nav-line2-left">
                         <button className="search-btn">
-                            <img src={magnifyingGlass} alt="magnifying glass icon"/>
+                            <img
+                                src={magnifyingGlass}
+                                alt="magnifying glass icon"
+                            />
                         </button>
                         <input className="search" placeholder="Search"></input>
                     </div>
                     <div className="nav-line2-right">
                         {createPopup}
                         <button className="filter-btn">
-                            <img src={filter} alt="filter -icon"className="filter-icon" />
+                            <img
+                                src={filter}
+                                alt="filter -icon"
+                                className="filter-icon"
+                            />
                             Filters
                         </button>
                     </div>
@@ -365,6 +432,11 @@ export const Expenses = () => {
                     <p>ACTION</p>
                 </div>
                 {expenseDataElements}
+                {/* <Schedule
+                    jobs={jobs}
+                    timeZone="UTC"
+                    dashboard={{ hidden: true }}
+                /> */}
             </div>
         </div>
     );
