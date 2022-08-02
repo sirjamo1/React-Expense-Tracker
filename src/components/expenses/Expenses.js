@@ -23,6 +23,7 @@ import {
     query,
     orderBy,
     where,
+    onSnapshot,
     serverTimestamp,
 } from "firebase/firestore";
 
@@ -54,7 +55,8 @@ export const Expenses = () => {
             uid: user.uid,
             email: user.email,
         });
-        setRefresh(!refresh);
+        setDataRecurring("off");
+        //setRefresh(!refresh);
     };
     const handleEditData = async () => {
         const updateCurrent = doc(db, "expenseData", editBtnId);
@@ -68,11 +70,12 @@ export const Expenses = () => {
             id: editBtnId,
             editDate: serverTimestamp(),
         });
-        setRefresh(!refresh);
+        setDataRecurring("off");
+        // setRefresh(!refresh);
     };
     const handleDeleteData = async () => {
         await deleteDoc(doc(db, "expenseData", editBtnId));
-        setRefresh(!refresh);
+        // setRefresh(!refresh);
     };
     const [currentExpense, setCurrentExpense] = useState([]);
     //when mouse enters the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
@@ -89,65 +92,141 @@ export const Expenses = () => {
         }
     };
     //renders rows of data each time edit or create expense popup is closed
+    // useEffect(() => {
+    //     console.log("i am getting data");
+    //     const userUid = user.uid;
+    //     const getExpenseData = async () => {
+    //         const data = await getDocs(
+    //             query(
+    //                 expenseDataRef,
+    //                 where("uid", "==", userUid),
+    //                 orderBy("date", "desc")
+    //             )
+    //         );
+    //         const userData = data.docs.map((doc) => ({
+    //             ...doc.data(),
+    //             id: doc.id,
+    //         }));
+    //         //console.log({ userData });
+    //         setExpenseData(userData);
+    //     };
+
+    //     getExpenseData();
+    // }, [refresh]); //refresh should go here
     useEffect(() => {
-        console.log("i am getting data");
-        //  console.log({ user });
         const userUid = user.uid;
-        const getExpenseData = async () => {
-            const data = await getDocs(
-                query(
-                    expenseDataRef,
-                    where("uid", "==", userUid),
-                    orderBy("date", "desc")
-                )
-            );
-            const userData = data.docs.map((doc) => ({
-                ...doc.data(),
-                id: doc.id,
-            }));
-            //console.log({ userData });
-            setExpenseData(userData);
-        };
-
-        getExpenseData();
-    }, [refresh]); //refresh should go here
-
-    //RECURRING ZONE************************
-
-    const monthBeforeDate = moment().subtract(1, "months").format("YYYY-MM-DD");
-    const addRecurring = () => {
-        console.log("starting recurring");
-
-        for (let i = 0; i < expenseData.length; i++) {
-            let date1 = new Date(expenseData[i].date.slice(0, 10));
-            let date2 = new Date(monthBeforeDate);
-            if (expenseData[i].recurring === true && date1 - date2 == 0) {
-                addDoc(expenseDataRef, {
-                    title: expenseData[i].title,
-                    type: expenseData[i].type,
-                    amount: expenseData[i].amount,
-                    date: moment().format("YYYY-MM-DD"),
-                    created: serverTimestamp(),
-                    recurring: true,
-                    key: nanoid(),
-                    uid: user.uid,
-                    email: user.email,
-                });
-                const updateCurrent = doc(db, "expenseData", expenseData[i].id);
-                updateDoc(updateCurrent, {
-                    title: expenseData[i].title,
-                    type: expenseData[i].type,
-                    amount: expenseData[i].amount,
-                    date: expenseData[i].date,
-                    recurring: false,
-                    hasRecurred: true,
-                    recurredDate: serverTimestamp(),
-                });
+        const unsub = onSnapshot(
+            query(
+                expenseDataRef,
+                where("uid", "==", userUid),
+                orderBy("date", "desc")
+            ),
+            (snapshot) => {
+                setExpenseData(
+                    snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
+                );
             }
+        );
+
+        return unsub;
+    }, []);
+
+    console.log(expenseData);
+    //RECURRING ZONE************************
+    const monthToNumber = (getMonth) => {
+        let monthNumber = "";
+        if (getMonth === "Jan") {
+            monthNumber = "01";
+        } else if (getMonth === "Feb") {
+            monthNumber = "02";
+        } else if (getMonth === "Mar") {
+            monthNumber = "03";
+        } else if (getMonth === "Apr") {
+            monthNumber = "04";
+        } else if (getMonth === "May") {
+            monthNumber = "05";
+        } else if (getMonth === "Jun") {
+            monthNumber = "06";
+        } else if (getMonth === "Jul") {
+            monthNumber = "07";
+        } else if (getMonth === "Aug") {
+            monthNumber = "08";
+        } else if (getMonth === "Sep") {
+            monthNumber = "09";
+        } else if (getMonth === "Oct") {
+            monthNumber = "10";
+        } else if (getMonth === "Nov") {
+            monthNumber = "11";
+        } else if (getMonth === "Dec") {
+            monthNumber = "12";
         }
-        // setRefresh(!refresh);
+        return monthNumber;
     };
-    addRecurring();
+
+    //NEED TO FIND A WAY for it to add slowly
+    const monthBeforeDate = moment().subtract(1, "months").format("YYYY-MM-DD");
+    useEffect(() => {
+        const addRecurring = () => {
+            console.log("starting recurring");
+            for (let i = 0; i < expenseData.length; i++) {
+                let expenseDate = new Date(expenseData[i].date.slice(0, 10));
+                let oneMonthBeforeToday = new Date(monthBeforeDate);
+                const twoYearsAgo = -63372000000;
+                // console.log({expenseDate})
+                // console.log({oneMonthBeforeToday})
+                // console.log(expenseDate - oneMonthBeforeToday)
+                // 63072000000 milliseconds == 2 years
+                if (
+                    expenseData[i].recurring === true &&
+                    expenseDate - oneMonthBeforeToday <= 0 &&
+                    expenseDate - oneMonthBeforeToday > twoYearsAgo
+                ) {
+                    //  console.log({ expenseDate });
+                    let newDate = new Date(
+                        expenseDate.setMonth(expenseDate.getMonth() + 1)
+                    );
+                    let getDay = newDate.toString().slice(8, 10);
+                    // console.log({ getDay });
+                    let getMonth = newDate.toString().slice(4, 7);
+                    // console.log({ getMonth });
+                    let getMonthNum = monthToNumber(getMonth);
+                    //console.log({ getMonthNum });
+                    let getYear = newDate.toString().slice(11, 15);
+                    // console.log({ getYear });
+                    let newDateFormatted = `${getYear}-${getMonthNum}-${getDay}`;
+                    console.log({ newDateFormatted });
+                    addDoc(expenseDataRef, {
+                        title: expenseData[i].title,
+                        type: expenseData[i].type,
+                        amount: expenseData[i].amount,
+                        date: newDateFormatted,
+                        created: serverTimestamp(),
+                        recurring: true,
+                        key: nanoid(),
+                        uid: user.uid,
+                        email: user.email,
+                    });
+                    const updateCurrent = doc(
+                        db,
+                        "expenseData",
+                        expenseData[i].id
+                    );
+                    updateDoc(updateCurrent, {
+                        // title:expenseData[i].title,
+                        // type:expenseData[i].type,
+                        // amount:expenseData[i].amount,
+                        date: expenseData[i].date,
+                        recurring: false,
+                        hasRecurred: true,
+                        recurredDate: newDateFormatted,
+                    });
+                }
+            }
+        };
+        addRecurring();
+    }, []);
+
+    // addRecurring();
     // const jobs = [
     //     {
     //         fn: addRecurring,
@@ -161,6 +240,24 @@ export const Expenses = () => {
         right: 400,
         bottom: 50,
     };
+    const hasItRecurred = !currentExpense.hasRecurred ? (
+        <span>
+            <input
+                className="recurring"
+                name="recurring"
+                onChange={(event) => {
+                    setDataRecurring(event.target.checked);
+                }}
+                type="checkbox"
+                defaultChecked={currentExpense.recurring}
+            ></input>
+            <label>Recurring</label>
+        </span>
+    ) : (
+        <span>
+            {currentExpense.title} recurred on {currentExpense.recurredDate}
+        </span>
+    );
     const createPopup = (
         <Popup
             modal={true}
@@ -310,16 +407,7 @@ export const Expenses = () => {
                             type="datetime-local"
                             value={currentExpense.date}
                         ></input>
-                        <input
-                            className="recurring"
-                            name="recurring"
-                            onChange={(event) => {
-                                setDataRecurring(event.target.checked);
-                            }}
-                            type="checkbox"
-                            defaultChecked={currentExpense.recurring}
-                        ></input>
-                        <label>Recurring</label>
+                        {hasItRecurred}
                     </span>
                     <button
                         className="popup-edit"
@@ -362,7 +450,7 @@ export const Expenses = () => {
             )}
         </Popup>
     );
-
+    console.log(expenseData.map((data) => data.id));
     //rows of expense data
     const expenseDataElements = expenseData.map((data) => (
         <div className="row-data">

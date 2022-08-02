@@ -164,7 +164,7 @@ const Dashboard = () => {
         getRecurring();
     }, [expenseData]);
     const theDate = moment().format("YYYY-MM-DD");
-    console.log(theDate);
+    //console.log(theDate);
     const recurring = recurringData.map((data) => (
         <div className="recurring-div">
             <p>{data.title}</p>
@@ -209,8 +209,7 @@ const Dashboard = () => {
         return result;
     };
     const currentMonth = getCurrentMonth();
-//**********************************NEED TO:***************************************
-//change labels to repersent what expense they were for */
+
     useEffect(() => {
         const getData = async () => {
             if (expenseData !== {} && dailyMonthlyTotal === "total") {
@@ -223,7 +222,7 @@ const Dashboard = () => {
                     };
                     totalFinal.push(tChart);
                 });
-                console.log(totalFinal);
+               // console.log(totalFinal);
                 setChartData({
                     labels: expenseData.map((data) =>
                         data.date.substring(0, 10)
