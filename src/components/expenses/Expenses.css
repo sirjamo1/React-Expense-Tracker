@@ -160,12 +160,15 @@
     background-color: white;
 }
 .popup-date {
-    width: 200px;
+    width: 400px;
     border-radius: 10px;
     margin-top: 20px;
 }
 .recurring {
-    width: 100px;
+    width: 30px;
+}
+.recurring-label >span{
+   color:grey;
 }
 .popup-add {
     width: 400px;

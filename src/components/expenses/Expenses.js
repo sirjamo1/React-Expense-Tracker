@@ -38,6 +38,7 @@ export const Expenses = () => {
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
     };
+    const [incomeOrExpense, setIncomeOrExpense] = useState()
     const handleCreateData = async () => {
         await addDoc(expenseDataRef, {
             title: dataTitle,
@@ -49,6 +50,7 @@ export const Expenses = () => {
             key: nanoid(),
             uid: user.uid,
             email: user.email,
+            incomeOrExpense: incomeOrExpense,
         });
         setDataRecurring("off");
     };
@@ -135,6 +137,7 @@ export const Expenses = () => {
         }
         return monthNumber;
     };
+    console.log(incomeOrExpense)
     const monthBeforeDate = moment().subtract(1, "months").format("YYYY-MM-DD");
     const addRecurring = async () => {
         console.log("starting recurring");
@@ -213,8 +216,6 @@ export const Expenses = () => {
             offset={offsetPopup}
             show={true}
             className="popup-main"
-            // onClose={createClose}
-            // onOpen={createOpen}
             trigger={
                 <button className="create-expense-btn">
                     <img
@@ -222,7 +223,7 @@ export const Expenses = () => {
                         className="create-icon"
                         alt="create expense icon"
                     />
-                    Create Expense
+                    Create Income/Expense
                 </button>
             }
         >
@@ -261,15 +262,16 @@ export const Expenses = () => {
                         <option value="Withdraw">Withdraw</option>
                         <option value="Payment">Payment</option>
                     </select>
+
+                    <input
+                        onChange={(event) => {
+                            setDataDate(event.target.value);
+                        }}
+                        className="popup-date"
+                        type="datetime-local"
+                        placeholder="Title"
+                    ></input>
                     <span>
-                        <input
-                            onChange={(event) => {
-                                setDataDate(event.target.value);
-                            }}
-                            className="popup-date"
-                            type="datetime-local"
-                            placeholder="Title"
-                        ></input>
                         <input
                             className="recurring"
                             name="recurring"
@@ -278,8 +280,32 @@ export const Expenses = () => {
                             }}
                             type="checkbox"
                         ></input>
-                        <label>Recurring</label>
+
+                        <label className="recurring-label">
+                            Recurring <span>(up to 2 years prior)</span>
+                        </label>
                     </span>
+                    <input
+                        type="radio"
+                        name="size"
+                        value="income"
+                        id="income"
+                        onChange={(event) => {
+                            setIncomeOrExpense(event.target.value);
+                        }}
+                    ></input>
+                    <label for="income">Income</label>
+                    <input
+                        type="radio"
+                        name="size"
+                        value="expense"
+                        id="expense"
+                        onChange={(event) => {
+                            setIncomeOrExpense(event.target.value);
+                        }}
+                    ></input>
+                    <label for="expense">Expense</label>
+
                     <button
                         className="popup-add"
                         onClick={() => {
@@ -293,6 +319,7 @@ export const Expenses = () => {
             )}
         </Popup>
     );
+
     const editPopup = (
         <Popup
             modal={true}
