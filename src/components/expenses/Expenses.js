@@ -10,7 +10,7 @@ import magnifyingGlass from "../icons/magnifyingGlass.png";
 import filter from "../icons/filter.png";
 import create from "../icons/create.png";
 import userIcon from "../icons/userIcon.png";
-import Schedule from "react-schedule-job";
+//import Schedule from "react-schedule-job";
 import moment from "moment";
 
 import {
@@ -71,11 +71,9 @@ export const Expenses = () => {
             editDate: serverTimestamp(),
         });
         setDataRecurring("off");
-        // setRefresh(!refresh);
     };
     const handleDeleteData = async () => {
         await deleteDoc(doc(db, "expenseData", editBtnId));
-        // setRefresh(!refresh);
     };
     const [currentExpense, setCurrentExpense] = useState([]);
     //when mouse enters the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
@@ -91,44 +89,29 @@ export const Expenses = () => {
             }
         }
     };
-    //renders rows of data each time edit or create expense popup is closed
-    // useEffect(() => {
-    //     console.log("i am getting data");
-    //     const userUid = user.uid;
-    //     const getExpenseData = async () => {
-    //         const data = await getDocs(
-    //             query(
-    //                 expenseDataRef,
-    //                 where("uid", "==", userUid),
-    //                 orderBy("date", "desc")
-    //             )
-    //         );
-    //         const userData = data.docs.map((doc) => ({
-    //             ...doc.data(),
-    //             id: doc.id,
-    //         }));
-    //         //console.log({ userData });
-    //         setExpenseData(userData);
-    //     };
-
-    //     getExpenseData();
-    // }, [refresh]); //refresh should go here
     useEffect(() => {
+        console.log("getting data");
         const userUid = user.uid;
-        const unsub = onSnapshot(
-            query(
-                expenseDataRef,
-                where("uid", "==", userUid),
-                orderBy("date", "desc")
-            ),
-            (snapshot) => {
-                setExpenseData(
-                    snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id }))
-                );
-            }
-        );
+        const getExpenseData = async () => {
+            const unsub = await onSnapshot(
+                query(
+                    expenseDataRef,
+                    where("uid", "==", userUid),
+                    orderBy("date", "desc")
+                ),
+                (snapshot) => {
+                    setExpenseData(
+                        snapshot.docs.map((doc) => ({
+                            ...doc.data(),
+                            id: doc.id,
+                        }))
+                    );
+                }
+            );
 
-        return unsub;
+            return unsub;
+        };
+        getExpenseData();
     }, []);
 
     console.log(expenseData);
@@ -163,11 +146,15 @@ export const Expenses = () => {
         return monthNumber;
     };
 
-    //NEED TO FIND A WAY for it to add slowly
     const monthBeforeDate = moment().subtract(1, "months").format("YYYY-MM-DD");
-    useEffect(() => {
-        const addRecurring = () => {
+
+    //NEED TO: find a way to run more then once but not to fast so no double ups
+    // useEffect(() => {
+
+   
+        const addRecurring = async () => {
             console.log("starting recurring");
+
             for (let i = 0; i < expenseData.length; i++) {
                 let expenseDate = new Date(expenseData[i].date.slice(0, 10));
                 let oneMonthBeforeToday = new Date(monthBeforeDate);
@@ -183,7 +170,7 @@ export const Expenses = () => {
                 ) {
                     //  console.log({ expenseDate });
                     let newDate = new Date(
-                        expenseDate.setMonth(expenseDate.getMonth() + 1)
+                        await expenseDate.setMonth(expenseDate.getMonth() + 1)
                     );
                     let getDay = newDate.toString().slice(8, 10);
                     // console.log({ getDay });
@@ -193,9 +180,10 @@ export const Expenses = () => {
                     //console.log({ getMonthNum });
                     let getYear = newDate.toString().slice(11, 15);
                     // console.log({ getYear });
-                    let newDateFormatted = `${getYear}-${getMonthNum}-${getDay}`;
+                    let newDateFormatted =
+                        await `${getYear}-${getMonthNum}-${getDay}`;
                     console.log({ newDateFormatted });
-                    addDoc(expenseDataRef, {
+                    setTimeout(() => { addDoc(expenseDataRef, {
                         title: expenseData[i].title,
                         type: expenseData[i].type,
                         amount: expenseData[i].amount,
@@ -205,13 +193,13 @@ export const Expenses = () => {
                         key: nanoid(),
                         uid: user.uid,
                         email: user.email,
-                    });
-                    const updateCurrent = doc(
+                    }); }, 500);
+                    const updateCurrent = await doc(
                         db,
                         "expenseData",
                         expenseData[i].id
                     );
-                    updateDoc(updateCurrent, {
+                    await updateDoc(updateCurrent, {
                         // title:expenseData[i].title,
                         // type:expenseData[i].type,
                         // amount:expenseData[i].amount,
@@ -220,21 +208,24 @@ export const Expenses = () => {
                         hasRecurred: true,
                         recurredDate: newDateFormatted,
                     });
+
                 }
             }
         };
         addRecurring();
-    }, []);
+   
+    // }, []);
 
     // addRecurring();
+
     // const jobs = [
     //     {
-    //         fn: addRecurring,
+    //         fn: addRecurring(),
     //         id: "1",
     //         schedule: "* * * * *",
     //     },
     // ];
-    //********************************************** */
+    // ********************************************** */
 
     const offsetPopup = {
         right: 400,
@@ -450,7 +441,7 @@ export const Expenses = () => {
             )}
         </Popup>
     );
-    console.log(expenseData.map((data) => data.id));
+    //console.log(expenseData.map((data) => data.id));
     //rows of expense data
     const expenseDataElements = expenseData.map((data) => (
         <div className="row-data">
