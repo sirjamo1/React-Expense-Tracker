@@ -120,7 +120,13 @@
 .row-data div > p {
     text-overflow: ellipsis;
     overflow: hidden;
-    color: green;
+   /*👉 color: green;👈*/
+}
+.income {
+color: green;
+}
+.expense {
+    color: red;
 }
 .row-data button {
     margin: 0;

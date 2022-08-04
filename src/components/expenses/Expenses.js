@@ -427,7 +427,13 @@ export const Expenses = () => {
     );
     //rows of expense data
     const expenseDataElements = expenseData.map((data) => (
-        <div className="row-data">
+        <div
+            className={
+                data.incomeOrExpense === "income"
+                    ? "row-data income"
+                    : "row-data expense"
+            }
+        >
             <div>
                 <p>{data.title}</p>
             </div>
@@ -435,7 +441,11 @@ export const Expenses = () => {
                 <p>{data.type}</p>
             </div>
             <div>
-                <p>${data.amount}</p>
+                {data.incomeOrExpense === "income" ? (
+                    <p>${data.amount}</p>
+                ) : (
+                    <p>-${data.amount}</p>
+                )}
             </div>
             <div>
                 <p>{data.date.substring(0, 10)}</p>
