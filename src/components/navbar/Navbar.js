@@ -26,19 +26,22 @@ export const Navbar = () => {
   //console.log(user);
   //Note: If user is not logged in navbar is empty
   return (
-    <nav className="primary--nav">
-      <NavLink className="links" to="/dashboard">
-        Dashboard
-      </NavLink>
-      <NavLink className="links" to="/expenses">
-        Expenses
-      </NavLink>
-      <NavLink className="links" to="/settings">
-        Settings
-      </NavLink>
-      <div className="links logout" onClick={handleLogout}>
-        Log out
-      </div>
-    </nav>
+      <nav className="primary--nav">
+          <NavLink className="links" to="/dashboard">
+              Dashboard
+          </NavLink>
+          <NavLink className="links" to="/expenses">
+              Expenses
+          </NavLink>
+          <NavLink className="links" to="/settings">
+              Settings
+          </NavLink>
+          <NavLink className="links" to="/transactions">
+              Transactions
+          </NavLink>
+          <div className="links logout" onClick={handleLogout}>
+              Log out
+          </div>
+      </nav>
   );
 };
