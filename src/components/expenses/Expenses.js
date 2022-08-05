@@ -38,7 +38,8 @@ export const Expenses = () => {
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
     };
-    const [incomeOrExpense, setIncomeOrExpense] = useState()
+    const [redo, setRedo] = useState(false);
+    const [incomeOrExpense, setIncomeOrExpense] = useState();
     const handleCreateData = async () => {
         await addDoc(expenseDataRef, {
             title: dataTitle,
@@ -53,6 +54,7 @@ export const Expenses = () => {
             incomeOrExpense: incomeOrExpense,
         });
         setDataRecurring("off");
+        setRedo(!redo);
     };
     const handleEditData = async () => {
         const updateCurrent = doc(db, "expenseData", editBtnId);
@@ -66,6 +68,7 @@ export const Expenses = () => {
             editDate: serverTimestamp(),
         });
         setDataRecurring("off");
+        setRedo(!redo);
     };
     const handleDeleteData = async () => {
         await deleteDoc(doc(db, "expenseData", editBtnId));
@@ -81,6 +84,7 @@ export const Expenses = () => {
                 setDataType(expenseData[i].type);
                 setDataDate(expenseData[i].date);
                 setDataRecurring(expenseData[i].recurring);
+                setIncomeOrExpense(expenseData[i].incomeOrExpense);
             }
         }
     };
@@ -137,30 +141,39 @@ export const Expenses = () => {
         }
         return monthNumber;
     };
-    console.log(incomeOrExpense)
+    console.log(incomeOrExpense);
     const monthBeforeDate = moment().subtract(1, "months").format("YYYY-MM-DD");
-    const addRecurring = async () => {
-        console.log("starting recurring");
-        for (let i = 0; i < expenseData.length; i++) {
-            let expenseDate = new Date(expenseData[i].date.slice(0, 10));
-            let oneMonthBeforeToday = new Date(monthBeforeDate);
-            const twoYearsAgo = -63372000000;
-            if (
-                expenseData[i].recurring === true &&
-                expenseDate - oneMonthBeforeToday <= 0 &&
-                expenseDate - oneMonthBeforeToday > twoYearsAgo
-            ) {
-                let newDate = new Date(
-                    await expenseDate.setMonth(expenseDate.getMonth() + 1)
-                );
-                let getDay = newDate.toString().slice(8, 10);
-                let getMonth = newDate.toString().slice(4, 7);
-                let getMonthNum = monthToNumber(getMonth);
-                let getYear = newDate.toString().slice(11, 15);
-                let newDateFormatted =
-                    await `${getYear}-${getMonthNum}-${getDay}`;
-                console.log({ newDateFormatted });
-                setTimeout(() => {
+    useEffect(() => {
+        const addRecurring = async () => {
+            const data = await getDocs(
+                query(
+                    expenseDataRef,
+                    where("uid", "==", user.uid),
+                    where("recurring", "==", true),
+                    orderBy("date", "desc")
+                )
+            );
+            const expenseData = data.docs.map((doc) => ({
+                ...doc.data(),
+                id: doc.id,
+            }));
+            for (let i = 0; i < expenseData.length; i++) {
+                let expenseDate = new Date(expenseData[i].date.slice(0, 10));
+                let oneMonthBeforeToday = new Date(monthBeforeDate);
+                const twoYearsAgo = -63372000000;
+                if (
+                    expenseData[i].recurring === true &&
+                    expenseDate - oneMonthBeforeToday <= 0 &&
+                    expenseDate - oneMonthBeforeToday > twoYearsAgo
+                ) {
+                    let newDate = new Date(
+                        expenseDate.setMonth(expenseDate.getMonth() + 1)
+                    );
+                    let getDay = newDate.toString().slice(8, 10);
+                    let getMonth = newDate.toString().slice(4, 7);
+                    let getMonthNum = monthToNumber(getMonth);
+                    let getYear = newDate.toString().slice(11, 15);
+                    let newDateFormatted = `${getYear}-${getMonthNum}-${getDay}`;
                     addDoc(expenseDataRef, {
                         title: expenseData[i].title,
                         type: expenseData[i].type,
@@ -171,22 +184,27 @@ export const Expenses = () => {
                         key: nanoid(),
                         uid: user.uid,
                         email: user.email,
+                        incomeOrExpense: expenseData[i].incomeOrExpense,
                     });
-                }, 1000);
-                const updateCurrent = await doc(
-                    db,
-                    "expenseData",
-                    expenseData[i].id
-                );
-                updateDoc(updateCurrent, {
-                    recurring: false,
-                    hasRecurred: true,
-                    recurredDate: newDateFormatted,
-                });
+                    const updateCurrent = await doc(
+                        db,
+                        "expenseData",
+                        expenseData[i].id
+                    );
+                    updateDoc(updateCurrent, {
+                        date: expenseData[i].date,
+                        recurring: false,
+                        hasRecurred: true,
+                        recurredDate: newDateFormatted,
+                        incomeOrExpense: expenseData[i].incomeOrExpense,
+                    });
+                    setRedo(!redo);
+                }
             }
-        }
-    };
-    addRecurring();
+        };
+        addRecurring();
+    }, [redo]);
+
     const offsetPopup = {
         right: 400,
         bottom: 50,
@@ -200,7 +218,7 @@ export const Expenses = () => {
                     setDataRecurring(event.target.checked);
                 }}
                 type="checkbox"
-                defaultChecked={currentExpense.recurring}
+                // defaultChecked={currentExpense.recurring}
             ></input>
             <label>Recurring</label>
         </span>
