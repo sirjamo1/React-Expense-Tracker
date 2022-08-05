@@ -32,7 +32,7 @@ export const Expenses = () => {
     const [dataAmount, setDataAmount] = useState(0);
     const [dataType, setDataType] = useState();
     const [dataDate, setDataDate] = useState();
-    const [dataRecurring, setDataRecurring] = useState("off");
+    const [dataRecurring, setDataRecurring] = useState(false);
     const expenseDataRef = collection(db, "expenseData");
     const [editBtnId, setEditBtnId] = useState();
     const handleCurrentId = (e) => {
@@ -41,6 +41,7 @@ export const Expenses = () => {
     const [redo, setRedo] = useState(false);
     const [incomeOrExpense, setIncomeOrExpense] = useState();
     const handleCreateData = async () => {
+        
         await addDoc(expenseDataRef, {
             title: dataTitle,
             type: dataType,
@@ -53,7 +54,7 @@ export const Expenses = () => {
             email: user.email,
             incomeOrExpense: incomeOrExpense,
         });
-        setDataRecurring("off");
+        setDataRecurring(false);
         setRedo(!redo);
     };
     const handleEditData = async () => {
@@ -67,14 +68,15 @@ export const Expenses = () => {
             id: editBtnId,
             editDate: serverTimestamp(),
         });
-        setDataRecurring("off");
+        setDataRecurring(false);
         setRedo(!redo);
     };
     const handleDeleteData = async () => {
         await deleteDoc(doc(db, "expenseData", editBtnId));
+        setDataRecurring(false);
     };
     const [currentExpense, setCurrentExpense] = useState([]);
-    //when mouse enters the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
+    //when mouseDown the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
     const changeExpense = () => {
         for (let i = 0; i < expenseData.length; i++) {
             if (expenseData[i].id === editBtnId) {
@@ -88,6 +90,7 @@ export const Expenses = () => {
             }
         }
     };
+    console.log(dataRecurring)
     useEffect(() => {
         console.log("getting data");
         const userUid = user.uid;
@@ -218,7 +221,7 @@ export const Expenses = () => {
                     setDataRecurring(event.target.checked);
                 }}
                 type="checkbox"
-                // defaultChecked={currentExpense.recurring}
+                 defaultChecked={currentExpense.recurring}
             ></input>
             <label>Recurring</label>
         </span>
@@ -234,6 +237,9 @@ export const Expenses = () => {
             offset={offsetPopup}
             show={true}
             className="popup-main"
+            onOpen={(event) => {
+                setDataRecurring(false);
+            }}
             trigger={
                 <button className="create-expense-btn">
                     <img
