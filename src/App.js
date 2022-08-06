@@ -52,14 +52,14 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
+          {/* <Route
             path="/transactions"
             element={
               <RequireAuth>
                 <Transactions />
               </RequireAuth>
             }
-          />
+          /> */}
           <Route
             path="/settings"
             element={

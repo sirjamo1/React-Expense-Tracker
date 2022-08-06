@@ -120,8 +120,20 @@
 .row-data div > p {
     text-overflow: ellipsis;
     overflow: hidden;
-    color: green;
 }
+.income {
+color: green;
+}
+.income:hover {
+    background-color: rgba(144, 238, 144, 0.2);
+}
+.expense {
+    color: red;
+}
+.expense:hover {
+    background-color: rgba(255, 0, 0, 0.1);
+}
+
 .row-data button {
     margin: 0;
 }
@@ -160,12 +172,15 @@
     background-color: white;
 }
 .popup-date {
-    width: 200px;
+    width: 400px;
     border-radius: 10px;
     margin-top: 20px;
 }
 .recurring {
-    width: 100px;
+    width: 30px;
+}
+.recurring-label >span{
+   color:grey;
 }
 .popup-add {
     width: 400px;

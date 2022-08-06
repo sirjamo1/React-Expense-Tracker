@@ -28,11 +28,18 @@ const Dashboard = () => {
     const userUid = sessionStorage.getItem("uid");
     const [recurringData, setRecurringData] = useState([]);
     const [threeRecent, setThreeRecent] = useState([]);
+    const [totalExpenseChart, setTotalExpenseChart] = useState(); ///
     const [expenseTotal, setExpenseTotal] = useState();
-    const [monthlyChart, setMonthlyChart] = useState();
-    const [monthlyTotal, setMonthlyTotal] = useState();
-    const [dailyChart, setDailyChart] = useState();
-    const [dailyTotal, setDailyTotal] = useState();
+    const [totalIncomeChart, setTotalIncomeChart] = useState(); ///
+    const [incomeTotal, setIncomeTotal] = useState(); ///
+    const [monthlyExpenseChart, setMonthlyExpenseChart] = useState(); //
+    const [monthlyIncomeChart, setMonthlyIncomeChart] = useState(); ///
+    const [monthlyIncomeTotal, setMonthlyIncomeTotal] = useState(); ///
+    const [monthlyExpenseTotal, setMonthlyExpenseTotal] = useState(); //
+    const [dailyExpenseChart, setDailyExpenseChart] = useState(); //
+    const [dailyExpenseTotal, setDailyExpenseTotal] = useState(); //
+    const [dailyIncomeChart, setDailyIncomeChart] = useState(); ///
+    const [dailyIncomeTotal, setDailyIncomeTotal] = useState(); ///
     const [dailyMonthlyTotal, setDailyMonthlyTotal] = useState("total");
     const [lineOrBar, setLineOrBar] = useState("Bar");
     const [chartData, setChartData] = useState({
@@ -121,31 +128,63 @@ const Dashboard = () => {
                 id: doc.id,
             }));
             const currentUserExpenseData = [];
+            const totalExpense = [];
             let expenseAmount = 0;
+            const totalIncome = [];
+            let incomeAmount = 0;
             const monthlyExpense = [];
-            let monthlyAmount = 0;
+            let monthlyExpenseAmount = 0;
+            const monthlyIncome = [];
+            let monthlyIncomeAmount = 0;
             const dailyExpense = [];
-            let dailyAmount = 0;
+            let dailyExpenseAmount = 0;
+            const dailyIncome = [];
+            let dailyIncomeAmount = 0;
+
             const three = [];
             for (let i = 0; i < userData.length; i++) {
                 currentUserExpenseData.push(userData[i]);
                 three.push(userData[i]);
-                expenseAmount += parseInt(userData[i].amount);
+                if (userData[i].incomeOrExpense === "expense") {
+                    totalExpense.push(userData[i]); //
+                    expenseAmount += parseInt(userData[i].amount); //
+                } else {
+                    totalIncome.push(userData[i]); //
+                    incomeAmount += parseInt(userData[i].amount); //
+                }
                 if (userData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
-                    monthlyExpense.push(userData[i]);
-                    monthlyAmount += parseInt(userData[i].amount);
+                    if (userData[i].incomeOrExpense === "expense") {
+                        monthlyExpense.push(userData[i]); //
+                        monthlyExpenseAmount += parseInt(userData[i].amount); //
+                    } else {
+                        monthlyIncome.push(userData[i]); //
+                        monthlyIncomeAmount += parseInt(userData[i].amount); //
+                    }
                 }
                 if (userData[i].date.slice(0, 10) === theDate) {
-                    dailyExpense.push(userData[i]);
-                    dailyAmount += parseInt(userData[i].amount);
+                    if (userData[i].incomeOrExpense === "expense") {
+                        dailyExpense.push(userData[i]); //
+                        dailyExpenseAmount += parseInt(userData[i].amount); //
+                    } else {
+                        dailyIncome.push(userData[i]); //
+                        dailyIncomeAmount += parseInt(userData[i].amount); //
+                    }
                 }
             }
+
             setExpenseData(currentUserExpenseData.reverse());
+            setTotalExpenseChart(totalExpense.reverse());
             setExpenseTotal(expenseAmount);
-            setMonthlyChart(monthlyExpense.reverse());
-            setMonthlyTotal(monthlyAmount);
-            setDailyChart(dailyExpense.reverse());
-            setDailyTotal(dailyAmount);
+            setTotalIncomeChart(totalIncome.reverse());
+            setIncomeTotal(incomeAmount);
+            setMonthlyExpenseChart(monthlyExpense.reverse());
+            setMonthlyExpenseTotal(monthlyExpenseAmount);
+            setMonthlyIncomeChart(monthlyIncome.reverse());
+            setMonthlyIncomeTotal(monthlyIncomeAmount);
+            setDailyExpenseChart(dailyExpense.reverse());
+            setDailyExpenseTotal(dailyExpenseAmount);
+            setDailyIncomeChart(dailyIncome.reverse());
+            setDailyIncomeTotal(dailyIncomeAmount);
             setThreeRecent(three);
         };
         getExpenseData();
@@ -172,7 +211,13 @@ const Dashboard = () => {
         </div>
     ));
     const threeMostRecent = threeRecent.slice(0, 3).map((data) => (
-        <div className="recent-expenses-data">
+        <div
+            className={
+                data.incomeOrExpense === "income"
+                    ? "recent-expenses-data income"
+                    : "recent-expenses-data expense"
+            }
+        >
             <div>
                 <p>{data.title}</p>
             </div>
@@ -180,7 +225,11 @@ const Dashboard = () => {
                 <p>{data.type}</p>
             </div>
             <div>
-                <p>${data.amount}</p>
+                {data.incomeOrExpense === "income" ? (
+                    <p>${data.amount}</p>
+                ) : (
+                    <p>-${data.amount}</p>
+                )}
             </div>
             <div>
                 <p>{data.date.substring(0, 10)}</p>
@@ -212,63 +261,108 @@ const Dashboard = () => {
 
     useEffect(() => {
         const getData = async () => {
-            if (expenseData !== {} && dailyMonthlyTotal === "total") {
-                const totalFinal = [];
-                expenseData.forEach(function (expenseData) {
-                    let tChart = {
-                        x: expenseData.date.substring(0, 10),
-                        y: expenseData.amount,
-                        label: expenseData.title,
+            if (totalExpenseChart !== {} && dailyMonthlyTotal === "total") {
+                const totalExpenseFinal = [];
+                totalExpenseChart.forEach(function (totalExpenseChart) {
+                    let chartExpense = {
+                        x: totalExpenseChart.date.substring(0, 10),
+                        y: totalExpenseChart.amount,
+                        label: totalExpenseChart.title,
                     };
-                    totalFinal.push(tChart);
+                    totalExpenseFinal.push(chartExpense);
                 });
-               // console.log(totalFinal);
+                const totalIncomeFinal = [];
+                totalIncomeChart.forEach(function (totalIncomeChart) {
+                    let chartIncome = {
+                        x: totalIncomeChart.date.substring(0, 10),
+                        y: totalIncomeChart.amount,
+                        label: totalIncomeChart.title,
+                    };
+                    totalIncomeFinal.push(chartIncome);
+                });
                 setChartData({
-                    labels: expenseData.map((data) =>
+                    labels: totalExpenseChart.map((data) =>
                         data.date.substring(0, 10)
                     ),
                     datasets: [
                         {
                             label: "All Expenses",
                             fill: true,
-                            data: totalFinal,
-                            backgroundColor: "rgba(243, 86, 223, 0.5)",
-                            borderRadius: 2,                    
+                            data: totalExpenseFinal,
+                            backgroundColor: "rgba(255, 6, 6, 0.5)",
+                            borderRadius: 2,
+                        },
+                        {
+                            label: "All Income",
+                            fill: true,
+                            data: totalIncomeFinal,
+                            backgroundColor: "rgba(6, 236, 6, 0.5)",
+                            borderRadius: 2,
                         },
                     ],
                 });
-            } else if (monthlyChart !== {} && dailyMonthlyTotal === "monthly") {
-                const monthlyFinal = [];
-                monthlyChart.forEach(function (monthlyChart) {
-                    let chart = {
-                        x: monthlyChart.date.substring(0, 10),
-                        y: monthlyChart.amount,
-                        label: monthlyChart.title,
+            } else if (
+                monthlyExpenseChart !== {} &&
+                dailyMonthlyTotal === "monthly"
+            ) {
+                const monthlyExpenseFinal = [];
+                monthlyExpenseChart.forEach(function (monthlyExpenseChart) {
+                    let chartExpense = {
+                        x: monthlyExpenseChart.date.substring(0, 10),
+                        y: monthlyExpenseChart.amount,
+                        label: monthlyExpenseChart.title,
                     };
-                    monthlyFinal.push(chart);
+                    monthlyExpenseFinal.push(chartExpense);
                 });
-                console.log(monthlyFinal);
+                const monthlyIncomeFinal = [];
+                monthlyIncomeChart.forEach(function (monthlyIncomeChart) {
+                    let chartIncome = {
+                        x: monthlyIncomeChart.date.substring(0, 10),
+                        y: monthlyIncomeChart.amount,
+                        label: monthlyIncomeChart.title,
+                    };
+                    monthlyIncomeFinal.push(chartIncome);
+                });
                 setChartData({
                     labels: currentMonth.map((data) => data),
                     datasets: [
                         {
                             label: months[parseInt(thisMonth) - 1],
-                            data: monthlyFinal,
+                            data: monthlyExpenseFinal,
                             fill: true,
-                            backgroundColor: "rgba(243, 86, 223, 0.5)",
+                            backgroundColor: "rgba(255, 6, 6, 0.5)",
+                            borderRadius: 2,
+                        },
+                        {
+                            label: months[parseInt(thisMonth) - 1],
+                            data: monthlyIncomeFinal,
+                            fill: true,
+                            backgroundColor: "rgba(6, 236, 6, 0.5)",
                             borderRadius: 2,
                         },
                     ],
                 });
-            } else if (dailyChart !== {} && dailyMonthlyTotal === "daily") {
-                const dailyFinal = [];
-                dailyChart.forEach(function (dailyChart) {
+            } else if (
+                dailyExpenseChart !== {} &&
+                dailyMonthlyTotal === "daily"
+            ) {
+                const dailyExpenseFinal = [];
+                dailyExpenseChart.forEach(function (dailyExpenseChart) {
                     let chart = {
-                        x: dailyChart.date.substring(11, 13),
-                        y: dailyChart.amount,
-                        label: dailyChart.title,
+                        x: dailyExpenseChart.date.substring(11, 13),
+                        y: dailyExpenseChart.amount,
+                        label: dailyExpenseChart.title,
                     };
-                    dailyFinal.push(chart);
+                    dailyExpenseFinal.push(chart);
+                });
+                const dailyIncomeFinal = [];
+                dailyIncomeChart.forEach(function (dailyIncomeChart) {
+                    let chart = {
+                        x: dailyIncomeChart.date.substring(11, 13),
+                        y: dailyIncomeChart.amount,
+                        label: dailyIncomeChart.title,
+                    };
+                    dailyIncomeFinal.push(chart);
                 });
                 setChartData({
                     labels: time.map((data) => data),
@@ -276,9 +370,17 @@ const Dashboard = () => {
                     datasets: [
                         {
                             label: "Daily Expenses",
-                            data: dailyFinal,
+                            data: dailyExpenseFinal,
                             fill: true,
-                            backgroundColor: "rgba(243, 86, 223, 0.5)",
+                            backgroundColor: "rgba(255, 6, 6, 0.5)",
+                            borderRadius: 2,
+                            active: true,
+                        },
+                        {
+                            label: "Daily Income",
+                            data: dailyIncomeFinal,
+                            fill: true,
+                            backgroundColor: "rgba(6, 236, 6, 0.5)",
                             borderRadius: 2,
                             active: true,
                         },
@@ -301,12 +403,7 @@ const Dashboard = () => {
             <div className="dashboard-header">
                 <h1>Dashboard</h1>
                 <h4>
-                   
-                    <img
-                        src={userIcon}
-                        alt="user icon"
-                        className="user-icon"
-                    />
+                    <img src={userIcon} alt="user icon" className="user-icon" />
                     {userDisplayName}
                 </h4>
             </div>
@@ -325,7 +422,9 @@ const Dashboard = () => {
                             }}
                         >
                             <h5>Total</h5>
-                            <h3>${expenseTotal}</h3>
+                            <h6>Income : ${incomeTotal}</h6>
+                            <h6>Expenses : $-{expenseTotal}</h6>
+                            <h6>Total : ${incomeTotal - expenseTotal} </h6>
                         </div>
                         <div
                             className={
@@ -337,7 +436,13 @@ const Dashboard = () => {
                                 setDailyMonthlyTotal("monthly");
                             }}
                         >
-                            <h5>Monthly Total</h5> <h3>${monthlyTotal}</h3>
+                            <h5>Monthly</h5>
+                            <h6>Income : ${monthlyIncomeTotal}</h6>
+                            <h6>Expenses : $-{monthlyExpenseTotal}</h6>
+                            <h6>
+                                Total : $
+                                {monthlyIncomeTotal - monthlyExpenseTotal}
+                            </h6>
                         </div>
                         <div
                             className={
@@ -349,7 +454,12 @@ const Dashboard = () => {
                                 setDailyMonthlyTotal("daily");
                             }}
                         >
-                            <h5>Daily Total</h5> <h3>${dailyTotal}</h3>
+                            <h5>Daily</h5>
+                            <h6>Income : ${dailyIncomeTotal}</h6>
+                            <h6>Expenses : $-{dailyExpenseTotal}</h6>
+                            <h6>
+                                Total : ${dailyIncomeTotal - dailyExpenseTotal}
+                            </h6>
                         </div>
                     </div>
                     <div className="chart-container">
@@ -360,7 +470,7 @@ const Dashboard = () => {
                         )}
                     </div>
                     <div className="recent-expenses-title">
-                        <h4>Recent Expenses</h4>
+                        <h4>Recent Transactions</h4>
                         <h5 onClick={changeLineOrBar}>
                             Change to {lineOrBar} Chart
                         </h5>
@@ -378,7 +488,7 @@ const Dashboard = () => {
                     {threeMostRecent}
                 </div>
                 <div className="rightside-container">
-                    <h4>Recurring Expenses</h4>
+                    <h4>Recurring Transactions</h4>
                     {recurring}
                 </div>
             </div>
