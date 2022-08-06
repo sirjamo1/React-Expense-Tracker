@@ -120,7 +120,6 @@
 .row-data div > p {
     text-overflow: ellipsis;
     overflow: hidden;
-   /*👉 color: green;👈*/
 }
 .income {
 color: green;

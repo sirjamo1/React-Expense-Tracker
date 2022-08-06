@@ -96,7 +96,19 @@
 .recent-expenses-data div > p {
   text-overflow: ellipsis;
   overflow: hidden;
-  color: green;
+  /*👉color: green;👈*/
+}
+.income {
+color: green;
+}
+.income:hover {
+    background-color: rgba(144, 238, 144, 0.2);
+}
+.expense {
+    color: red;
+}
+.expense:hover {
+    background-color: rgba(255, 0, 0, 0.1);
 }
 /*👉************Rightside************👈*/
 .rightside-container {
