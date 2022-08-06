@@ -39,8 +39,9 @@
 .three-totals h5 {
   margin: 6px;
 }
-.three-totals h3 {
+.three-totals h6 {
   margin: 0;
+  font-weight: 500;
 }
 .three-totals > div:hover {
   background-color: aqua;
@@ -105,7 +106,7 @@ color: green;
     background-color: rgba(144, 238, 144, 0.2);
 }
 .expense {
-    color: red;
+    color: rgb(242, 7, 7);
 }
 .expense:hover {
     background-color: rgba(255, 0, 0, 0.1);

@@ -289,14 +289,14 @@ const Dashboard = () => {
                             label: "All Expenses",
                             fill: true,
                             data: totalExpenseFinal,
-                            backgroundColor: "rgba(243, 86, 223, 0.5)",
+                            backgroundColor: "rgba(255, 6, 6, 0.5)",
                             borderRadius: 2,
                         },
                         {
-                            label: "All Expenses",
+                            label: "All Income",
                             fill: true,
                             data: totalIncomeFinal,
-                            backgroundColor: "rgba(99, 6, 1, 0.5)",
+                            backgroundColor: "rgba(6, 236, 6, 0.5)",
                             borderRadius: 2,
                         },
                     ],
@@ -330,14 +330,14 @@ const Dashboard = () => {
                             label: months[parseInt(thisMonth) - 1],
                             data: monthlyExpenseFinal,
                             fill: true,
-                            backgroundColor: "rgba(243, 86, 223, 0.5)",
+                            backgroundColor: "rgba(255, 6, 6, 0.5)",
                             borderRadius: 2,
                         },
                         {
                             label: months[parseInt(thisMonth) - 1],
                             data: monthlyIncomeFinal,
                             fill: true,
-                            backgroundColor: "rgba(99, 6, 1, 0.5)",
+                            backgroundColor: "rgba(6, 236, 6, 0.5)",
                             borderRadius: 2,
                         },
                     ],
@@ -372,7 +372,7 @@ const Dashboard = () => {
                             label: "Daily Expenses",
                             data: dailyExpenseFinal,
                             fill: true,
-                            backgroundColor: "rgba(243, 86, 223, 0.5)",
+                            backgroundColor: "rgba(255, 6, 6, 0.5)",
                             borderRadius: 2,
                             active: true,
                         },
@@ -380,7 +380,7 @@ const Dashboard = () => {
                             label: "Daily Income",
                             data: dailyIncomeFinal,
                             fill: true,
-                            backgroundColor: "rgba(99, 6, 1, 0.5)",
+                            backgroundColor: "rgba(6, 236, 6, 0.5)",
                             borderRadius: 2,
                             active: true,
                         },
@@ -422,7 +422,9 @@ const Dashboard = () => {
                             }}
                         >
                             <h5>Total</h5>
-                            <h3>${expenseTotal}</h3>
+                            <h6>Income : ${incomeTotal}</h6>
+                            <h6>Expenses : $-{expenseTotal}</h6>
+                            <h6>Total : ${incomeTotal - expenseTotal} </h6>
                         </div>
                         <div
                             className={
@@ -434,8 +436,13 @@ const Dashboard = () => {
                                 setDailyMonthlyTotal("monthly");
                             }}
                         >
-                            <h5>Monthly Total</h5>{" "}
-                            <h3>${monthlyExpenseTotal}</h3>
+                            <h5>Monthly</h5>
+                            <h6>Income : ${monthlyIncomeTotal}</h6>
+                            <h6>Expenses : $-{monthlyExpenseTotal}</h6>
+                            <h6>
+                                Total : $
+                                {monthlyIncomeTotal - monthlyExpenseTotal}
+                            </h6>
                         </div>
                         <div
                             className={
@@ -447,7 +454,12 @@ const Dashboard = () => {
                                 setDailyMonthlyTotal("daily");
                             }}
                         >
-                            <h5>Daily Total</h5> <h3>${dailyExpenseTotal}</h3>
+                            <h5>Daily</h5>
+                            <h6>Income : ${dailyIncomeTotal}</h6>
+                            <h6>Expenses : $-{dailyExpenseTotal}</h6>
+                            <h6>
+                                Total : ${dailyIncomeTotal - dailyExpenseTotal}
+                            </h6>
                         </div>
                     </div>
                     <div className="chart-container">
@@ -458,7 +470,7 @@ const Dashboard = () => {
                         )}
                     </div>
                     <div className="recent-expenses-title">
-                        <h4>Recent Expenses</h4>
+                        <h4>Recent Transactions</h4>
                         <h5 onClick={changeLineOrBar}>
                             Change to {lineOrBar} Chart
                         </h5>
@@ -476,7 +488,7 @@ const Dashboard = () => {
                     {threeMostRecent}
                 </div>
                 <div className="rightside-container">
-                    <h4>Recurring Expenses</h4>
+                    <h4>Recurring Transactions</h4>
                     {recurring}
                 </div>
             </div>
