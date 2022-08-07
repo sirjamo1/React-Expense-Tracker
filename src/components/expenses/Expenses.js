@@ -41,7 +41,6 @@ export const Expenses = () => {
     const [redo, setRedo] = useState(false);
     const [incomeOrExpense, setIncomeOrExpense] = useState();
     const handleCreateData = async () => {
-        
         await addDoc(expenseDataRef, {
             title: dataTitle,
             type: dataType,
@@ -90,7 +89,7 @@ export const Expenses = () => {
             }
         }
     };
-    console.log(dataRecurring)
+    console.log(dataRecurring);
     useEffect(() => {
         console.log("getting data");
         const userUid = user.uid;
@@ -221,7 +220,7 @@ export const Expenses = () => {
                     setDataRecurring(event.target.checked);
                 }}
                 type="checkbox"
-                 defaultChecked={currentExpense.recurring}
+                defaultChecked={currentExpense.recurring}
             ></input>
             <label>Recurring</label>
         </span>
@@ -285,6 +284,8 @@ export const Expenses = () => {
                         <option value="Technology">Technology</option>
                         <option value="Withdraw">Withdraw</option>
                         <option value="Payment">Payment</option>
+                        <option value="Work">Work</option>
+                        <option value="Other">Other</option>
                     </select>
 
                     <input
@@ -295,40 +296,45 @@ export const Expenses = () => {
                         type="datetime-local"
                         placeholder="Title"
                     ></input>
-                    <span>
-                        <input
-                            className="recurring"
-                            name="recurring"
-                            onChange={(event) => {
-                                setDataRecurring(event.target.checked);
-                            }}
-                            type="checkbox"
-                        ></input>
+                    <div className="recurring-container">
+                        <span>
+                            <input
+                                className="recurring"
+                                name="recurring"
+                                onChange={(event) => {
+                                    setDataRecurring(event.target.checked);
+                                }}
+                                type="checkbox"
+                            ></input>
 
-                        <label className="recurring-label">
-                            Recurring <span>(up to 2 years prior)</span>
-                        </label>
-                    </span>
-                    <input
-                        type="radio"
-                        name="size"
-                        value="income"
-                        id="income"
-                        onChange={(event) => {
-                            setIncomeOrExpense(event.target.value);
-                        }}
-                    ></input>
-                    <label for="income">Income</label>
-                    <input
-                        type="radio"
-                        name="size"
-                        value="expense"
-                        id="expense"
-                        onChange={(event) => {
-                            setIncomeOrExpense(event.target.value);
-                        }}
-                    ></input>
-                    <label for="expense">Expense</label>
+                            <label className="recurring-label">
+                                Recurring <span>(up to 2 years prior)</span>
+                            </label>
+                        </span>
+                    </div>
+                    <div className="radio-btn-container">
+                        <input
+                            type="radio"
+                            name="size"
+                            value="income"
+                            id="income"
+                            onChange={(event) => {
+                                setIncomeOrExpense(event.target.value);
+                            }}
+                        ></input>
+                        <label for="income">Income</label>
+
+                        <input
+                            type="radio"
+                            name="size"
+                            value="expense"
+                            id="expense"
+                            onChange={(event) => {
+                                setIncomeOrExpense(event.target.value);
+                            }}
+                        ></input>
+                        <label for="expense">Expense</label>
+                    </div>
 
                     <button
                         className="popup-add"
