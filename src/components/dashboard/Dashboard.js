@@ -14,8 +14,6 @@ import {
     where,
 } from "firebase/firestore";
 import { useAuth } from "../../Auth";
-// import { Bar } from "react-chartjs-2";
-// import { chart as chartjs} from "chart.js/auto"
 import { BarChart } from "../charts/BarChart";
 import { LineChart } from "../charts/LineChart";
 
@@ -28,18 +26,18 @@ const Dashboard = () => {
     const userUid = sessionStorage.getItem("uid");
     const [recurringData, setRecurringData] = useState([]);
     const [threeRecent, setThreeRecent] = useState([]);
-    const [yearlyExpenseChart, setYearlyExpenseChart] = useState(); ///
+    const [yearlyExpenseChart, setYearlyExpenseChart] = useState(); 
     const [yearlyExpenseTotal, setYearlyExpenseTotal] = useState();
-    const [yearlyIncomeChart, setYearlyIncomeChart] = useState(); ///
-    const [yearlyIncomeTotal, setYearlyIncomeTotal] = useState(); ///
-    const [monthlyExpenseChart, setMonthlyExpenseChart] = useState(); //
-    const [monthlyIncomeChart, setMonthlyIncomeChart] = useState(); ///
-    const [monthlyIncomeTotal, setMonthlyIncomeTotal] = useState(); ///
-    const [monthlyExpenseTotal, setMonthlyExpenseTotal] = useState(); //
-    const [dailyExpenseChart, setDailyExpenseChart] = useState(); //
-    const [dailyExpenseTotal, setDailyExpenseTotal] = useState(); //
-    const [dailyIncomeChart, setDailyIncomeChart] = useState(); ///
-    const [dailyIncomeTotal, setDailyIncomeTotal] = useState(); ///
+    const [yearlyIncomeChart, setYearlyIncomeChart] = useState(); 
+    const [yearlyIncomeTotal, setYearlyIncomeTotal] = useState(); 
+    const [monthlyExpenseChart, setMonthlyExpenseChart] = useState(); 
+    const [monthlyIncomeChart, setMonthlyIncomeChart] = useState();
+    const [monthlyIncomeTotal, setMonthlyIncomeTotal] = useState();
+    const [monthlyExpenseTotal, setMonthlyExpenseTotal] = useState();
+    const [dailyExpenseChart, setDailyExpenseChart] = useState();
+    const [dailyExpenseTotal, setDailyExpenseTotal] = useState();
+    const [dailyIncomeChart, setDailyIncomeChart] = useState();
+    const [dailyIncomeTotal, setDailyIncomeTotal] = useState();
     const [dailyMonthlyTotal, setDailyMonthlyTotal] = useState("total");
     const [lineOrBar, setLineOrBar] = useState("Bar");
     const [chartData, setChartData] = useState({
@@ -147,29 +145,29 @@ const Dashboard = () => {
                 three.push(userData[i]);
                 if (userData[i].date.slice(0, 4) === theDate.slice(0, 4)) {
                     if (userData[i].incomeOrExpense === "expense") {
-                        yearlyExpense.push(userData[i]); //
-                        yearlyExpenseAmount += parseInt(userData[i].amount); //
+                        yearlyExpense.push(userData[i]); 
+                        yearlyExpenseAmount += parseInt(userData[i].amount); 
                     } else {
-                        yearlyIncome.push(userData[i]); //
-                        yearlyIncomeAmount += parseInt(userData[i].amount); //
+                        yearlyIncome.push(userData[i]); 
+                        yearlyIncomeAmount += parseInt(userData[i].amount); 
                     }
                 }
                 if (userData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
                     if (userData[i].incomeOrExpense === "expense") {
-                        monthlyExpense.push(userData[i]); //
-                        monthlyExpenseAmount += parseInt(userData[i].amount); //
+                        monthlyExpense.push(userData[i]);
+                        monthlyExpenseAmount += parseInt(userData[i].amount); 
                     } else {
-                        monthlyIncome.push(userData[i]); //
-                        monthlyIncomeAmount += parseInt(userData[i].amount); //
+                        monthlyIncome.push(userData[i]);
+                        monthlyIncomeAmount += parseInt(userData[i].amount);
                     }
                 }
                 if (userData[i].date.slice(0, 10) === theDate) {
                     if (userData[i].incomeOrExpense === "expense") {
-                        dailyExpense.push(userData[i]); //
-                        dailyExpenseAmount += parseInt(userData[i].amount); //
+                        dailyExpense.push(userData[i]);
+                        dailyExpenseAmount += parseInt(userData[i].amount);
                     } else {
-                        dailyIncome.push(userData[i]); //
-                        dailyIncomeAmount += parseInt(userData[i].amount); //
+                        dailyIncome.push(userData[i]);
+                        dailyIncomeAmount += parseInt(userData[i].amount);
                     }
                 }
             }
@@ -191,7 +189,6 @@ const Dashboard = () => {
         };
         getExpenseData();
     }, []);
-    //console.log(yearlyExpenseChart)
     useEffect(() => {
         const getRecurring = () => {
             const recurringList = [];
@@ -205,8 +202,6 @@ const Dashboard = () => {
         getRecurring();
     }, [expenseData]);
     const theDate = moment().format("YYYY-MM-DD");
-    //console.log(theDate);
-    console.log(theDate.slice(0, 4));
     const recurring = recurringData.map((data) => (
         <div className="recurring-div">
             <p>{data.title}</p>
@@ -305,7 +300,7 @@ const Dashboard = () => {
                     let chartIncome = {
                         x: yearlyIncomeChart.month,
                         y: yearlyIncomeChart.amount,
-                        label: yearlyIncomeChart.amount,
+                        label: yearlyIncomeChart.month,
                     };
                     totalIncomeFinal.push(chartIncome);
                 });
