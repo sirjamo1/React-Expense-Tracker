@@ -28,10 +28,10 @@ const Dashboard = () => {
     const userUid = sessionStorage.getItem("uid");
     const [recurringData, setRecurringData] = useState([]);
     const [threeRecent, setThreeRecent] = useState([]);
-    const [totalExpenseChart, setTotalExpenseChart] = useState(); ///
-    const [expenseTotal, setExpenseTotal] = useState();
-    const [totalIncomeChart, setTotalIncomeChart] = useState(); ///
-    const [incomeTotal, setIncomeTotal] = useState(); ///
+    const [yearlyExpenseChart, setYearlyExpenseChart] = useState(); ///
+    const [yearlyExpenseTotal, setYearlyExpenseTotal] = useState();
+    const [yearlyIncomeChart, setYearlyIncomeChart] = useState(); ///
+    const [yearlyIncomeTotal, setYearlyIncomeTotal] = useState(); ///
     const [monthlyExpenseChart, setMonthlyExpenseChart] = useState(); //
     const [monthlyIncomeChart, setMonthlyIncomeChart] = useState(); ///
     const [monthlyIncomeTotal, setMonthlyIncomeTotal] = useState(); ///
@@ -128,10 +128,10 @@ const Dashboard = () => {
                 id: doc.id,
             }));
             const currentUserExpenseData = [];
-            const totalExpense = [];
-            let expenseAmount = 0;
-            const totalIncome = [];
-            let incomeAmount = 0;
+            const yearlyExpense = [];
+            let yearlyExpenseAmount = 0;
+            const yearlyIncome = [];
+            let yearlyIncomeAmount = 0;
             const monthlyExpense = [];
             let monthlyExpenseAmount = 0;
             const monthlyIncome = [];
@@ -145,12 +145,14 @@ const Dashboard = () => {
             for (let i = 0; i < userData.length; i++) {
                 currentUserExpenseData.push(userData[i]);
                 three.push(userData[i]);
-                if (userData[i].incomeOrExpense === "expense") {
-                    totalExpense.push(userData[i]); //
-                    expenseAmount += parseInt(userData[i].amount); //
-                } else {
-                    totalIncome.push(userData[i]); //
-                    incomeAmount += parseInt(userData[i].amount); //
+                if (userData[i].date.slice(0, 4) === theDate.slice(0, 4)) {
+                    if (userData[i].incomeOrExpense === "expense") {
+                        yearlyExpense.push(userData[i]); //
+                        yearlyExpenseAmount += parseInt(userData[i].amount); //
+                    } else {
+                        yearlyIncome.push(userData[i]); //
+                        yearlyIncomeAmount += parseInt(userData[i].amount); //
+                    }
                 }
                 if (userData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
                     if (userData[i].incomeOrExpense === "expense") {
@@ -173,10 +175,10 @@ const Dashboard = () => {
             }
 
             setExpenseData(currentUserExpenseData.reverse());
-            setTotalExpenseChart(totalExpense.reverse());
-            setExpenseTotal(expenseAmount);
-            setTotalIncomeChart(totalIncome.reverse());
-            setIncomeTotal(incomeAmount);
+            setYearlyExpenseChart(yearlyExpense.reverse());
+            setYearlyExpenseTotal(yearlyExpenseAmount);
+            setYearlyIncomeChart(yearlyIncome.reverse());
+            setYearlyIncomeTotal(yearlyIncomeAmount);
             setMonthlyExpenseChart(monthlyExpense.reverse());
             setMonthlyExpenseTotal(monthlyExpenseAmount);
             setMonthlyIncomeChart(monthlyIncome.reverse());
@@ -189,7 +191,7 @@ const Dashboard = () => {
         };
         getExpenseData();
     }, []);
-
+    //console.log(yearlyExpenseChart)
     useEffect(() => {
         const getRecurring = () => {
             const recurringList = [];
@@ -204,6 +206,7 @@ const Dashboard = () => {
     }, [expenseData]);
     const theDate = moment().format("YYYY-MM-DD");
     //console.log(theDate);
+    console.log(theDate.slice(0, 4));
     const recurring = recurringData.map((data) => (
         <div className="recurring-div">
             <p>{data.title}</p>
@@ -261,39 +264,63 @@ const Dashboard = () => {
 
     useEffect(() => {
         const getData = async () => {
-            if (totalExpenseChart !== {} && dailyMonthlyTotal === "total") {
+            if (yearlyExpenseChart !== {} && dailyMonthlyTotal === "total") {
+                const monthsExpense = [];
+                months.forEach((month) => {
+                    let monthPlusAmount = {
+                        month: month,
+                        amount: 0,
+                        label: month,
+                    };
+                    monthsExpense.push(monthPlusAmount);
+                });
+                yearlyExpenseChart.map((expense) => {
+                    let month = parseInt(expense.date.substring(5, 7), 10) - 1;
+                    monthsExpense[month].amount += parseInt(expense.amount);
+                });
                 const totalExpenseFinal = [];
-                totalExpenseChart.forEach(function (totalExpenseChart) {
+                monthsExpense.forEach(function (yearlyExpenseChart) {
                     let chartExpense = {
-                        x: totalExpenseChart.date.substring(0, 10),
-                        y: totalExpenseChart.amount,
-                        label: totalExpenseChart.title,
+                        x: yearlyExpenseChart.month,
+                        y: yearlyExpenseChart.amount,
+                        label: yearlyExpenseChart.month,
                     };
                     totalExpenseFinal.push(chartExpense);
                 });
-                const totalIncomeFinal = [];
-                totalIncomeChart.forEach(function (totalIncomeChart) {
-                    let chartIncome = {
-                        x: totalIncomeChart.date.substring(0, 10),
-                        y: totalIncomeChart.amount,
-                        label: totalIncomeChart.title,
+                const monthsIncome = [];
+                months.forEach((month) => {
+                    let monthPlusAmount = {
+                        month: month,
+                        amount: 0,
+                        label: month,
                     };
-                    totalIncomeFinal.push(chartIncome);
+                    monthsIncome.push(monthPlusAmount);
                 });
+                yearlyIncomeChart.map((income) => {
+                    let month = parseInt(income.date.substring(5, 7), 10) - 1;
+                    monthsIncome[month].amount += parseInt(income.amount);
+                });
+                 const totalIncomeFinal = [];
+                 monthsIncome.forEach(function (yearlyIncomeChart) {
+                     let chartIncome = {
+                         x: yearlyIncomeChart.month,
+                         y: yearlyIncomeChart.amount,
+                         label: yearlyIncomeChart.amount,
+                     };
+                     totalIncomeFinal.push(chartIncome);
+                 });
                 setChartData({
-                    labels: totalExpenseChart.map((data) =>
-                        data.date.substring(0, 10)
-                    ),
+                    labels: months.map((data) => data),
                     datasets: [
                         {
-                            label: "All Expenses",
+                            label: "Yearly Expenses",
                             fill: true,
                             data: totalExpenseFinal,
                             backgroundColor: "rgba(255, 6, 6, 0.5)",
                             borderRadius: 2,
                         },
                         {
-                            label: "All Income",
+                            label: "Yearly Income",
                             fill: true,
                             data: totalIncomeFinal,
                             backgroundColor: "rgba(6, 236, 6, 0.5)",
@@ -421,10 +448,13 @@ const Dashboard = () => {
                                 setDailyMonthlyTotal("total");
                             }}
                         >
-                            <h5>Total</h5>
-                            <h6>Income : ${incomeTotal}</h6>
-                            <h6>Expenses : $-{expenseTotal}</h6>
-                            <h6>Total : ${incomeTotal - expenseTotal} </h6>
+                            <h5>Yearly</h5>
+                            <h6>Income : ${yearlyIncomeTotal}</h6>
+                            <h6>Expenses : $-{yearlyExpenseTotal}</h6>
+                            <h6>
+                                Total : $
+                                {yearlyIncomeTotal - yearlyExpenseTotal}{" "}
+                            </h6>
                         </div>
                         <div
                             className={
