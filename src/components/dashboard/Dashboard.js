@@ -300,15 +300,15 @@ const Dashboard = () => {
                     let month = parseInt(income.date.substring(5, 7), 10) - 1;
                     monthsIncome[month].amount += parseInt(income.amount);
                 });
-                 const totalIncomeFinal = [];
-                 monthsIncome.forEach(function (yearlyIncomeChart) {
-                     let chartIncome = {
-                         x: yearlyIncomeChart.month,
-                         y: yearlyIncomeChart.amount,
-                         label: yearlyIncomeChart.amount,
-                     };
-                     totalIncomeFinal.push(chartIncome);
-                 });
+                const totalIncomeFinal = [];
+                monthsIncome.forEach(function (yearlyIncomeChart) {
+                    let chartIncome = {
+                        x: yearlyIncomeChart.month,
+                        y: yearlyIncomeChart.amount,
+                        label: yearlyIncomeChart.amount,
+                    };
+                    totalIncomeFinal.push(chartIncome);
+                });
                 setChartData({
                     labels: months.map((data) => data),
                     datasets: [

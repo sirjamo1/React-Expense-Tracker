@@ -101,6 +101,10 @@
 .row-header p {
     margin: 10px 10px;
 }
+.row-data-container {
+    height: 82vh;
+    overflow: scroll;
+}
 .row-data {
     display: grid;
     grid-template-columns:
@@ -122,7 +126,7 @@
     overflow: hidden;
 }
 .income {
-color: green;
+    color: green;
 }
 .income:hover {
     background-color: rgba(144, 238, 144, 0.2);
@@ -179,8 +183,8 @@ color: green;
 .recurring {
     width: 30px;
 }
-.recurring-label >span{
-   color:grey;
+.recurring-label > span {
+    color: grey;
 }
 .popup-add {
     width: 400px;

@@ -527,7 +527,7 @@ export const Expenses = () => {
                     <p>INVOICE ID</p>
                     <p>ACTION</p>
                 </div>
-                {expenseDataElements}
+                <div className="row-data-container">{expenseDataElements}</div>
             </div>
         </div>
     );
