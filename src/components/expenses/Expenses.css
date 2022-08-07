@@ -42,15 +42,19 @@
     margin: 0;
     padding: 0;
     text-indent: 6px;
-    height: 35px;
+    height: 31px;
     width: 170px;
     border-radius: 0px 10px 10px 0px;
-    border: none;
-    background-color: rgb(190, 247, 190);
+    border: 2px solid rgb(190, 247, 190);
 }
+.search:hover {
+    border: 2px solid rgb(44, 197, 44);;
+}
+
 .nav-line2-right {
     display: flex;
 }
+
 .create-expense-btn {
     margin: 0;
     padding: 0;
@@ -101,6 +105,10 @@
 .row-header p {
     margin: 10px 10px;
 }
+.row-data-container {
+    height: 82vh;
+    overflow-y: scroll;
+}
 .row-data {
     display: grid;
     grid-template-columns:
@@ -122,7 +130,7 @@
     overflow: hidden;
 }
 .income {
-color: green;
+    color: green;
 }
 .income:hover {
     background-color: rgba(144, 238, 144, 0.2);
@@ -146,7 +154,7 @@ color: green;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: rgba(236, 236, 236, 0.9);
+    background-color: rgba(236, 236, 236, 1);
     width: 550px;
     height: 550px;
     display: flex;
@@ -176,19 +184,61 @@ color: green;
     border-radius: 10px;
     margin-top: 20px;
 }
-.recurring {
-    width: 30px;
+textarea,
+input,
+select {
+    border: rgba(236, 236, 236, 0.9) 1px solid;
+    outline: none;
 }
-.recurring-label >span{
-   color:grey;
+textarea:hover,
+input:hover,
+select:hover {
+    border: lightgreen 1px solid;
+    outline: none;
+}
+textarea:focus,
+input:focus,
+select:focus {
+    border: lightgreen 1px solid;
+    outline: none;
+}
+.recurring-container {
+    margin-top: 10px;
+    margin-left: 53px;
+    align-self: flex-start;
+}
+.recurring {
+    margin-top: 10px;
+    width: 30px;
+    align-self: flex-start;
+}
+.recurring-label > span {
+    color: grey;
+}
+.radio-btn-container {
+    display: flex;
+
+    margin-top: 0px;
+    margin-left: 59px;
+    align-self: flex-start;
+}
+.radio-btn-container > input[type="radio"],
+label {
+    margin-top: 19px;
+    vertical-align: middle;
 }
 .popup-add {
     width: 400px;
     height: 40px;
     border-radius: 10px;
-    margin-top: 190px;
+    position: absolute;
+    bottom: 20px;
     background-color: rgb(44, 197, 44);
 }
+.popup-add:hover {
+    background: rgb(11, 232, 11);
+}
+/*👉********EDIT POPUP*********👈*/
 .edit-expense-btn {
     background-color: rgb(44, 197, 44);
     border-radius: 6px;
@@ -198,6 +248,9 @@ color: green;
 }
 .edit-expense-btn:hover {
     background: rgb(11, 232, 11);
+}
+.recurred-container {
+    margin-top: 10px;
 }
 .popup-edit {
     width: 400px;
@@ -216,6 +269,8 @@ color: green;
     height: 40px;
     border-radius: 10px;
     margin-top: 140px;
+     position: absolute;
+    bottom: 20px;
     cursor: pointer;
 }
 .popup-delete:hover {

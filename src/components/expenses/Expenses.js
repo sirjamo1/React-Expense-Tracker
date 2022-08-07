@@ -33,15 +33,17 @@ export const Expenses = () => {
     const [dataType, setDataType] = useState();
     const [dataDate, setDataDate] = useState();
     const [dataRecurring, setDataRecurring] = useState(false);
+    const [searchBar, setSearchBar] = useState("");
     const expenseDataRef = collection(db, "expenseData");
     const [editBtnId, setEditBtnId] = useState();
+    const [dataForRows, setDataForRows] = useState(expenseData);
+
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
     };
     const [redo, setRedo] = useState(false);
     const [incomeOrExpense, setIncomeOrExpense] = useState();
     const handleCreateData = async () => {
-        
         await addDoc(expenseDataRef, {
             title: dataTitle,
             type: dataType,
@@ -90,7 +92,6 @@ export const Expenses = () => {
             }
         }
     };
-    console.log(dataRecurring)
     useEffect(() => {
         console.log("getting data");
         const userUid = user.uid;
@@ -144,7 +145,6 @@ export const Expenses = () => {
         }
         return monthNumber;
     };
-    console.log(incomeOrExpense);
     const monthBeforeDate = moment().subtract(1, "months").format("YYYY-MM-DD");
     useEffect(() => {
         const addRecurring = async () => {
@@ -221,7 +221,7 @@ export const Expenses = () => {
                     setDataRecurring(event.target.checked);
                 }}
                 type="checkbox"
-                 defaultChecked={currentExpense.recurring}
+                defaultChecked={currentExpense.recurring}
             ></input>
             <label>Recurring</label>
         </span>
@@ -285,6 +285,8 @@ export const Expenses = () => {
                         <option value="Technology">Technology</option>
                         <option value="Withdraw">Withdraw</option>
                         <option value="Payment">Payment</option>
+                        <option value="Work">Work</option>
+                        <option value="Other">Other</option>
                     </select>
 
                     <input
@@ -295,40 +297,45 @@ export const Expenses = () => {
                         type="datetime-local"
                         placeholder="Title"
                     ></input>
-                    <span>
-                        <input
-                            className="recurring"
-                            name="recurring"
-                            onChange={(event) => {
-                                setDataRecurring(event.target.checked);
-                            }}
-                            type="checkbox"
-                        ></input>
+                    <div className="recurring-container">
+                        <span>
+                            <input
+                                className="recurring"
+                                name="recurring"
+                                onChange={(event) => {
+                                    setDataRecurring(event.target.checked);
+                                }}
+                                type="checkbox"
+                            ></input>
 
-                        <label className="recurring-label">
-                            Recurring <span>(up to 2 years prior)</span>
-                        </label>
-                    </span>
-                    <input
-                        type="radio"
-                        name="size"
-                        value="income"
-                        id="income"
-                        onChange={(event) => {
-                            setIncomeOrExpense(event.target.value);
-                        }}
-                    ></input>
-                    <label for="income">Income</label>
-                    <input
-                        type="radio"
-                        name="size"
-                        value="expense"
-                        id="expense"
-                        onChange={(event) => {
-                            setIncomeOrExpense(event.target.value);
-                        }}
-                    ></input>
-                    <label for="expense">Expense</label>
+                            <label className="recurring-label">
+                                Recurring <span>(up to 2 years prior)</span>
+                            </label>
+                        </span>
+                    </div>
+                    <div className="radio-btn-container">
+                        <input
+                            type="radio"
+                            name="size"
+                            value="income"
+                            id="income"
+                            onChange={(event) => {
+                                setIncomeOrExpense(event.target.value);
+                            }}
+                        ></input>
+                        <label for="income">Income</label>
+
+                        <input
+                            type="radio"
+                            name="size"
+                            value="expense"
+                            id="expense"
+                            onChange={(event) => {
+                                setIncomeOrExpense(event.target.value);
+                            }}
+                        ></input>
+                        <label for="expense">Expense</label>
+                    </div>
 
                     <button
                         className="popup-add"
@@ -396,18 +403,20 @@ export const Expenses = () => {
                         <option value="Technology">Technology</option>
                         <option value="Withdraw">Withdraw</option>
                         <option value="Payment">Payment</option>
+                        <option value="Work">Work</option>
+                        <option value="Other">Other</option>
                     </select>
-                    <span>
-                        <input
-                            onChange={(event) => {
-                                setDataDate(event.target.value);
-                            }}
-                            className="popup-date"
-                            type="datetime-local"
-                            value={currentExpense.date}
-                        ></input>
-                        {hasItRecurred}
-                    </span>
+
+                    <input
+                        onChange={(event) => {
+                            setDataDate(event.target.value);
+                        }}
+                        className="popup-date"
+                        type="datetime-local"
+                        value={currentExpense.date}
+                    ></input>
+                    <div className="recurred-container">{hasItRecurred}</div>
+
                     <button
                         className="popup-edit"
                         onClick={() => {
@@ -449,8 +458,31 @@ export const Expenses = () => {
             )}
         </Popup>
     );
-    //rows of expense data
-    const expenseDataElements = expenseData.map((data) => (
+  useEffect(() => {
+      handleSearch();
+  },);
+    const handleSearch = () => {
+        console.log("searching..");
+        if (searchBar === "") {
+            setDataForRows(expenseData);
+        } else {
+            let searchedData = [];
+            expenseData.map((data) => {
+                if (
+                    searchBar.toLowerCase() === data.title.toLowerCase() ||
+                    searchBar.toLowerCase() === data.type.toLowerCase() ||
+                    searchBar === data.date || searchBar == data.amount
+                ) {
+                    searchedData.push(data);
+                }
+            });
+            setDataForRows(searchedData);
+        }
+    };
+  
+    console.log(dataForRows);
+    console.log({ searchBar });
+    const expenseDataElements = dataForRows.map((data) => (
         <div
             className={
                 data.incomeOrExpense === "income"
@@ -498,13 +530,22 @@ export const Expenses = () => {
                 </div>
                 <div className="nav-line2">
                     <div className="nav-line2-left">
-                        <button className="search-btn">
+                        <button
+                            className="search-btn"
+                            onClick={() => handleSearch()}
+                        >
                             <img
                                 src={magnifyingGlass}
                                 alt="magnifying glass icon"
                             />
                         </button>
-                        <input className="search" placeholder="Search"></input>
+                        <input
+                            className="search"
+                            placeholder="Search"
+                            onChange={(event) => {
+                                setSearchBar(event.target.value);
+                            }}
+                        ></input>
                     </div>
                     <div className="nav-line2-right">
                         {createPopup}
@@ -527,7 +568,7 @@ export const Expenses = () => {
                     <p>INVOICE ID</p>
                     <p>ACTION</p>
                 </div>
-                {expenseDataElements}
+                <div className="row-data-container">{expenseDataElements}</div>
             </div>
         </div>
     );
