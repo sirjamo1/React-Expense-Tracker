@@ -37,7 +37,8 @@ export const Expenses = () => {
     const expenseDataRef = collection(db, "expenseData");
     const [editBtnId, setEditBtnId] = useState();
     const [dataForRows, setDataForRows] = useState(expenseData);
-
+    const [filterOpen, setFilterOpen] = useState(false);
+    const [filterOption, setFilterOption] = useState("date");
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
     };
@@ -458,9 +459,9 @@ export const Expenses = () => {
             )}
         </Popup>
     );
-  useEffect(() => {
-      handleSearch();
-  },);
+    useEffect(() => {
+        handleSearch();
+    });
     const handleSearch = () => {
         console.log("searching..");
         if (searchBar === "") {
@@ -471,7 +472,8 @@ export const Expenses = () => {
                 if (
                     searchBar.toLowerCase() === data.title.toLowerCase() ||
                     searchBar.toLowerCase() === data.type.toLowerCase() ||
-                    searchBar === data.date || searchBar == data.amount
+                    searchBar === data.date ||
+                    searchBar == data.amount
                 ) {
                     searchedData.push(data);
                 }
@@ -479,9 +481,145 @@ export const Expenses = () => {
             setDataForRows(searchedData);
         }
     };
-  
-    console.log(dataForRows);
-    console.log({ searchBar });
+    const filterPopup = (
+        <Popup
+            //   modal={true}
+            closeOnDocumentClick
+            //   offset={offsetPopup}
+            show={true}
+            className="popup-filter"
+            //   onOpen={(event) => {
+            //       setDataRecurring(false);
+            //   }}
+            position="left top"
+            trigger={
+                <button
+                    className="filter-btn"
+                    //   onMouseEnter={() => setFilterOpen(true)}
+                    //   onMouseLeave={() => setFilterOpen(false)}
+                >
+                    <img
+                        src={filter}
+                        alt="filter -icon"
+                        className="filter-icon"
+                    />
+                    Filters
+                </button>
+            }
+        >
+            {(close) => (
+                <div className="popup-filter-container">
+                    <div
+                        onClick={() => {
+                            setFilterOption("date");
+                            // handleFilter();
+                            close();
+                        }}
+                    >
+                        Date
+                    </div>
+                    <div
+                        onClick={() => {
+                            setFilterOption("title");
+                            // handleFilter();
+                            close();
+                        }}
+                    >
+                        Name/Business
+                    </div>
+                    <div
+                        onClick={() => {
+                            setFilterOption("type");
+                            // handleFilter();
+                            close();
+                        }}
+                    >
+                        Type
+                    </div>
+                    <div
+                        onClick={() => {
+                            setFilterOption("amount");
+                            // handleFilter();
+                            close();
+                        }}
+                    >
+                        Amount
+                    </div>
+                    <div
+                        onClick={() => {
+                            setFilterOption("id");
+                            // handleFilter();
+                            close();
+                        }}
+                    >
+                        Invoice Id
+                    </div>
+                </div>
+            )}
+        </Popup>
+    );
+
+    // 
+    console.log({ filterOption });
+    // const handleFilter = () => {
+        console.log(
+        dataForRows.sort((a, b) => {
+            if (filterOption == "title")  {
+                const A = a.title.toLowerCase();
+                const B = b.title.toLowerCase();
+                 if (A < B) {
+                     return -1;
+                 }
+                 if (A > B) {
+                     return 1;
+                 }
+                 return 0;
+            } else if(filterOption == "type") {
+                const A = a.type.toLowerCase();
+                const B = b.type.toLowerCase();
+                 if (A < B) {
+                     return -1;
+                 }
+                 if (A > B) {
+                     return 1;
+                 }
+                 return 0;
+            } else if (filterOption == "date") {
+                const A = a.date;
+                const B = b.date;
+                 if (A < B) {
+                     return -1;
+                 }
+                 if (A > B) {
+                     return 1;
+                 }
+                 return 0;
+            } else if (filterOption == "amount") {
+                const A = parseInt(a.amount);
+                const B = parseInt(b.amount);
+                if (A < B) {
+                    return -1;
+                }
+                if (A > B) {
+                    return 1;
+                }
+                return 0;
+            } 
+             else if (filterOption == "id") {
+                const A = a.amount.toLowerCase();
+                const B = b.amount.toLowerCase();
+                if (A < B) {
+                    return -1;
+                }
+                if (A > B) {
+                    return 1;
+                }
+                return 0;
+            } 
+        }));
+        console.log(dataForRows.reverse())
+    // }
+    
     const expenseDataElements = dataForRows.map((data) => (
         <div
             className={
@@ -549,14 +687,19 @@ export const Expenses = () => {
                     </div>
                     <div className="nav-line2-right">
                         {createPopup}
-                        <button className="filter-btn">
+                        {filterPopup}
+                        {/* <button
+                            className="filter-btn"
+                            onMouseEnter={() => setFilterOpen(true)}
+                            onMouseLeave={() => setFilterOpen(false)}
+                        >
                             <img
                                 src={filter}
                                 alt="filter -icon"
                                 className="filter-icon"
                             />
                             Filters
-                        </button>
+                        </button> */}
                     </div>
                 </div>
 

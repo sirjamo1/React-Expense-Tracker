@@ -238,7 +238,33 @@ label {
 .popup-add:hover {
     background: rgb(11, 232, 11);
 }
+/*👉********FILTER POPUP*********👈*/
+
+
+.popup-filter{
+     border-radius: 20px;
+}
+.popup-filter-container {
+
+align-items: center;
+
+}
+.popup-filter-container div{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 40px;
+    width: 100%;
+    border-bottom: 1px lightblue solid;
+    cursor: pointer;
+    
+}
+.popup-filter-container div:hover{
+    background-color: aqua;
+    
+}
 /*👉********EDIT POPUP*********👈*/
+
 .edit-expense-btn {
     background-color: rgb(44, 197, 44);
     border-radius: 6px;
