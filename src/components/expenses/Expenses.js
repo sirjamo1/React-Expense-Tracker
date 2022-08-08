@@ -37,7 +37,7 @@ export const Expenses = () => {
     const expenseDataRef = collection(db, "expenseData");
     const [editBtnId, setEditBtnId] = useState();
     const [dataForRows, setDataForRows] = useState(expenseData);
-    const [filterOpen, setFilterOpen] = useState(false);
+    const [reverseOrder, setReverseOrder] = useState(false);
     const [filterOption, setFilterOption] = useState("date");
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
@@ -483,21 +483,12 @@ export const Expenses = () => {
     };
     const filterPopup = (
         <Popup
-            //   modal={true}
             closeOnDocumentClick
-            //   offset={offsetPopup}
             show={true}
             className="popup-filter"
-            //   onOpen={(event) => {
-            //       setDataRecurring(false);
-            //   }}
             position="left top"
             trigger={
-                <button
-                    className="filter-btn"
-                    //   onMouseEnter={() => setFilterOpen(true)}
-                    //   onMouseLeave={() => setFilterOpen(false)}
-                >
+                <button className="filter-btn">
                     <img
                         src={filter}
                         alt="filter -icon"
@@ -510,90 +501,121 @@ export const Expenses = () => {
             {(close) => (
                 <div className="popup-filter-container">
                     <div
+                        style={{
+                            backgroundColor:
+                                filterOption === "date" ? "aqua" : "white",
+                        }}
                         onClick={() => {
                             setFilterOption("date");
-                            // handleFilter();
+                            handleFilter();
                             close();
                         }}
                     >
                         Date
                     </div>
                     <div
+                        style={{
+                            backgroundColor:
+                                filterOption === "title" ? "aqua" : "white",
+                        }}
                         onClick={() => {
                             setFilterOption("title");
-                            // handleFilter();
+                            handleFilter();
                             close();
                         }}
                     >
                         Name/Business
                     </div>
                     <div
+                        style={ {
+                            backgroundColor:
+                                filterOption === "type" ? "aqua" : "white",
+                        }}
                         onClick={() => {
                             setFilterOption("type");
-                            // handleFilter();
+                            handleFilter();
                             close();
                         }}
                     >
                         Type
                     </div>
                     <div
+                        style={{
+                            backgroundColor:
+                                filterOption === "amount" ? "aqua" : "white",
+                        }}
                         onClick={() => {
                             setFilterOption("amount");
-                            // handleFilter();
+                            handleFilter();
                             close();
                         }}
                     >
                         Amount
                     </div>
                     <div
+                        style={{
+                            backgroundColor:
+                                filterOption == "id" ? "aqua" : "white",
+                        }}
                         onClick={() => {
                             setFilterOption("id");
-                            // handleFilter();
+                            handleFilter();
                             close();
                         }}
                     >
                         Invoice Id
+                    </div>
+                    <div
+                        onClick={() => {
+                            setReverseOrder(!reverseOrder);
+                            handleFilter();
+                            close();
+                        }}
+                    >
+                        {reverseOrder === false
+                            ? "Decending Order"
+                            : "Accending order"}
                     </div>
                 </div>
             )}
         </Popup>
     );
 
-    // 
+    //
     console.log({ filterOption });
-    // const handleFilter = () => {
-        console.log(
+    const handleFilter = () => {
+    console.log(
         dataForRows.sort((a, b) => {
-            if (filterOption == "title")  {
+            if (filterOption == "title") {
                 const A = a.title.toLowerCase();
                 const B = b.title.toLowerCase();
-                 if (A < B) {
-                     return -1;
-                 }
-                 if (A > B) {
-                     return 1;
-                 }
-                 return 0;
-            } else if(filterOption == "type") {
+                if (A < B) {
+                    return -1;
+                }
+                if (A > B) {
+                    return 1;
+                }
+                return 0;
+            } else if (filterOption == "type") {
                 const A = a.type.toLowerCase();
                 const B = b.type.toLowerCase();
-                 if (A < B) {
-                     return -1;
-                 }
-                 if (A > B) {
-                     return 1;
-                 }
-                 return 0;
+                if (A < B) {
+                    return -1;
+                }
+                if (A > B) {
+                    return 1;
+                }
+                return 0;
             } else if (filterOption == "date") {
                 const A = a.date;
                 const B = b.date;
-                 if (A < B) {
-                     return -1;
-                 }
-                 if (A > B) {
-                     return 1;
-                 }
-                 return 0;
+                if (A < B) {
+                    return -1;
+                }
+                if (A > B) {
+                    return 1;
+                }
+                return 0;
             } else if (filterOption == "amount") {
                 const A = parseInt(a.amount);
                 const B = parseInt(b.amount);
@@ -604,8 +626,7 @@ export const Expenses = () => {
                     return 1;
                 }
                 return 0;
-            } 
-             else if (filterOption == "id") {
+            } else if (filterOption == "id") {
                 const A = a.amount.toLowerCase();
                 const B = b.amount.toLowerCase();
                 if (A < B) {
@@ -615,12 +636,16 @@ export const Expenses = () => {
                     return 1;
                 }
                 return 0;
-            } 
-        }));
-        console.log(dataForRows.reverse())
-    // }
+            }
+        })
+    );
+}
+
     
-    const expenseDataElements = dataForRows.map((data) => (
+
+    const expenseDataElements = (
+        reverseOrder === false ? dataForRows : dataForRows.reverse()
+    ).map((data) => (
         <div
             className={
                 data.incomeOrExpense === "income"
@@ -688,18 +713,6 @@ export const Expenses = () => {
                     <div className="nav-line2-right">
                         {createPopup}
                         {filterPopup}
-                        {/* <button
-                            className="filter-btn"
-                            onMouseEnter={() => setFilterOpen(true)}
-                            onMouseLeave={() => setFilterOpen(false)}
-                        >
-                            <img
-                                src={filter}
-                                alt="filter -icon"
-                                className="filter-icon"
-                            />
-                            Filters
-                        </button> */}
                     </div>
                 </div>
 

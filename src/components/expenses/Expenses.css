@@ -259,10 +259,12 @@ align-items: center;
     cursor: pointer;
     
 }
+
 .popup-filter-container div:hover{
     background-color: aqua;
     
 }
+
 /*👉********EDIT POPUP*********👈*/
 
 .edit-expense-btn {
