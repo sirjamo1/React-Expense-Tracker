@@ -473,7 +473,7 @@ export const Expenses = () => {
                     searchBar.toLowerCase() === data.title.toLowerCase() ||
                     searchBar.toLowerCase() === data.type.toLowerCase() ||
                     searchBar === data.date ||
-                    searchBar == data.amount
+                    searchBar === data.amount
                 ) {
                     searchedData.push(data);
                 }
@@ -527,7 +527,7 @@ export const Expenses = () => {
                         Name/Business
                     </div>
                     <div
-                        style={ {
+                        style={{
                             backgroundColor:
                                 filterOption === "type" ? "aqua" : "white",
                         }}
@@ -555,7 +555,7 @@ export const Expenses = () => {
                     <div
                         style={{
                             backgroundColor:
-                                filterOption == "id" ? "aqua" : "white",
+                                filterOption === "id" ? "aqua" : "white",
                         }}
                         onClick={() => {
                             setFilterOption("id");
@@ -574,7 +574,7 @@ export const Expenses = () => {
                     >
                         {reverseOrder === false
                             ? "Decending Order"
-                            : "Accending order"}
+                            : "Accending Order"}
                     </div>
                 </div>
             )}
@@ -584,64 +584,69 @@ export const Expenses = () => {
     //
     console.log({ filterOption });
     const handleFilter = () => {
-    console.log(
-        dataForRows.sort((a, b) => {
-            if (filterOption == "title") {
-                const A = a.title.toLowerCase();
-                const B = b.title.toLowerCase();
-                if (A < B) {
-                    return -1;
+        console.log(
+            dataForRows.sort((a, b) => {
+                if (filterOption === "title") {
+                    const A = a.title.toLowerCase();
+                    const B = b.title.toLowerCase();
+                    if (A < B) {
+                        return -1;
+                    }
+                    if (A > B) {
+                        return 1;
+                    }
+                    return 0;
+                } else if (filterOption === "type") {
+                    const A = a.type.toLowerCase();
+                    const B = b.type.toLowerCase();
+                    if (A < B) {
+                        return -1;
+                    }
+                    if (A > B) {
+                        return 1;
+                    }
+                    return 0;
+                } else if (filterOption === "date") {
+                    const A = a.date;
+                    const B = b.date;
+                    if (A < B) {
+                        return -1;
+                    }
+                    if (A > B) {
+                        return 1;
+                    }
+                    return 0;
+                } else if (filterOption === "amount") {
+                    const A =
+                        a.incomeOrExpense == "expense"
+                            ? -parseInt(a.amount)
+                            : parseInt(a.amount);
+                    console.log(A);
+                    const B =
+                        b.incomeOrExpense == "expense"
+                            ? -parseInt(b.amount)
+                            : parseInt(b.amount);
+                    if (A < B) {
+                        return -1;
+                    }
+                    if (A > B) {
+                        return 1;
+                    }
+                    return 0;
+                } else if (filterOption === "id") {
+                    const A = a.amount.toLowerCase();
+                    const B = b.amount.toLowerCase();
+                    if (A < B) {
+                        return -1;
+                    }
+                    if (A > B) {
+                        return 1;
+                    }
+                    return 0;
                 }
-                if (A > B) {
-                    return 1;
-                }
-                return 0;
-            } else if (filterOption == "type") {
-                const A = a.type.toLowerCase();
-                const B = b.type.toLowerCase();
-                if (A < B) {
-                    return -1;
-                }
-                if (A > B) {
-                    return 1;
-                }
-                return 0;
-            } else if (filterOption == "date") {
-                const A = a.date;
-                const B = b.date;
-                if (A < B) {
-                    return -1;
-                }
-                if (A > B) {
-                    return 1;
-                }
-                return 0;
-            } else if (filterOption == "amount") {
-                const A = parseInt(a.amount);
-                const B = parseInt(b.amount);
-                if (A < B) {
-                    return -1;
-                }
-                if (A > B) {
-                    return 1;
-                }
-                return 0;
-            } else if (filterOption == "id") {
-                const A = a.amount.toLowerCase();
-                const B = b.amount.toLowerCase();
-                if (A < B) {
-                    return -1;
-                }
-                if (A > B) {
-                    return 1;
-                }
-                return 0;
-            }
-        })
-    );
-}
-
-    
+            })
+        );
+    };
 
     const expenseDataElements = (
         reverseOrder === false ? dataForRows : dataForRows.reverse()
