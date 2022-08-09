@@ -15,10 +15,18 @@
     padding: 30px;
 }
 .links:hover {
-    background-color: rgb(57, 157, 157);
+    background-color: rgb(11, 232, 11);
+}
+.links:active {
+    background-color: rgb(11, 232, 11);
 }
 .logout {
     position: absolute;
     bottom: 0px;
     cursor: pointer;
+    display: flex;
+    gap: 8px;
+}
+.logout-icon {
+    width: 20px;
 }

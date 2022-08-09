@@ -25,7 +25,7 @@
     display: flex;
 }
 .search-btn {
-    background-color: rgb(157, 241, 157);
+    background-color: rgb(44, 197, 44);
     border: none;
     border-radius: 10px 0px 0px 10px;
     height: 35px;
@@ -36,7 +36,7 @@
     border-right: 1px solid lightgrey;
 }
 .search-btn:hover {
-    background-color: rgb(44, 197, 44);
+    background-color: rgb(11, 232, 11);
 }
 .search {
     margin: 0;
@@ -45,10 +45,10 @@
     height: 31px;
     width: 170px;
     border-radius: 0px 10px 10px 0px;
-    border: 2px solid rgb(190, 247, 190);
+    border: 2px solid rgb(44, 197, 44);
 }
 .search:hover {
-    border: 2px solid rgb(44, 197, 44);;
+    border: 2px solid rgb(11, 232, 11);
 }
 
 .nav-line2-right {
@@ -240,16 +240,13 @@ label {
 }
 /*👉********FILTER POPUP*********👈*/
 
-
-.popup-filter{
-     border-radius: 20px;
+.popup-filter {
+    border-radius: 20px;
 }
 .popup-filter-container {
-
-align-items: center;
-
+    align-items: center;
 }
-.popup-filter-container div{
+.popup-filter-container div {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -257,12 +254,10 @@ align-items: center;
     width: 100%;
     border-bottom: 1px lightblue solid;
     cursor: pointer;
-    
 }
 
-.popup-filter-container div:hover{
-    background-color: aqua;
-    
+.popup-filter-container div:hover {
+    border:1px aqua solid ;
 }
 
 /*👉********EDIT POPUP*********👈*/
@@ -297,7 +292,7 @@ align-items: center;
     height: 40px;
     border-radius: 10px;
     margin-top: 140px;
-     position: absolute;
+    position: absolute;
     bottom: 20px;
     cursor: pointer;
 }
