@@ -2,6 +2,7 @@ import { React } from "react";
 import { NavLink } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import logoutIcon from "../icons/logoutIcon.png";
 import "./Navbar.css";
 //import { useAuth } from "../../Auth";
 
@@ -23,8 +24,6 @@ export const Navbar = () => {
         sessionStorage.removeItem("displayName");
         navigate("/");
     };
-    //console.log(user);
-    //Note: If user is not logged in navbar is empty
     return (
         <nav className="primary--nav">
             <NavLink className="links" to="/dashboard">
@@ -40,6 +39,11 @@ export const Navbar = () => {
               Transactions
           </NavLink> */}
             <div className="links logout" onClick={handleLogout}>
+                <img
+                    src={logoutIcon}
+                    alt="logout icon"
+                    className="logout-icon"
+                />
                 Log out
             </div>
         </nav>

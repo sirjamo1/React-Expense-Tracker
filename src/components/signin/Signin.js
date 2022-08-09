@@ -54,7 +54,7 @@ export const Signin = () => {
             <div className="signin--container">
                 <h1>Sign in</h1>
                 <label>
-                    Email<span className="asterisk">*</span>
+                    Email<span className="asterisk"> * </span>
                     <span className="instructions">
                         (Must be a valid e-mail address)
                     </span>
@@ -68,7 +68,7 @@ export const Signin = () => {
                     required
                 ></input>
                 <label>
-                    Password<span className="asterisk">*</span>
+                    Password<span className="asterisk"> * </span>
                     <span className="instructions">
                         (Minimum eight characters, at least one letter and one
                         number)

@@ -37,11 +37,9 @@ export const Expenses = () => {
     const expenseDataRef = collection(db, "expenseData");
     const [editBtnId, setEditBtnId] = useState();
     const [dataForRows, setDataForRows] = useState(expenseData);
-
-    const handleCurrentId = (e) => {
-        setEditBtnId(e.currentTarget.id);
-    };
-    const [redo, setRedo] = useState(false);
+    const [reverseOrder, setReverseOrder] = useState(true);
+    const [filterOption, setFilterOption] = useState("date");
+    const [redoRecurring, setRedoRecurring] = useState(false);
     const [incomeOrExpense, setIncomeOrExpense] = useState();
     const handleCreateData = async () => {
         await addDoc(expenseDataRef, {
@@ -57,7 +55,10 @@ export const Expenses = () => {
             incomeOrExpense: incomeOrExpense,
         });
         setDataRecurring(false);
-        setRedo(!redo);
+        setRedoRecurring(!redoRecurring);
+    };
+    const handleCurrentId = (e) => {
+        setEditBtnId(e.currentTarget.id);
     };
     const handleEditData = async () => {
         const updateCurrent = doc(db, "expenseData", editBtnId);
@@ -71,7 +72,7 @@ export const Expenses = () => {
             editDate: serverTimestamp(),
         });
         setDataRecurring(false);
-        setRedo(!redo);
+        setRedoRecurring(!redoRecurring);
     };
     const handleDeleteData = async () => {
         await deleteDoc(doc(db, "expenseData", editBtnId));
@@ -201,12 +202,12 @@ export const Expenses = () => {
                         recurredDate: newDateFormatted,
                         incomeOrExpense: expenseData[i].incomeOrExpense,
                     });
-                    setRedo(!redo);
+                    setRedoRecurring(!redoRecurring);
                 }
             }
         };
         addRecurring();
-    }, [redo]);
+    }, [redoRecurring]);
 
     const offsetPopup = {
         right: 400,
@@ -458,9 +459,9 @@ export const Expenses = () => {
             )}
         </Popup>
     );
-  useEffect(() => {
-      handleSearch();
-  },);
+    useEffect(() => {
+        handleSearch();
+    });
     const handleSearch = () => {
         console.log("searching..");
         if (searchBar === "") {
@@ -471,7 +472,8 @@ export const Expenses = () => {
                 if (
                     searchBar.toLowerCase() === data.title.toLowerCase() ||
                     searchBar.toLowerCase() === data.type.toLowerCase() ||
-                    searchBar === data.date || searchBar == data.amount
+                    searchBar === data.date ||
+                    searchBar === data.amount
                 ) {
                     searchedData.push(data);
                 }
@@ -479,10 +481,174 @@ export const Expenses = () => {
             setDataForRows(searchedData);
         }
     };
-  
-    console.log(dataForRows);
-    console.log({ searchBar });
-    const expenseDataElements = dataForRows.map((data) => (
+    console.log({ filterOption });
+
+ 
+
+    dataForRows.sort((a, b) => {
+        if (filterOption === "title") {
+            const A = a.title.toLowerCase();
+            const B = b.title.toLowerCase();
+            if (A < B) {
+                return -1;
+            }
+            if (A > B) {
+                return 1;
+            }
+            return 0;
+        } else if (filterOption === "type") {
+            const A = a.type.toLowerCase();
+            const B = b.type.toLowerCase();
+            if (A < B) {
+                return -1;
+            }
+            if (A > B) {
+                return 1;
+            }
+            return 0;
+        } else if (filterOption === "date") {
+            const A = a.date;
+            const B = b.date;
+            if (A < B) {
+                return -1;
+            }
+            if (A > B) {
+                return 1;
+            }
+            return 0;
+        } else if (filterOption === "amount") {
+            const A =
+                a.incomeOrExpense === "expense"
+                    ? -parseInt(a.amount)
+                    : parseInt(a.amount);
+            console.log(A);
+            const B =
+                b.incomeOrExpense === "expense"
+                    ? -parseInt(b.amount)
+                    : parseInt(b.amount);
+            if (A < B) {
+                return -1;
+            }
+            if (A > B) {
+                return 1;
+            }
+            return 0;
+        } else if (filterOption === "id") {
+            const A = a.amount.toLowerCase();
+            const B = b.amount.toLowerCase();
+            if (A < B) {
+                return -1;
+            }
+            if (A > B) {
+                return 1;
+            }
+            return 0;
+        }
+        return a - b;
+    });
+
+    const filterPopup = (
+        <Popup
+            closeOnDocumentClick
+            show={true}
+            className="popup-filter"
+            position="left top"
+            trigger={
+                <button className="filter-btn">
+                    <img
+                        src={filter}
+                        alt="filter -icon"
+                        className="filter-icon"
+                    />
+                    Filters
+                </button>
+            }
+        >
+            {(close) => (
+                <div className="popup-filter-container">
+                    <div 
+                        style={{
+                            backgroundColor:
+                                filterOption === "date" ? "aqua" : "white",
+                        }}
+                        onClick={() => {
+                            setFilterOption("date");
+
+                            close();
+                        }}
+                    >
+                        Date
+                    </div>
+                    <div
+                        style={{
+                            backgroundColor:
+                                filterOption === "title" ? "aqua" : "white",
+                        }}
+                        onClick={() => {
+                            setFilterOption("title");
+
+                            close();
+                        }}
+                    >
+                        Name/Business
+                    </div>
+                    <div
+                        style={{
+                            backgroundColor:
+                                filterOption === "type" ? "aqua" : "white",
+                        }}
+                        onClick={() => {
+                            setFilterOption("type");
+
+                            close();
+                        }}
+                    >
+                        Type
+                    </div>
+                    <div
+                        style={{
+                            backgroundColor:
+                                filterOption === "amount" ? "aqua" : "white",
+                        }}
+                        onClick={() => {
+                            setFilterOption("amount");
+
+                            close();
+                        }}
+                    >
+                        Amount
+                    </div>
+                    <div
+                        style={{
+                            backgroundColor:
+                                filterOption === "id" ? "aqua" : "white",
+                        }}
+                        onClick={() => {
+                            setFilterOption("id");
+
+                            close();
+                        }}
+                    >
+                        Invoice Id
+                    </div>
+                    <div
+                        onClick={() => {
+                            setReverseOrder(!reverseOrder);
+                            close();
+                        }}
+                    >
+                        {reverseOrder === false
+                            ? "Descending Order"
+                            : "Ascending Order"}
+                    </div>
+                </div>
+            )}
+        </Popup>
+    );
+
+    const expenseDataElements = (
+        reverseOrder === false ? dataForRows : dataForRows.reverse()
+    ).map((data) => (
         <div
             className={
                 data.incomeOrExpense === "income"
@@ -549,14 +715,7 @@ export const Expenses = () => {
                     </div>
                     <div className="nav-line2-right">
                         {createPopup}
-                        <button className="filter-btn">
-                            <img
-                                src={filter}
-                                alt="filter -icon"
-                                className="filter-icon"
-                            />
-                            Filters
-                        </button>
+                        {filterPopup}
                     </div>
                 </div>
 
