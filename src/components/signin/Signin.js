@@ -53,11 +53,7 @@ export const Signin = () => {
         <div className="main--container">
             <div className="signin--container">
                 <h1>Sign in</h1>
-                <label>
-                    Email<span className="asterisk"> * </span>
-                    <span className="instructions">
-                        (Must be a valid e-mail address)
-                    </span>
+                <label>Email
                 </label>
                 <input
                     onChange={(event) => {
@@ -67,12 +63,7 @@ export const Signin = () => {
                     placeholder="Email"
                     required
                 ></input>
-                <label>
-                    Password<span className="asterisk"> * </span>
-                    <span className="instructions">
-                        (Minimum eight characters, at least one letter and one
-                        number)
-                    </span>
+                <label>Password
                 </label>
                 <input
                     onChange={(event) => {
@@ -99,7 +90,7 @@ export const Signin = () => {
                     <Link to="/forgotPassword">Forgot Password?</Link>
                 </div>
                 <h4>
-                    Don't have an account?<Link to="/signup"> Create one</Link>
+                    Don't have an account? <Link to="/signup"> Create one</Link>
                 </h4>
             </div>
             <img src={dollarInBirdCage} alt="dollar bill in a bird cage" />
