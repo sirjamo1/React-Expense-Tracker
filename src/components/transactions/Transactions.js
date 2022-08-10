@@ -378,7 +378,6 @@ export const Expenses = () => {
                         }}
                         className="popup-title"
                         placeholder={currentExpense.title}
-                        // value={currentExpense.title}
                     ></input>
                     <input
                         onChange={(event) => {
@@ -387,7 +386,6 @@ export const Expenses = () => {
                         type="number"
                         className="popup-amount"
                         placeholder={currentExpense.amount}
-                        // value={currentExpense.amount}
                     ></input>
                     <select
                         onChange={(event) => {
@@ -395,8 +393,7 @@ export const Expenses = () => {
                         }}
                         className="popup-select"
                         name="type"
-                        // value={currentExpense.type}
-
+                        placeholder={currentExpense.type}
                         id="type"
                     >
                         <option value="Mobile">Mobile</option>
@@ -470,11 +467,14 @@ export const Expenses = () => {
         } else {
             let searchedData = [];
             expenseData.map((data) => {
+                let n = searchBar.length;
                 if (
-                    searchBar.toLowerCase() === data.title.toLowerCase() ||
-                    searchBar.toLowerCase() === data.type.toLowerCase() ||
-                    searchBar === data.date ||
-                    searchBar === data.amount
+                    searchBar.toLowerCase() ===
+                        data.title.toLowerCase().slice(0, [n]) ||
+                    searchBar.toLowerCase() ===
+                        data.type.toLowerCase().slice(0, [n]) ||
+                    searchBar === data.date.slice(0, [n]) ||
+                    searchBar === data.amount.slice(0, [n])
                 ) {
                     searchedData.push(data);
                 }
