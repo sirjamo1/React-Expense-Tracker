@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Component } from "react";
 import "./Settings.css";
 import Popup from "reactjs-popup";
-import userIcon from "../icons/userIcon.png";
+import Header from "../header/Header";
 import {
     updateProfile,
     updateEmail,
@@ -126,14 +126,7 @@ export const Settings = () => {
     );
     const userAccount = (
         <div>
-            <div className="header">
-                <h1>Settings</h1>
-                <h4>
-                    {" "}
-                    <img src={userIcon} alt="user icon" className="user-icon" />
-                    {userDisplayName}
-                </h4>
-            </div>
+            <Header headerTitle={"Settings"} />
             <div className="account-info">
                 <h3>Account Information</h3>
                 <p>Update your account information</p>

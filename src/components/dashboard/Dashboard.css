@@ -1,19 +1,15 @@
 .dashboard-container {
   width: 100vw;
   height: 100vh;
-  margin: 0px 10px;
   position: relative;
 }
 /*👉*********HEADER*********👈*/
-.dashboard-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-}
+
 .left-and-right-container {
   display: flex;
   position: relative;
+  margin-top: 20px;
+  margin-left: 10px;
 }
 /*👉************Leftside************👈*/
 .leftside-container {
@@ -27,7 +23,7 @@
 .three-totals > div {
   background-color: rgba(0, 255, 255, 0.267);
   border-radius: 10px;
-  height: 60px;
+  height: 80px;
   cursor: pointer;
   flex-basis: 150px;
   display: flex;
@@ -38,9 +34,10 @@
 
 .three-totals h5 {
   margin: 6px;
+  margin-top: 0px;
 }
 .three-totals h6 {
-  margin: 0;
+  margin: 2px;
   font-weight: 500;
 }
 .three-totals > div:hover {
@@ -97,7 +94,6 @@
 .recent-expenses-data div > p {
   text-overflow: ellipsis;
   overflow: hidden;
-  /*👉color: green;👈*/
 }
 .income {
 color: green;
@@ -116,16 +112,29 @@ color: green;
   width: 30%;
   margin-left: 10px;
 }
-.recurring-div {
+.recurring-div-income {
   display: flex;
   justify-content: space-between;
   background-color: rgba(0, 255, 255, 0.267);
   border-radius: 10px;
   margin-top: 10px;
 }
-.recurring-div:hover {
+.recurring-div-income:hover {
   background-color: aqua;
 }
-.recurring-div > p {
+.recurring-div-income > p {
+  margin: 10px 10px;
+}
+.recurring-div-expense {
+  display: flex;
+  justify-content: space-between;
+  background-color: rgba(250, 19, 19, 0.4);
+  border-radius: 10px;
+  margin-top: 10px;
+}
+.recurring-div-expense:hover {
+  background-color: red;
+}
+.recurring-div-expense > p {
   margin: 10px 10px;
 }

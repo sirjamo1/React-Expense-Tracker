@@ -4,7 +4,7 @@ import { db } from "../../firebase-config";
 import moment from "moment";
 import { Link } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
-import userIcon from "../icons/userIcon.png";
+import Header from "../header/Header";
 import {
     collection,
     getDocs,
@@ -203,7 +203,7 @@ const Dashboard = () => {
     }, [expenseData]);
     const theDate = moment().format("YYYY-MM-DD");
     const recurring = recurringData.map((data) => (
-        <div className="recurring-div">
+        <div className={data.incomeOrExpense === "income" ? "recurring-div-income" : "recurring-div-expense"}>
             <p>{data.title}</p>
             <p>${data.amount}</p>
         </div>
@@ -311,14 +311,16 @@ const Dashboard = () => {
                             label: "Yearly Expenses",
                             fill: true,
                             data: totalExpenseFinal,
-                            backgroundColor: "rgba(255, 6, 6, 0.5)",
+                            borderColor: "rgba(255, 6, 6, 1)",
+                            backgroundColor: "rgba(255, 6, 6, 0.3)",
                             borderRadius: 2,
                         },
                         {
                             label: "Yearly Income",
                             fill: true,
                             data: totalIncomeFinal,
-                            backgroundColor: "rgba(6, 236, 6, 0.5)",
+                            borderColor: "rgba(6, 236, 6, 1)",
+                            backgroundColor: "rgba(6, 236, 6, 0.3)",
                             borderRadius: 2,
                         },
                     ],
@@ -352,14 +354,16 @@ const Dashboard = () => {
                             label: months[parseInt(thisMonth) - 1],
                             data: monthlyExpenseFinal,
                             fill: true,
-                            backgroundColor: "rgba(255, 6, 6, 0.5)",
+                            borderColor: "rgba(255, 6, 6, 1)",
+                            backgroundColor: "rgba(255, 6, 6, 0.3)",
                             borderRadius: 2,
                         },
                         {
                             label: months[parseInt(thisMonth) - 1],
                             data: monthlyIncomeFinal,
                             fill: true,
-                            backgroundColor: "rgba(6, 236, 6, 0.5)",
+                            borderColor: "rgba(6, 236, 6, 1)",
+                            backgroundColor: "rgba(6, 236, 6, 0.3)",
                             borderRadius: 2,
                         },
                     ],
@@ -394,7 +398,8 @@ const Dashboard = () => {
                             label: "Daily Expenses",
                             data: dailyExpenseFinal,
                             fill: true,
-                            backgroundColor: "rgba(255, 6, 6, 0.5)",
+                            borderColor: "rgba(255, 6, 6, 1)",
+                            backgroundColor: "rgba(255, 6, 6, 0.3)",
                             borderRadius: 2,
                             active: true,
                         },
@@ -402,7 +407,8 @@ const Dashboard = () => {
                             label: "Daily Income",
                             data: dailyIncomeFinal,
                             fill: true,
-                            backgroundColor: "rgba(6, 236, 6, 0.5)",
+                            borderColor: "rgba(6, 236, 6, 1)",
+                            backgroundColor: "rgba(6, 236, 6, 0.3)",
                             borderRadius: 2,
                             active: true,
                         },
@@ -422,13 +428,8 @@ const Dashboard = () => {
 
     return (
         <div className="dashboard-container">
-            <div className="dashboard-header">
-                <h1>Dashboard</h1>
-                <h4>
-                    <img src={userIcon} alt="user icon" className="user-icon" />
-                    {userDisplayName}
-                </h4>
-            </div>
+            <Header headerTitle={"Dashboard"}/>
+
             <div className="left-and-right-container">
                 <div className="leftside-container">
                     <div className="three-totals">

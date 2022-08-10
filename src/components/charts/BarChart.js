@@ -9,7 +9,6 @@ import {
     Tooltip,
     Legend,
 } from "chart.js/auto";
-// import faker from "faker";
 
 export function BarChart({ chartData }) {
     return (
