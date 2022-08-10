@@ -8,6 +8,8 @@ export function LineChart({ chartData }) {
             data={chartData}
             options={{
                 responsive: true,
+                spanGaps: true,
+                tension: 0.4,
                 plugins: {
                     tooltip: {
                         callbacks: {

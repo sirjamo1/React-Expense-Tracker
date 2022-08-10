@@ -7,8 +7,7 @@ import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { AuthProvider } from "./Auth";
 import { Signup } from "./components/signup/Signup.js";
 //import { Dashboard } from "./components/dashboard/Dashboard.js";
-import { Expenses } from "./components/expenses/Expenses.js";
-import { Transactions } from "./components/transactions/Transactions.js";
+import { Expenses } from "./components/transactions/Transactions.js";
 import { Settings } from "./components/settings/Settings.js";
 import { NoMatch } from "./NoMatch";
 import { ForgotPassword } from "./components/ForgotPassword/ForgotPassword";
@@ -52,14 +51,6 @@ function App() {
               </RequireAuth>
             }
           />
-          {/* <Route
-            path="/transactions"
-            element={
-              <RequireAuth>
-                <Transactions />
-              </RequireAuth>
-            }
-          /> */}
           <Route
             path="/settings"
             element={

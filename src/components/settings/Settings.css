@@ -1,13 +1,9 @@
 .settings--container{
  width:100vw;
- margin: 0px 10px;
+/*👉 margin: 0px 10px;👈*/
+position: relative;
 }
-.header {
-   display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-}
+
 .account-info{
 margin: 0px 30px;
 }

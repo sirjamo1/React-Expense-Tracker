@@ -6,6 +6,7 @@
     flex-direction: column;
     align-items: center;
     position: relative;
+    box-shadow: 1px 3px 5px 0px rgba(250, 19, 19, 0.75);
 }
 
 .links {
@@ -13,9 +14,17 @@
     box-sizing: border-box;
     width: 100%;
     padding: 30px;
+    color: rgb(59, 1, 249);
 }
 .links:hover {
-    background-color: rgb(11, 232, 11);
+    background: linear-gradient(
+        90deg,
+        rgb(11, 232, 11) 0%,
+        rgb(11, 232, 11) 0%,
+        #00ffff 99%
+    );
+    color: yellow;
+    text-shadow: 1px 1px 1px red;
 }
 .links:active {
     background-color: rgb(11, 232, 11);

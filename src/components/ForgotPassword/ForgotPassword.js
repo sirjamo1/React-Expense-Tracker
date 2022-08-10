@@ -1,4 +1,3 @@
-//import React, { useEffect, useState } from "react";
 import "./ForgotPassword.css";
 import React, { useRef, useState } from "react";
 import dollarInBirdCage from "../images/dollarInBirdCage.png";
@@ -23,6 +22,7 @@ export const ForgotPassword = () => {
       setError("Failed to reset");
     }
   }
+
   return (
     <div className="main--container">
       <div className="signin--container">
@@ -30,27 +30,25 @@ export const ForgotPassword = () => {
         {error && <h3>{error}</h3>}
         {message && <h3>{message}</h3>}
         <label>
-          Email<span className="asterisk">*</span>
+          Email<span className="asterisk"> *</span>
           <span className="instructions"></span>
         </label>
         <input
           ref={emailRef}
           id="email"
           type="email"
-          //placeholder={userEmail}
-
           required
         ></input>
-        <button onClick={handleReset} className="submit-btn" type="submit">
+        <button onClick={handleReset} className="reset-btn" type="submit">
           Reset
         </button>
 
         <div className="w-100 text-center mt-3">
-          <Link to="/">Login</Link>
+          <Link to="/">Back to Signin</Link>
         </div>
 
         <h4>
-          Don't have an account?<Link to="/signup">Create One</Link>
+          Don't have an account? <Link to="/signup"> Create One</Link>
         </h4>
       </div>
       <img src={dollarInBirdCage} alt="dollar bill in a bird cage" />

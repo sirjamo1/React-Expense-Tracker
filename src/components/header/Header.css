@@ -1,0 +1,20 @@
+.dashboard-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+background: linear-gradient(90deg,#00ffff 0%, #ffff00 10%, #ffff00 99%);
+    margin-bottom: 5px;
+    box-shadow: 5px 3px 5px 0px rgba(250, 19, 19, 0.75);
+}
+.dashboard-header h1 {
+    color: rgb(11, 232, 11);
+    text-shadow: 1px 1px 1px red;
+    margin-left: 50px;
+}
+.dashboard-header h4 {
+    margin-right: 10px;
+}
+.user-icon {
+    width: 20px;
+    margin-right: 4px;
+}

@@ -74,7 +74,7 @@ export function Signup() {
             <div className="signup--container">
                 <h1>Sign up</h1>
                 <label>
-                    Full Name<span className="asterisk">*</span>
+                    Full Name<span className="asterisk"> * </span>
                     <span className="instructions"></span>
                 </label>
                 <input
@@ -86,7 +86,7 @@ export function Signup() {
                     required
                 ></input>
                 <label>
-                    Email<span className="asterisk">*</span>
+                    Email<span className="asterisk"> * </span>
                     <span className="instructions">
                         (Must be a valid e-mail address)
                     </span>
@@ -100,7 +100,7 @@ export function Signup() {
                     required
                 ></input>
                 <label>
-                    Password<span className="asterisk">*</span>
+                    Password<span className="asterisk"> * </span>
                     <span className="instructions">
                         (Minimum eight characters, at least one letter and one
                         number)

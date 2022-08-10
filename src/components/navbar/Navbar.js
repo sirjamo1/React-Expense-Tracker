@@ -4,17 +4,8 @@ import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import logoutIcon from "../icons/logoutIcon.png";
 import "./Navbar.css";
-//import { useAuth } from "../../Auth";
-
 export const Navbar = () => {
-    //const { user } = useAuth();
-    // const [user, setUser] = useState(null);
     const auth = getAuth();
-    // useEffect(() => {
-    //     onAuthStateChanged(auth, (user) => {
-    //         setUser(user);
-    //     });
-    // }, [user, auth]);
     const navigate = useNavigate();
     const handleLogout = async () => {
         await signOut(auth);
@@ -30,14 +21,11 @@ export const Navbar = () => {
                 Dashboard
             </NavLink>
             <NavLink className="links" to="/expenses">
-                Expenses
+                Transactions
             </NavLink>
             <NavLink className="links" to="/settings">
                 Settings
             </NavLink>
-            {/* <NavLink className="links" to="/transactions">
-              Transactions
-          </NavLink> */}
             <div className="links logout" onClick={handleLogout}>
                 <img
                     src={logoutIcon}
