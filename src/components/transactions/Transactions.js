@@ -204,10 +204,12 @@ export const Expenses = () => {
                         incomeOrExpense: expenseData[i].incomeOrExpense,
                     });
                     setRedoRecurring(!redoRecurring);
+                    
                 }
             }
         };
         addRecurring();
+      
     }, [redoRecurring]);
 
     const offsetPopup = {
@@ -457,9 +459,20 @@ export const Expenses = () => {
             )}
         </Popup>
     );
+
+    //without empty dependencies it will search unlimited times
+    // maybe add a timeout function to sense when user stops typing on update then
+    // watch youtube video
     useEffect(() => {
-        handleSearch();
-    });
+       const timer = setTimeout(() => {
+            handleSearch();
+        }, 350);
+
+        return () => {
+            clearTimeout(timer);
+        }
+        
+    },[searchBar, expenseData]);
     const handleSearch = () => {
         console.log("searching..");
         if (searchBar === "") {
@@ -482,7 +495,6 @@ export const Expenses = () => {
             setDataForRows(searchedData);
         }
     };
-    console.log({ filterOption });
 
     dataForRows.sort((a, b) => {
         if (filterOption === "title") {
