@@ -40,6 +40,7 @@ export const Expenses = () => {
     const [dataForRows, setDataForRows] = useState(expenseData);
     const [reverseOrder, setReverseOrder] = useState(true);
     const [filterOption, setFilterOption] = useState("date");
+    const [xDaysAgo, setXDaysAgo] = useState(0);
     const [redoRecurring, setRedoRecurring] = useState(false);
     const [incomeOrExpense, setIncomeOrExpense] = useState();
     const handleCreateData = async () => {
@@ -58,9 +59,12 @@ export const Expenses = () => {
         setDataRecurring(false);
         setRedoRecurring(!redoRecurring);
     };
+
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
+        // changeExpense()
     };
+    console.log({ xDaysAgo });
     const handleEditData = async () => {
         const updateCurrent = doc(db, "expenseData", editBtnId);
         await updateDoc(updateCurrent, {
@@ -80,20 +84,24 @@ export const Expenses = () => {
         setDataRecurring(false);
     };
     const [currentExpense, setCurrentExpense] = useState([]);
-    //when mouseDown the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
-    const changeExpense = () => {
-        for (let i = 0; i < expenseData.length; i++) {
-            if (expenseData[i].id === editBtnId) {
-                setCurrentExpense(expenseData[i]);
-                setDataTitle(expenseData[i].title);
-                setDataAmount(expenseData[i].amount);
-                setDataType(expenseData[i].type);
-                setDataDate(expenseData[i].date);
-                setDataRecurring(expenseData[i].recurring);
-                setIncomeOrExpense(expenseData[i].incomeOrExpense);
+    //when mouseOver the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
+    useEffect(() => {
+        const changeExpense = (e) => {
+            for (let i = 0; i < expenseData.length; i++) {
+                if (expenseData[i].id === editBtnId) {
+                    setCurrentExpense(expenseData[i]);
+                    setDataTitle(expenseData[i].title);
+                    setDataAmount(expenseData[i].amount);
+                    setDataType(expenseData[i].type);
+                    setDataDate(expenseData[i].date);
+                    setDataRecurring(expenseData[i].recurring);
+                    setIncomeOrExpense(expenseData[i].incomeOrExpense);
+                }
             }
-        }
-    };
+        };
+
+        changeExpense();
+    }, [editBtnId]);
     useEffect(() => {
         console.log("getting data");
         const userUid = user.uid;
@@ -148,6 +156,7 @@ export const Expenses = () => {
         return monthNumber;
     };
     const monthBeforeDate = moment().subtract(1, "months").format("YYYY-MM-DD");
+
     useEffect(() => {
         const addRecurring = async () => {
             const data = await getDocs(
@@ -361,14 +370,7 @@ export const Expenses = () => {
             closeOnDocumentClick
             className="popup-main"
             nested
-            trigger={
-                <button
-                    onMouseDown={changeExpense}
-                    className="edit-expense-btn"
-                >
-                    Edit
-                </button>
-            }
+            trigger={<button className="edit-expense-btn">Edit</button>}
         >
             {(close) => (
                 <div className="popup--container">
@@ -457,9 +459,17 @@ export const Expenses = () => {
             )}
         </Popup>
     );
+
     useEffect(() => {
-        handleSearch();
-    });
+        const timer = setTimeout(() => {
+            handleSearch();
+        }, 350);
+
+        return () => {
+            clearTimeout(timer);
+        };
+    }, [searchBar, expenseData]);
+
     const handleSearch = () => {
         console.log("searching..");
         if (searchBar === "") {
@@ -482,7 +492,29 @@ export const Expenses = () => {
             setDataForRows(searchedData);
         }
     };
-    console.log({ filterOption });
+    
+    useEffect(() => {
+        const handleXDaysSearch = () => {
+            if (xDaysAgo === 0 || xDaysAgo === "") {
+                setDataForRows(expenseData);
+            } else {
+                let xDaysAgoData = [];
+                const days = xDaysAgo;
+                const xDaysBefore = moment()
+                    .subtract({ days }, "days")
+                    .format("YYYY-MM-DD");
+                expenseData.map((data) => {
+                    let expenseDate = new Date(data.date.slice(0, 10));
+                    let xDaysDate = new Date(xDaysBefore);
+                    if (xDaysDate - expenseDate <= 0) {
+                        xDaysAgoData.push(data);
+                    }
+                });
+                setDataForRows(xDaysAgoData);
+            }
+        };
+        handleXDaysSearch();
+    }, [xDaysAgo]);
 
     dataForRows.sort((a, b) => {
         if (filterOption === "title") {
@@ -644,7 +676,6 @@ export const Expenses = () => {
             )}
         </Popup>
     );
-
     const expenseDataElements = (
         reverseOrder === false ? dataForRows : dataForRows.reverse()
     ).map((data) => (
@@ -674,7 +705,7 @@ export const Expenses = () => {
             <div>
                 <p>{data.id}</p>
             </div>
-            <div onMouseEnter={handleCurrentId} id={data.id}>
+            <div onMouseDownCapture={handleCurrentId} id={data.id}>
                 {editPopup}
             </div>
         </div>
@@ -705,6 +736,16 @@ export const Expenses = () => {
                     <div className="nav-line2-right">
                         {createPopup}
                         {filterPopup}
+                        <div>
+                            <input
+                                className="x-days-ago"
+                                type="number"
+                                placeholder="X Days Ago"
+                                onChange={(event) => {
+                                    setXDaysAgo(event.target.value);
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
 
