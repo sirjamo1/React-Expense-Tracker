@@ -2,7 +2,7 @@
     width: 100%;
     position: relative;
 }
-.transactions-div{
+.transactions-div {
     margin: 0px 10px;
     display: flex;
     flex-direction: column;
@@ -93,10 +93,13 @@
     display: grid;
     grid-template-columns:
         minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
-        minmax(80px, 1fr) minmax(80px, 1fr) minmax(80px, .7fr);
+        minmax(80px, 1fr) minmax(80px, 1fr) minmax(80px, 0.7fr);
 }
 .row-header p {
     margin: 10px 10px;
+}
+.x-days-ago {
+    width: 90px;
 }
 .row-data-container {
     max-height: 79vh;
@@ -106,7 +109,7 @@
     display: grid;
     grid-template-columns:
         minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
-        minmax(80px, 1fr) minmax(80px, 1fr) minmax(80px, .6fr);
+        minmax(80px, 1fr) minmax(80px, 1fr) minmax(80px, 0.6fr);
     margin-left: 10px;
     border-bottom: 1px solid lightgrey;
 }

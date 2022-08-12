@@ -40,6 +40,7 @@ export const Expenses = () => {
     const [dataForRows, setDataForRows] = useState(expenseData);
     const [reverseOrder, setReverseOrder] = useState(true);
     const [filterOption, setFilterOption] = useState("date");
+    const [xDaysAgo, setXDaysAgo] = useState(0);
     const [redoRecurring, setRedoRecurring] = useState(false);
     const [incomeOrExpense, setIncomeOrExpense] = useState();
     const handleCreateData = async () => {
@@ -63,6 +64,7 @@ export const Expenses = () => {
         setEditBtnId(e.currentTarget.id);
         // changeExpense()
     };
+    console.log({ xDaysAgo });
     const handleEditData = async () => {
         const updateCurrent = doc(db, "expenseData", editBtnId);
         await updateDoc(updateCurrent, {
@@ -97,7 +99,7 @@ export const Expenses = () => {
                 }
             }
         };
-        
+
         changeExpense();
     }, [editBtnId]);
     useEffect(() => {
@@ -154,6 +156,7 @@ export const Expenses = () => {
         return monthNumber;
     };
     const monthBeforeDate = moment().subtract(1, "months").format("YYYY-MM-DD");
+
     useEffect(() => {
         const addRecurring = async () => {
             const data = await getDocs(
@@ -361,20 +364,13 @@ export const Expenses = () => {
 
     const editPopup = (
         <Popup
-   
             modal={true}
             offset={offsetPopup}
             show={false}
             closeOnDocumentClick
             className="popup-main"
             nested
-            trigger={
-                <button
-                    className="edit-expense-btn"
-                >
-                    Edit
-                </button>
-            }
+            trigger={<button className="edit-expense-btn">Edit</button>}
         >
             {(close) => (
                 <div className="popup--container">
@@ -463,6 +459,7 @@ export const Expenses = () => {
             )}
         </Popup>
     );
+
     useEffect(() => {
         const timer = setTimeout(() => {
             handleSearch();
@@ -472,6 +469,7 @@ export const Expenses = () => {
             clearTimeout(timer);
         };
     }, [searchBar, expenseData]);
+
     const handleSearch = () => {
         console.log("searching..");
         if (searchBar === "") {
@@ -494,6 +492,29 @@ export const Expenses = () => {
             setDataForRows(searchedData);
         }
     };
+    
+    useEffect(() => {
+        const handleXDaysSearch = () => {
+            if (xDaysAgo === 0 || xDaysAgo === "") {
+                setDataForRows(expenseData);
+            } else {
+                let xDaysAgoData = [];
+                const days = xDaysAgo;
+                const xDaysBefore = moment()
+                    .subtract({ days }, "days")
+                    .format("YYYY-MM-DD");
+                expenseData.map((data) => {
+                    let expenseDate = new Date(data.date.slice(0, 10));
+                    let xDaysDate = new Date(xDaysBefore);
+                    if (xDaysDate - expenseDate <= 0) {
+                        xDaysAgoData.push(data);
+                    }
+                });
+                setDataForRows(xDaysAgoData);
+            }
+        };
+        handleXDaysSearch();
+    }, [xDaysAgo]);
 
     dataForRows.sort((a, b) => {
         if (filterOption === "title") {
@@ -655,7 +676,6 @@ export const Expenses = () => {
             )}
         </Popup>
     );
-console.log({editBtnId})
     const expenseDataElements = (
         reverseOrder === false ? dataForRows : dataForRows.reverse()
     ).map((data) => (
@@ -716,6 +736,16 @@ console.log({editBtnId})
                     <div className="nav-line2-right">
                         {createPopup}
                         {filterPopup}
+                        <div>
+                            <input
+                                className="x-days-ago"
+                                type="number"
+                                placeholder="X Days Ago"
+                                onChange={(event) => {
+                                    setXDaysAgo(event.target.value);
+                                }}
+                            />
+                        </div>
                     </div>
                 </div>
 
