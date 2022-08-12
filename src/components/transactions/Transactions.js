@@ -58,8 +58,10 @@ export const Expenses = () => {
         setDataRecurring(false);
         setRedoRecurring(!redoRecurring);
     };
+
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
+        // changeExpense()
     };
     const handleEditData = async () => {
         const updateCurrent = doc(db, "expenseData", editBtnId);
@@ -80,20 +82,24 @@ export const Expenses = () => {
         setDataRecurring(false);
     };
     const [currentExpense, setCurrentExpense] = useState([]);
-    //when mouseDown the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
-    const changeExpense = () => {
-        for (let i = 0; i < expenseData.length; i++) {
-            if (expenseData[i].id === editBtnId) {
-                setCurrentExpense(expenseData[i]);
-                setDataTitle(expenseData[i].title);
-                setDataAmount(expenseData[i].amount);
-                setDataType(expenseData[i].type);
-                setDataDate(expenseData[i].date);
-                setDataRecurring(expenseData[i].recurring);
-                setIncomeOrExpense(expenseData[i].incomeOrExpense);
+    //when mouseOver the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
+    useEffect(() => {
+        const changeExpense = (e) => {
+            for (let i = 0; i < expenseData.length; i++) {
+                if (expenseData[i].id === editBtnId) {
+                    setCurrentExpense(expenseData[i]);
+                    setDataTitle(expenseData[i].title);
+                    setDataAmount(expenseData[i].amount);
+                    setDataType(expenseData[i].type);
+                    setDataDate(expenseData[i].date);
+                    setDataRecurring(expenseData[i].recurring);
+                    setIncomeOrExpense(expenseData[i].incomeOrExpense);
+                }
             }
-        }
-    };
+        };
+        
+        changeExpense();
+    }, [editBtnId]);
     useEffect(() => {
         console.log("getting data");
         const userUid = user.uid;
@@ -204,12 +210,10 @@ export const Expenses = () => {
                         incomeOrExpense: expenseData[i].incomeOrExpense,
                     });
                     setRedoRecurring(!redoRecurring);
-                    
                 }
             }
         };
         addRecurring();
-      
     }, [redoRecurring]);
 
     const offsetPopup = {
@@ -357,6 +361,7 @@ export const Expenses = () => {
 
     const editPopup = (
         <Popup
+   
             modal={true}
             offset={offsetPopup}
             show={false}
@@ -365,7 +370,6 @@ export const Expenses = () => {
             nested
             trigger={
                 <button
-                    onMouseDown={changeExpense}
                     className="edit-expense-btn"
                 >
                     Edit
@@ -459,20 +463,15 @@ export const Expenses = () => {
             )}
         </Popup>
     );
-
-    //without empty dependencies it will search unlimited times
-    // maybe add a timeout function to sense when user stops typing on update then
-    // watch youtube video
     useEffect(() => {
-       const timer = setTimeout(() => {
+        const timer = setTimeout(() => {
             handleSearch();
         }, 350);
 
         return () => {
             clearTimeout(timer);
-        }
-        
-    },[searchBar, expenseData]);
+        };
+    }, [searchBar, expenseData]);
     const handleSearch = () => {
         console.log("searching..");
         if (searchBar === "") {
@@ -656,7 +655,7 @@ export const Expenses = () => {
             )}
         </Popup>
     );
-
+console.log({editBtnId})
     const expenseDataElements = (
         reverseOrder === false ? dataForRows : dataForRows.reverse()
     ).map((data) => (
@@ -686,7 +685,7 @@ export const Expenses = () => {
             <div>
                 <p>{data.id}</p>
             </div>
-            <div onMouseEnter={handleCurrentId} id={data.id}>
+            <div onMouseDownCapture={handleCurrentId} id={data.id}>
                 {editPopup}
             </div>
         </div>
