@@ -9,9 +9,3 @@ main {
   display: flex;
   flex-direction: row;
 }
-
-/* .wrapperStyle {
-  flex: 1;
-  align-items: "center";
-  justify-content: "center";
-} */

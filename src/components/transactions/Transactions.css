@@ -17,7 +17,7 @@
     display: flex;
 }
 .search-btn {
-    background-color: rgb(44, 197, 44);
+    background-color: var(--buttonGreen);
     border: none;
     border-radius: 10px 0px 0px 10px;
     height: 35px;
@@ -27,7 +27,7 @@
     cursor: pointer;
 }
 .search-btn:hover {
-    background-color: rgb(11, 232, 11);
+    background-color: var(--highlightedGreen) ;
 }
 .search {
     margin: 0;
@@ -36,10 +36,10 @@
     height: 31px;
     width: 170px;
     border-radius: 0px 10px 10px 0px;
-    border: 2px solid rgb(44, 197, 44);
+    border: 2px solid var(--buttonGreen);
 }
 .search:hover {
-    border: 2px solid rgb(11, 232, 11);
+    border: 2px solid var(--highlightedGreen);
 }
 
 .nav-line2-right {
@@ -51,7 +51,7 @@
     padding: 0;
     width: 150px;
     height: 35px;
-    background-color: rgb(44, 197, 44);
+    background-color: var(--buttonGreen);
     border-radius: 6px;
     border: none;
     color: white;
@@ -66,13 +66,13 @@
 }
 
 .create-transaction-btn:hover {
-    background: rgb(11, 232, 11);
+    background: var(--highlightedGreen);
 }
 .filter-btn {
     margin: 0px 10px 0px 10px;
     padding: 0;
     height: 35px;
-    background-color: rgb(44, 197, 44);
+    background-color: var(--buttonGreen);
     border-radius: 6px;
     border: none;
     color: white;
@@ -85,7 +85,7 @@
     padding: 6px;
 }
 .filter-btn:hover {
-    background: rgb(11, 232, 11);
+    background: var(--highlightedGreen);
 }
 .row-header {
     background-color: rgba(0, 255, 255, 0.267);
@@ -189,13 +189,13 @@ select {
 textarea:hover,
 input:hover,
 select:hover {
-    border: lightgreen 1px solid;
+    border: var(--buttonGreen) 1px solid;
     outline: none;
 }
 textarea:focus,
 input:focus,
 select:focus {
-    border: lightgreen 1px solid;
+    border: var(--buttonGreen) 1px solid;
     outline: none;
 }
 .recurring-container {
@@ -235,10 +235,10 @@ label {
     border-radius: 10px;
     position: absolute;
     bottom: 20px;
-    background-color: rgb(44, 197, 44);
+    background-color: var(--buttonGreen);
 }
 .popup-add:hover {
-    background: rgb(11, 232, 11);
+    background: var(--highlightedGreen);
 }
 /*👉********FILTER POPUP*********👈*/
 
@@ -265,14 +265,14 @@ label {
 /*👉********EDIT POPUP*********👈*/
 
 .edit-transaction-btn {
-    background-color: rgb(44, 197, 44);
+    background-color: var(--buttonGreen);
     border-radius: 6px;
     border: none;
     color: white;
     cursor: pointer;
 }
 .edit-transaction-btn:hover {
-    background: rgb(11, 232, 11);
+    background: var(--highlightedGreen);
 }
 .recurred-container {
     margin-top: 10px;
@@ -282,11 +282,11 @@ label {
     height: 40px;
     border-radius: 10px;
     margin-top: 40px;
-    background-color: rgb(44, 197, 44);
+    background-color: var(--buttonGreen);
     cursor: pointer;
 }
 .popup-edit:hover {
-    background: rgb(11, 232, 11);
+    background: var(--highlightedGreen);
 }
 .popup-delete {
     background-color: rgb(243, 65, 65);
@@ -319,12 +319,12 @@ label {
     background-color: red;
 }
 .RUSure-no-btn {
-    background-color: rgb(44, 197, 44);
+    background-color: var(--buttonGreen);
     border-radius: 6px;
     border: none;
     height: 25px;
     cursor: pointer;
 }
 .RUSure-no-btn:hover {
-    background: rgb(11, 232, 11);
+    background: var(--highlightedGreen);
 }
