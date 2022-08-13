@@ -1,124 +1,121 @@
 .dashboard-container {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
+    width: 100vw;
+    height: 100vh;
+    position: relative;
 }
 /*👉*********HEADER*********👈*/
 
 .left-and-right-container {
-  display: flex;
-  position: relative;
-  margin-top: 20px;
-  margin-left: 10px;
+    display: flex;
+    position: relative;
+    margin-top: 20px;
+    margin-left: 10px;
 }
 /*👉************Leftside************👈*/
 .leftside-container {
-  width: 70%;
+    width: 70%;
 }
 .three-totals {
-  display: flex;
-  justify-content: space-evenly;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 .three-totals > div {
-  background-color: rgba(0, 255, 255, 0.267);
-  border-radius: 10px;
-  height: 80px;
-  cursor: pointer;
-  flex-basis: 150px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+    background-color: rgba(0, 255, 255, 0.267);
+    border-radius: 10px;
+    height: 80px;
+    cursor: pointer;
+    flex-basis: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .three-totals h5 {
-  margin: 6px;
-  margin-top: 0px;
-  font-size: 1.2rem;
-  color: rgb(59, 1, 249);
+    margin: 6px;
+    margin-top: 0px;
+    font-size: 1.2rem;
+    color: rgb(59, 1, 249);
     text-shadow: 1px 1px 1px grey;
 }
 .three-totals h6 {
-  margin: 2px;
-  font-weight: 500;
+    margin: 2px;
+    font-weight: 500;
 }
 .positive {
-color: green;
+    color: green;
 }
 .negative {
-color: red;
+    color: red;
 }
 .three-totals > div:hover {
-  background-color: aqua;
+    background-color: aqua;
 }
 .three-totals-activated {
-  box-shadow: 0px 0px 242px 5px rgba(0, 255, 255, 0.94) inset;
-  -webkit-box-shadow: 0px 0px 242px 5px rgba(0, 255, 255, 0.94) inset;
-  -moz-box-shadow: 0px 0px 242px 5px rgba(0, 255, 255, 0.94) inset;
+    box-shadow: 0px 0px 242px 5px rgba(0, 255, 255, 0.94) inset;
+    -webkit-box-shadow: 0px 0px 242px 5px rgba(0, 255, 255, 0.94) inset;
+    -moz-box-shadow: 0px 0px 242px 5px rgba(0, 255, 255, 0.94) inset;
 }
 .three-totals-activated h5 {
-color: yellow;
+    color: yellow;
     text-shadow: 2px 2px 2px red;
 }
 .recent-transactions-title {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 
-  margin: -20px 0px;
+    margin: -20px 0px;
 }
 .recent-transactions-title h4 {
- color: rgb(59, 1, 249);
+    color: rgb(59, 1, 249);
     text-shadow: 1px 1px 1px grey;
-    font-size: 1.5rem;
-
+    font-size: 1.3rem;
 }
 .recent-transactions-title h5 {
-  color: darkblue;
-  cursor: pointer;
-
+    color: darkblue;
+    cursor: pointer;
 }
 .recent-transactions-title button {
-  margin: 0;
-  text-decoration: none;
-  background-color: rgba(0, 255, 255, 0.267);
-  border: none;
-  border-radius: 10px;
- 
+    margin: 0;
+    text-decoration: none;
+    background-color: rgba(0, 255, 255, 0.267);
+    border: none;
+    border-radius: 10px;
 }
 .recent-transactions-header {
-  background-color: rgba(0, 255, 255, 0.267);
-  display: grid;
+    background-color: rgba(0, 255, 255, 0.267);
+    display: grid;
 
-  grid-template-columns:
-    minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
-    minmax(80px, 1fr);
+    grid-template-columns:
+        minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
+        minmax(80px, 1fr);
 }
 
 .recent-transactions-data {
-  display: grid;
-  grid-template-columns:
-    minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
-    minmax(80px, 1fr);
-  margin-left: 10px;
-  border-bottom: 1px solid lightgrey;
+    display: grid;
+    grid-template-columns:
+        minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
+        minmax(80px, 1fr);
+    margin-left: 10px;
+    border-bottom: 1px solid lightgrey;
 }
 
 .recent-transactions-data div {
-  margin: 0;
-  display: flex;
-  align-items: center;
-  max-height: 40px;
-  overflow: hidden;
-  white-space: nowrap;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    max-height: 40px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .recent-transactions-data div > p {
-  text-overflow: ellipsis;
-  overflow: hidden;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 .income {
-color: green;
+    color: green;
 }
 .income:hover {
     background-color: rgba(144, 238, 144, 0.2);
@@ -131,41 +128,39 @@ color: green;
 }
 /*👉************Rightside************👈*/
 .rightside-container {
-  width: 30%;
-  margin-left: 10px;
-
+    width: 30%;
+    margin-left: 10px;
 }
 .rightside-container h4 {
-  color: rgb(59, 1, 249);
+    color: rgb(59, 1, 249);
     text-shadow: 1px 1px 1px grey;
     font-size: 1.3rem;
-    
 }
 .recurring-div-income {
-  display: flex;
-  justify-content: space-between;
-  background-color: rgba(0, 255, 255, 0.267);
-  border-radius: 10px;
-  margin-top: 10px;
-  margin-right: 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(0, 255, 255, 0.267);
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
 }
 .recurring-div-income:hover {
-  background-color: aqua;
+    background-color: aqua;
 }
 .recurring-div-income > p {
-  margin: 10px 10px;
+    margin: 10px 10px;
 }
 .recurring-div-expense {
-  display: flex;
-  justify-content: space-between;
-  background-color: rgba(250, 19, 19, 0.4);
-  border-radius: 10px;
-  margin-top: 10px;
-  margin-right: 10px;
+    display: flex;
+    justify-content: space-between;
+    background-color: rgba(250, 19, 19, 0.4);
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
 }
 .recurring-div-expense:hover {
-  background-color: red;
+    background-color: red;
 }
 .recurring-div-expense > p {
-  margin: 10px 10px;
+    margin: 10px 10px;
 }

@@ -190,24 +190,36 @@ const Dashboard = () => {
         getExpenseData();
     }, []);
     const theDate = moment().format("YYYY-MM-DD");
-        const recurring = expenseData.map((data) =>
-            data.recurring === true ? (
-                <div
-                    className={
-                        data.incomeOrExpense === "income"
-                            ? "recurring-div-income"
-                            : "recurring-div-expense"
-                    }
-                >
-                    <p>{data.title}</p>
-                    <p>${data.amount}</p>
-                </div>
-            ) : (
-                <div className="recurring-div-income">
-                    <p>No recurring data found</p>
-                </div>
-            )
-        );
+    useEffect(() => {
+        const getRecurring = () => {
+            const recurringList = [];
+            expenseData.map((data) => {
+                if (data.recurring) {
+                    recurringList.push(data);
+                }
+            });
+            setRecurringData(recurringList);
+        };
+        getRecurring();
+    }, [expenseData]);
+    const recurring = recurringData.map((data) =>
+        data.recurring ? (
+            <div
+                className={
+                    data.incomeOrExpense === "income"
+                        ? "recurring-div-income"
+                        : "recurring-div-expense"
+                }
+            >
+                <p>{data.title}</p>
+                <p>${data.amount}</p>
+            </div>
+        ) : (
+            <div className="recurring-div-income">
+                <p>No recurring data found</p>
+            </div>
+        )
+    );
     const threeMostRecent = threeRecent.slice(0, 3).map((data) => (
         <div
             className={
@@ -425,100 +437,107 @@ const Dashboard = () => {
             setLineOrBar("Bar");
         }
     };
-const threeTotals = (
-    <div className="three-totals">
-        <div
-            value="total"
-            className={
-                dailyMonthlyTotal === "total" ? "three-totals-activated" : null
-            }
-            onClick={() => {
-                setDailyMonthlyTotal("total");
-            }}
-        >
-            <h5>Yearly</h5>
-            <h6>
-                Income : $<span className="positive">{yearlyIncomeTotal}</span>
-            </h6>
-            <h6>
-                Expenses : $-
-                <span className="negative">{yearlyExpenseTotal}</span>
-            </h6>
-            <h6>
-                Total : $
-                <span
-                    className={
-                        yearlyIncomeTotal - yearlyExpenseTotal >= 0
-                            ? "positive"
-                            : "negative"
-                    }
-                >
-                    {yearlyIncomeTotal - yearlyExpenseTotal}
-                </span>
-            </h6>
+    const threeTotals = (
+        <div className="three-totals">
+            <div
+                value="total"
+                className={
+                    dailyMonthlyTotal === "total"
+                        ? "three-totals-activated"
+                        : null
+                }
+                onClick={() => {
+                    setDailyMonthlyTotal("total");
+                }}
+            >
+                <h5>Yearly</h5>
+                <h6>
+                    Income : $
+                    <span className="positive">{yearlyIncomeTotal}</span>
+                </h6>
+                <h6>
+                    Expenses : $-
+                    <span className="negative">{yearlyExpenseTotal}</span>
+                </h6>
+                <h6>
+                    Total : $
+                    <span
+                        className={
+                            yearlyIncomeTotal - yearlyExpenseTotal >= 0
+                                ? "positive"
+                                : "negative"
+                        }
+                    >
+                        {yearlyIncomeTotal - yearlyExpenseTotal}
+                    </span>
+                </h6>
+            </div>
+            <div
+                className={
+                    dailyMonthlyTotal === "monthly"
+                        ? "three-totals-activated"
+                        : null
+                }
+                onClick={() => {
+                    setDailyMonthlyTotal("monthly");
+                }}
+            >
+                <h5>Monthly</h5>
+                <h6>
+                    Income : $
+                    <span className="positive">{monthlyIncomeTotal}</span>
+                </h6>
+                <h6>
+                    Expenses : $-
+                    <span className="negative">{monthlyExpenseTotal}</span>
+                </h6>
+                <h6>
+                    Total : $
+                    <span
+                        className={
+                            monthlyIncomeTotal - monthlyExpenseTotal >= 0
+                                ? "positive"
+                                : "negative"
+                        }
+                    >
+                        {monthlyIncomeTotal - monthlyExpenseTotal}
+                    </span>
+                </h6>
+            </div>
+            <div
+                className={
+                    dailyMonthlyTotal === "daily"
+                        ? "three-totals-activated"
+                        : null
+                }
+                onClick={() => {
+                    setDailyMonthlyTotal("daily");
+                }}
+            >
+                <h5>Daily</h5>
+                <h6>
+                    Income : $
+                    <span className="positive">{dailyIncomeTotal}</span>
+                </h6>
+                <h6>
+                    Expenses : $-
+                    <span className="negative">{dailyExpenseTotal}</span>
+                </h6>
+                <h6>
+                    Total : $
+                    <span
+                        className={
+                            dailyIncomeTotal - dailyExpenseTotal >= 0
+                                ? "positive"
+                                : "negative"
+                        }
+                    >
+                        {dailyIncomeTotal - dailyExpenseTotal}
+                    </span>
+                </h6>
+            </div>
         </div>
-        <div
-            className={
-                dailyMonthlyTotal === "monthly"
-                    ? "three-totals-activated"
-                    : null
-            }
-            onClick={() => {
-                setDailyMonthlyTotal("monthly");
-            }}
-        >
-            <h5>Monthly</h5>
-            <h6>
-                Income : $<span className="positive">{monthlyIncomeTotal}</span>
-            </h6>
-            <h6>
-                Expenses : $-
-                <span className="negative">{monthlyExpenseTotal}</span>
-            </h6>
-            <h6>
-                Total : $
-                <span
-                    className={
-                        monthlyIncomeTotal - monthlyExpenseTotal >= 0
-                            ? "positive"
-                            : "negative"
-                    }
-                >
-                    {monthlyIncomeTotal - monthlyExpenseTotal}
-                </span>
-            </h6>
-        </div>
-        <div
-            className={
-                dailyMonthlyTotal === "daily" ? "three-totals-activated" : null
-            }
-            onClick={() => {
-                setDailyMonthlyTotal("daily");
-            }}
-        >
-            <h5>Daily</h5>
-            <h6>
-                Income : $<span className="positive">{dailyIncomeTotal}</span>
-            </h6>
-            <h6>
-                Expenses : $-
-                <span className="negative">{dailyExpenseTotal}</span>
-            </h6>
-            <h6>
-                Total : $
-                <span
-                    className={
-                        dailyIncomeTotal - dailyExpenseTotal >= 0
-                            ? "positive"
-                            : "negative"
-                    }
-                >
-                    {dailyIncomeTotal - dailyExpenseTotal}
-                </span>
-            </h6>
-        </div>
-    </div>
-);
+    );
     return (
         <div className="dashboard-container">
             <Header headerTitle={"Dashboard"} />
@@ -526,7 +545,7 @@ const threeTotals = (
             <div className="left-and-right-container">
                 <div className="leftside-container">
                     {threeTotals}
-                    
+
                     <div className="chart-container">
                         {lineOrBar === "Bar" ? (
                             <LineChart chartData={chartData} />
