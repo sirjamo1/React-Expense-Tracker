@@ -26,11 +26,11 @@ const Dashboard = () => {
     const userUid = sessionStorage.getItem("uid");
     const [recurringData, setRecurringData] = useState([]);
     const [threeRecent, setThreeRecent] = useState([]);
-    const [yearlyExpenseChart, setYearlyExpenseChart] = useState(); 
+    const [yearlyExpenseChart, setYearlyExpenseChart] = useState();
     const [yearlyExpenseTotal, setYearlyExpenseTotal] = useState();
-    const [yearlyIncomeChart, setYearlyIncomeChart] = useState(); 
-    const [yearlyIncomeTotal, setYearlyIncomeTotal] = useState(); 
-    const [monthlyExpenseChart, setMonthlyExpenseChart] = useState(); 
+    const [yearlyIncomeChart, setYearlyIncomeChart] = useState();
+    const [yearlyIncomeTotal, setYearlyIncomeTotal] = useState();
+    const [monthlyExpenseChart, setMonthlyExpenseChart] = useState();
     const [monthlyIncomeChart, setMonthlyIncomeChart] = useState();
     const [monthlyIncomeTotal, setMonthlyIncomeTotal] = useState();
     const [monthlyExpenseTotal, setMonthlyExpenseTotal] = useState();
@@ -145,17 +145,17 @@ const Dashboard = () => {
                 three.push(userData[i]);
                 if (userData[i].date.slice(0, 4) === theDate.slice(0, 4)) {
                     if (userData[i].incomeOrExpense === "expense") {
-                        yearlyExpense.push(userData[i]); 
-                        yearlyExpenseAmount += parseInt(userData[i].amount); 
+                        yearlyExpense.push(userData[i]);
+                        yearlyExpenseAmount += parseInt(userData[i].amount);
                     } else {
-                        yearlyIncome.push(userData[i]); 
-                        yearlyIncomeAmount += parseInt(userData[i].amount); 
+                        yearlyIncome.push(userData[i]);
+                        yearlyIncomeAmount += parseInt(userData[i].amount);
                     }
                 }
                 if (userData[i].date.slice(0, 7) === theDate.slice(0, 7)) {
                     if (userData[i].incomeOrExpense === "expense") {
                         monthlyExpense.push(userData[i]);
-                        monthlyExpenseAmount += parseInt(userData[i].amount); 
+                        monthlyExpenseAmount += parseInt(userData[i].amount);
                     } else {
                         monthlyIncome.push(userData[i]);
                         monthlyIncomeAmount += parseInt(userData[i].amount);
@@ -189,31 +189,31 @@ const Dashboard = () => {
         };
         getExpenseData();
     }, []);
-    useEffect(() => {
-        const getRecurring = () => {
-            const recurringList = [];
-            for (let i = 0; i < expenseData.length; i++) {
-                if (expenseData[i].recurring === true) {
-                    recurringList.push(expenseData[i]);
-                }
-            }
-            setRecurringData(recurringList);
-        };
-        getRecurring();
-    }, [expenseData]);
     const theDate = moment().format("YYYY-MM-DD");
-    const recurring = recurringData.map((data) => (
-        <div className={data.incomeOrExpense === "income" ? "recurring-div-income" : "recurring-div-expense"}>
-            <p>{data.title}</p>
-            <p>${data.amount}</p>
-        </div>
-    ));
+        const recurring = expenseData.map((data) =>
+            data.recurring === true ? (
+                <div
+                    className={
+                        data.incomeOrExpense === "income"
+                            ? "recurring-div-income"
+                            : "recurring-div-expense"
+                    }
+                >
+                    <p>{data.title}</p>
+                    <p>${data.amount}</p>
+                </div>
+            ) : (
+                <div className="recurring-div-income">
+                    <p>No recurring data found</p>
+                </div>
+            )
+        );
     const threeMostRecent = threeRecent.slice(0, 3).map((data) => (
         <div
             className={
                 data.incomeOrExpense === "income"
-                    ? "recent-expenses-data income"
-                    : "recent-expenses-data expense"
+                    ? "recent-transactions-data income"
+                    : "recent-transactions-data expense"
             }
         >
             <div>
@@ -320,7 +320,7 @@ const Dashboard = () => {
                             fill: true,
                             data: totalIncomeFinal,
                             borderColor: "rgba(6, 236, 6, 1)",
-                            backgroundColor: "rgba(6, 236, 6, 0.3)",
+                            backgroundColor: "rgba(6, 236, 6, 0.2)",
                             borderRadius: 2,
                         },
                     ],
@@ -425,69 +425,108 @@ const Dashboard = () => {
             setLineOrBar("Bar");
         }
     };
-
+const threeTotals = (
+    <div className="three-totals">
+        <div
+            value="total"
+            className={
+                dailyMonthlyTotal === "total" ? "three-totals-activated" : null
+            }
+            onClick={() => {
+                setDailyMonthlyTotal("total");
+            }}
+        >
+            <h5>Yearly</h5>
+            <h6>
+                Income : $<span className="positive">{yearlyIncomeTotal}</span>
+            </h6>
+            <h6>
+                Expenses : $-
+                <span className="negative">{yearlyExpenseTotal}</span>
+            </h6>
+            <h6>
+                Total : $
+                <span
+                    className={
+                        yearlyIncomeTotal - yearlyExpenseTotal >= 0
+                            ? "positive"
+                            : "negative"
+                    }
+                >
+                    {yearlyIncomeTotal - yearlyExpenseTotal}
+                </span>
+            </h6>
+        </div>
+        <div
+            className={
+                dailyMonthlyTotal === "monthly"
+                    ? "three-totals-activated"
+                    : null
+            }
+            onClick={() => {
+                setDailyMonthlyTotal("monthly");
+            }}
+        >
+            <h5>Monthly</h5>
+            <h6>
+                Income : $<span className="positive">{monthlyIncomeTotal}</span>
+            </h6>
+            <h6>
+                Expenses : $-
+                <span className="negative">{monthlyExpenseTotal}</span>
+            </h6>
+            <h6>
+                Total : $
+                <span
+                    className={
+                        monthlyIncomeTotal - monthlyExpenseTotal >= 0
+                            ? "positive"
+                            : "negative"
+                    }
+                >
+                    {monthlyIncomeTotal - monthlyExpenseTotal}
+                </span>
+            </h6>
+        </div>
+        <div
+            className={
+                dailyMonthlyTotal === "daily" ? "three-totals-activated" : null
+            }
+            onClick={() => {
+                setDailyMonthlyTotal("daily");
+            }}
+        >
+            <h5>Daily</h5>
+            <h6>
+                Income : $<span className="positive">{dailyIncomeTotal}</span>
+            </h6>
+            <h6>
+                Expenses : $-
+                <span className="negative">{dailyExpenseTotal}</span>
+            </h6>
+            <h6>
+                Total : $
+                <span
+                    className={
+                        dailyIncomeTotal - dailyExpenseTotal >= 0
+                            ? "positive"
+                            : "negative"
+                    }
+                >
+                    {dailyIncomeTotal - dailyExpenseTotal}
+                </span>
+            </h6>
+        </div>
+    </div>
+);
     return (
         <div className="dashboard-container">
-            <Header headerTitle={"Dashboard"}/>
+            <Header headerTitle={"Dashboard"} />
 
             <div className="left-and-right-container">
                 <div className="leftside-container">
-                    <div className="three-totals">
-                        <div
-                            value="total"
-                            className={
-                                dailyMonthlyTotal === "total"
-                                    ? "three-totals-activated"
-                                    : null
-                            }
-                            onClick={() => {
-                                setDailyMonthlyTotal("total");
-                            }}
-                        >
-                            <h5>Yearly</h5>
-                            <h6>Income : ${yearlyIncomeTotal}</h6>
-                            <h6>Expenses : $-{yearlyExpenseTotal}</h6>
-                            <h6>
-                                Total : $
-                                {yearlyIncomeTotal - yearlyExpenseTotal}{" "}
-                            </h6>
-                        </div>
-                        <div
-                            className={
-                                dailyMonthlyTotal === "monthly"
-                                    ? "three-totals-activated"
-                                    : null
-                            }
-                            onClick={() => {
-                                setDailyMonthlyTotal("monthly");
-                            }}
-                        >
-                            <h5>Monthly</h5>
-                            <h6>Income : ${monthlyIncomeTotal}</h6>
-                            <h6>Expenses : $-{monthlyExpenseTotal}</h6>
-                            <h6>
-                                Total : $
-                                {monthlyIncomeTotal - monthlyExpenseTotal}
-                            </h6>
-                        </div>
-                        <div
-                            className={
-                                dailyMonthlyTotal === "daily"
-                                    ? "three-totals-activated"
-                                    : null
-                            }
-                            onClick={() => {
-                                setDailyMonthlyTotal("daily");
-                            }}
-                        >
-                            <h5>Daily</h5>
-                            <h6>Income : ${dailyIncomeTotal}</h6>
-                            <h6>Expenses : $-{dailyExpenseTotal}</h6>
-                            <h6>
-                                Total : ${dailyIncomeTotal - dailyExpenseTotal}
-                            </h6>
-                        </div>
-                    </div>
+                    {threeTotals}
+                    
                     <div className="chart-container">
                         {lineOrBar === "Bar" ? (
                             <LineChart chartData={chartData} />
@@ -495,17 +534,17 @@ const Dashboard = () => {
                             <BarChart chartData={chartData} />
                         )}
                     </div>
-                    <div className="recent-expenses-title">
+                    <div className="recent-transactions-title">
                         <h4>Recent Transactions</h4>
                         <h5 onClick={changeLineOrBar}>
                             Change to {lineOrBar} Chart
                         </h5>
                         <button>
-                            <Link to="/expenses">View All</Link>
+                            <Link to="/transactions">View All</Link>
                         </button>
                     </div>
 
-                    <div className="recent-expense-header">
+                    <div className="recent-transactions-header">
                         <p>NAME/BUSINESS</p>
                         <p>TYPE</p>
                         <p>AMOUNT</p>

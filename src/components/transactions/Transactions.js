@@ -25,7 +25,7 @@ import {
     serverTimestamp,
 } from "firebase/firestore";
 
-export const Expenses = () => {
+export const Transactions = () => {
     const { user } = useAuth();
     const [userDisplayName, setUserDisplayName] = useState(user.displayName);
     const [expenseData, setExpenseData] = useState([]);
@@ -62,7 +62,6 @@ export const Expenses = () => {
 
     const handleCurrentId = (e) => {
         setEditBtnId(e.currentTarget.id);
-        // changeExpense()
     };
     console.log({ xDaysAgo });
     const handleEditData = async () => {
@@ -84,20 +83,19 @@ export const Expenses = () => {
         setDataRecurring(false);
     };
     const [currentExpense, setCurrentExpense] = useState([]);
-    //when mouseOver the edit buttons parent div, it grabs it's id and compares it to expenseData id to make sure user edits/deletes the one they clicked on
     useEffect(() => {
         const changeExpense = (e) => {
-            for (let i = 0; i < expenseData.length; i++) {
-                if (expenseData[i].id === editBtnId) {
-                    setCurrentExpense(expenseData[i]);
-                    setDataTitle(expenseData[i].title);
-                    setDataAmount(expenseData[i].amount);
-                    setDataType(expenseData[i].type);
-                    setDataDate(expenseData[i].date);
-                    setDataRecurring(expenseData[i].recurring);
-                    setIncomeOrExpense(expenseData[i].incomeOrExpense);
+            expenseData.map((data) => {
+                if (data.id === editBtnId) {
+                    setCurrentExpense(data);
+                    setDataTitle(data.title);
+                    setDataAmount(data.amount);
+                    setDataType(data.type);
+                    setDataDate(data.date);
+                    setDataRecurring(data.recurring);
+                    setIncomeOrExpense(data.incomeOrExpense);
                 }
-            }
+            });
         };
 
         changeExpense();
@@ -252,11 +250,11 @@ export const Expenses = () => {
                 setDataRecurring(false);
             }}
             trigger={
-                <button className="create-expense-btn">
+                <button className="create-transaction-btn">
                     <img
                         src={create}
                         className="create-icon"
-                        alt="create expense icon"
+                        alt="create transaction icon"
                     />
                     Create Income/Expense
                 </button>
@@ -326,6 +324,7 @@ export const Expenses = () => {
                     </div>
                     <div className="radio-btn-container">
                         <input
+                            className="radio-btn"
                             type="radio"
                             name="size"
                             value="income"
@@ -337,6 +336,7 @@ export const Expenses = () => {
                         <label for="income">Income</label>
 
                         <input
+                            className="radio-btn"
                             type="radio"
                             name="size"
                             value="expense"
@@ -370,7 +370,7 @@ export const Expenses = () => {
             closeOnDocumentClick
             className="popup-main"
             nested
-            trigger={<button className="edit-expense-btn">Edit</button>}
+            trigger={<button className="edit-transaction-btn">Edit</button>}
         >
             {(close) => (
                 <div className="popup--container">
@@ -492,7 +492,7 @@ export const Expenses = () => {
             setDataForRows(searchedData);
         }
     };
-    
+
     useEffect(() => {
         const handleXDaysSearch = () => {
             if (xDaysAgo === 0 || xDaysAgo === "") {
@@ -711,7 +711,7 @@ export const Expenses = () => {
         </div>
     ));
     return (
-        <div className="expenses--container">
+        <div className="transactions--container">
             <Header headerTitle={"Transactions"} />
             <div className="transactions-div">
                 <div className="nav-line2">
