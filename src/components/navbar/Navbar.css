@@ -14,7 +14,10 @@
     box-sizing: border-box;
     width: 100%;
     padding: 30px;
+
     color: rgb(59, 1, 249);
+    text-shadow: 3px 3px 3px grey;
+
 }
 .links:hover {
     background: linear-gradient(
@@ -28,6 +31,10 @@
 }
 .links:active {
     background-color: rgb(11, 232, 11);
+}
+.nav-logo {
+    width: 8rem;
+    margin-top: 100px;
 }
 .logout {
     position: absolute;

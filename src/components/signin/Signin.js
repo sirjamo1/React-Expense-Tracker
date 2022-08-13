@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { auth } from "../../firebase-config";
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import GoogleButton from "react-google-button";
+import transAppLogoTransparent from "../images/transAppLogoTransparent.png";
 import { useAuth, user } from "../../Auth";
 
 export const Signin = () => {
@@ -53,8 +54,7 @@ export const Signin = () => {
         <div className="main--container">
             <div className="signin--container">
                 <h1>Sign in</h1>
-                <label>Email
-                </label>
+                <label>Email</label>
                 <input
                     onChange={(event) => {
                         setLoginEmail(event.target.value);
@@ -63,8 +63,7 @@ export const Signin = () => {
                     placeholder="Email"
                     required
                 ></input>
-                <label>Password
-                </label>
+                <label>Password</label>
                 <input
                     onChange={(event) => {
                         setLoginPassword(event.target.value);
@@ -92,8 +91,14 @@ export const Signin = () => {
                 <h4>
                     Don't have an account? <Link to="/signup"> Create one</Link>
                 </h4>
+
+                <img src={transAppLogoTransparent} className="signin-logo" />
             </div>
-            <img src={dollarInBirdCage} alt="dollar bill in a bird cage" />
+            <img
+                className="bird-cage-img"
+                src={dollarInBirdCage}
+                alt="dollar bill in a bird cage"
+            />
         </div>
     );
 };

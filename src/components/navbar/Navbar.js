@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { getAuth, signOut } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
 import logoutIcon from "../icons/logoutIcon.png";
+import transAppLogoTransparent from "../images/transAppLogoTransparent.png"
 import "./Navbar.css";
 export const Navbar = () => {
     const auth = getAuth();
@@ -26,6 +27,8 @@ export const Navbar = () => {
             <NavLink className="links" to="/settings">
                 Settings
             </NavLink>
+            <img src={transAppLogoTransparent}
+            className="nav-logo"/>
             <div className="links logout" onClick={handleLogout}>
                 <img
                     src={logoutIcon}

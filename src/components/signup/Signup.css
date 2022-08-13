@@ -30,9 +30,9 @@ button {
   width: 70px;
   margin-top: 30px;
 }
-.main--container img {
-  max-height: 100vh;
-  width: 60vw;
+.bird-cage-img {
+    min-height: 100vh;
+    width: 60vw;
 }
 
 .google-btn {
@@ -40,4 +40,8 @@ button {
   height: 40px;
   line-height: 40px;
   font-size: 15px;
+}
+.signup-logo {
+    width: 260px; 
+    align-self: center; 
 }

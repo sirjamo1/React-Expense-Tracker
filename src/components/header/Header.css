@@ -12,8 +12,8 @@
     margin-right: 10px;
 }
 .user-icon {
-    width: 20px;
-    margin-right: 4px;
+    width: 22px;
+    margin-right: 8px;
 }
 .title-list {
     text-decoration: none;
@@ -39,9 +39,8 @@
 
 .title-list.moved li:nth-child(1) {
     transition: all 3s ease-in;
-    /*👉transform: translateX(460px);👈*/
-    animation: roll 3s 1 ;
-    animation-fill-mode: forwards
+    animation: roll 3s 1;
+    animation-fill-mode: forwards;
 }
 .title-list.moved li:nth-child(2) {
     transition: all 1.5s ease-out;
@@ -64,7 +63,7 @@
     transform: translateX(460px);
 }
 .title-list.moved li:nth-child(7) {
-    transition: all 1.0s ease-out;
+    transition: all 1s ease-out;
     transform: translateX(460px);
 }
 .title-list.moved li:nth-child(8) {
@@ -76,7 +75,7 @@
     transform: translateX(460px);
 }
 .title-list.moved li:nth-child(10) {
-    transition: all .7s ease-out;
+    transition: all 0.7s ease-out;
     transform: translateX(460px);
 }
 .title-list.moved li:nth-child(11) {
@@ -89,21 +88,30 @@
 }
 
 @keyframes roll {
-  0% {
-    transform: translateX(0px) ;
-  }
- 
+    0% {
+        transform: translateX(0px);
+    }
+
     65% {
-    transform: translateX(460px) rotateZ( 15deg)
-  }
-  70% {
-    transform: translateX(460px) rotateZ( 0deg)
-  }
-  80% {
-    transform: translateX(450px) rotateZ(-30deg)
-  }
-  100% {
-    transform: translateX(460px) rotateZ(0deg) ;
-   /*👉 transform: translateX(460px);👈*/
-  }
+        transform: translateX(460px) rotateZ(15deg);
+    }
+    70% {
+        transform: translateX(460px) rotateZ(0deg);
+    }
+    80% {
+        transform: translateX(450px) rotateZ(-30deg);
+    }
+    100% {
+        transform: translateX(460px) rotateZ(0deg);
+    }
+}
+.user-name {
+    color: aqua;
+    opacity: 0;
+    font-size: 1.6rem;
+    text-shadow: 1px 1px 1px red;
+}
+.user-name.name-moved {
+    transition: all 1.8s ease-in;
+    opacity: 1;
 }

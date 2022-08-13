@@ -3,6 +3,7 @@ import React, { useRef, useState } from "react";
 import dollarInBirdCage from "../images/dollarInBirdCage.png";
 import { Link } from "react-router-dom";
 import { useAuth } from "../../Auth";
+import transAppLogoTransparent from "../images/transAppLogoTransparent.png";
 
 export const ForgotPassword = () => {
   const emailRef = useRef();
@@ -24,34 +25,38 @@ export const ForgotPassword = () => {
   }
 
   return (
-    <div className="main--container">
-      <div className="signin--container">
-        <h1>Password Reset</h1>
-        {error && <h3>{error}</h3>}
-        {message && <h3>{message}</h3>}
-        <label>
-          Email<span className="asterisk"> *</span>
-          <span className="instructions"></span>
-        </label>
-        <input
-          ref={emailRef}
-          id="email"
-          type="email"
-          required
-        ></input>
-        <button onClick={handleReset} className="reset-btn" type="submit">
-          Reset
-        </button>
+      <div className="main--container">
+          <div className="signin--container">
+              <h1>Password Reset</h1>
+              {error && <h3>{error}</h3>}
+              {message && <h3>{message}</h3>}
+              <label>
+                  Email<span className="asterisk"> *</span>
+                  <span className="instructions"></span>
+              </label>
+              <input ref={emailRef} id="email" type="email" required></input>
+              <button onClick={handleReset} className="reset-btn" type="submit">
+                  Reset
+              </button>
 
-        <div className="w-100 text-center mt-3">
-          <Link to="/">Back to Signin</Link>
-        </div>
+              <div className="w-100 text-center mt-3">
+                  <Link to="/">Back to Signin</Link>
+              </div>
 
-        <h4>
-          Don't have an account? <Link to="/signup"> Create One</Link>
-        </h4>
+              <h4>
+                  Don't have an account? <Link to="/signup"> Create One</Link>
+              </h4>
+              <img
+                  className="forgot-password-logo"
+                  src={transAppLogoTransparent}
+                  alt="trans app logo"
+              />
+          </div>
+          <img
+              className="bird-cage-img"
+              src={dollarInBirdCage}
+              alt="dollar bill in a bird cage"
+          />
       </div>
-      <img src={dollarInBirdCage} alt="dollar bill in a bird cage" />
-    </div>
   );
 };

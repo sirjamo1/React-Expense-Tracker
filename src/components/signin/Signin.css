@@ -12,14 +12,14 @@
 }
 h1 {
     align-self: center;
+    font-size: 3rem;
+    background-image: linear-gradient(90deg,#ff0000 0%, #00ff00 80%);
+    background-clip: text;
+    color: transparent;
+    text-shadow: black 1px 1px -1px;
+    -webkit-text-stroke: red .3px;
 }
-.asterisk {
-    color: red;
-}
-.instructions {
-    color: rgb(106, 100, 100);
-    font-size: 0.7rem;
-}
+
 label {
     padding: 10px;
     padding-left: 0px;
@@ -33,7 +33,8 @@ input {
     width: 70px;
     margin-top: 25px;
 }
-.main--container img {
+
+.bird-cage-img {
     min-height: 100vh;
     width: 60vw;
 }
@@ -43,4 +44,9 @@ input {
     line-height: 40px;
     font-size: 15px;
     margin: 20px 0px;
+}
+
+.signin-logo {
+    width: 280px;  
+    align-self: center;
 }

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import dollarInBirdCage from "../images/dollarInBirdCage.png";
 import { db } from "../../firebase-config";
 import { nanoid } from "nanoid";
+import transAppLogoTransparent from "../images/transAppLogoTransparent.png";
 import {
     collection,
     addDoc,
@@ -132,8 +133,13 @@ export function Signup() {
                 <h4>
                     <Link to="/"> Back to sign in page</Link>
                 </h4>
+                <img className="signup-logo" src={transAppLogoTransparent} alt="trans app logo" />
             </div>
-            <img src={dollarInBirdCage} alt="dollar bill in a bird cage" />
+            <img
+                className="bird-cage-img"
+                 src={dollarInBirdCage}
+                alt="dollar bill in a bird cage"
+            />
         </div>
     );
 }
