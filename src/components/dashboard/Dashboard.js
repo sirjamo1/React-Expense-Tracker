@@ -221,7 +221,7 @@ const Dashboard = () => {
         )
     );
     const threeMostRecent = threeRecent.slice(0, 3).map((data) => (
-        <div
+        <div key={data.key}
             className={
                 data.incomeOrExpense === "income"
                     ? "recent-transactions-data income"
