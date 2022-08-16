@@ -1,6 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "@firebase/firestore";
-import { getAuth } from "firebase/auth";
+import { getAuth, updateProfile } from "firebase/auth";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
+import { useAuth } from "../src/Auth"
 //************ NOTE:*********************
 //need to put in your own firebase below*/
 const firebaseConfig = {
@@ -18,6 +20,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
 export const auth = getAuth(app);
+const storage = getStorage();
 
 //James Firebase below
 // const firebaseConfig = {
@@ -29,3 +32,18 @@ export const auth = getAuth(app);
     // appId: "1:307878146582:web:c88dcc8ed679d196577b37",
     // measurementId: "G-RZZS4N2DLM",
 // };
+//STORAGE
+
+export async function upload(file, user, setLoading) {
+    const fileRef = ref(storage, `${user.uid}.png`);
+    console.log({user})
+    setLoading(true);
+
+    const snapshot = await uploadBytes(fileRef, file);
+    const photoURL = await getDownloadURL(fileRef);
+
+    updateProfile(user, { photoURL });
+
+    setLoading(false);
+    alert("Uploaded file!");
+}

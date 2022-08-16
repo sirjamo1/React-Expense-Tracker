@@ -1,7 +1,9 @@
-import React, { useState, useEffect, Component } from "react";
+import React, { useState, useEffect } from "react";
 import "./Settings.css";
 import Popup from "reactjs-popup";
+import "reactjs-popup/dist/index.css";
 import Header from "../header/Header";
+import userIcon from "../icons/userIcon.png";
 import {
     updateProfile,
     updateEmail,
@@ -9,121 +11,200 @@ import {
     reauthenticateWithCredential,
     EmailAuthProvider,
 } from "firebase/auth";
+// import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 
 import { useAuth } from "../../Auth";
+import { upload } from "../../firebase-config";
+// import { upload } from "@testing-library/user-event/dist/upload";
 
 export const Settings = () => {
     const { user } = useAuth();
+    console.log(user.email);
 
     const [userDisplayName, setUserDisplayName] = useState(user.displayName);
     const [userEmail, setUserEmail] = useState(user.email);
     const [userMobile, setUserMobile] = useState(user.phoneNumber);
-    const [userPhoto, setUserPhoto] = useState(user.photoUrl);
+    
     const [userFirstName, setUserFirstName] = useState(
         user.displayName.substring(0, user.displayName.indexOf(" "))
     );
     const [userLastName, setUserLastName] = useState(
         user.displayName.substring(user.displayName.indexOf(" ") + 1)
     );
+    const [editPopupOpen, setEditPopupOpen] = useState(false);
     const [userDOB, setUserDOB] = useState();
-    const [userNewPassword, setUserNewPassword] = useState();
+    const [userNewPassword, setUserNewPassword] = useState("");
     const userUid = user.uid;
-    const [authPopup, setAuthPopup] = useState(false);
 
-    const [reAuthPassword, setReAuthPassword] = useState("");
-
-    // user.providerData.forEach((profile) => {
-    //     console.log("Sign-in provider: " + profile.providerId);
-    //     console.log("  Provider-specific UID: " + profile.uid);
-    //     console.log("  Name: " + profile.displayName);
-    //     console.log("  Email: " + profile.email);
-    //     console.log("  Photo URL: " + profile.photoURL);
-    //     //console.log("  Phone Number: " + profile.phoneNumber); //not sure about this
-    // });
-    //update profile can only update displayName and photoUrl
-    //
-    ///   **********NOTE:*************
-    //update email and password get an error 400 (below) to do with and should wait for the popup to close before resuming function
-    //
-    //https://identitytoolkit.googleapis.com/v1/accounts:update?key=AIzaSyDR90b1grij9mZjZkX_W1eEzk70pX-T1Ww 400     <--error
+    const [currentPassword, setCurrentPassword] = useState("");
+    // const storage = getStorage();
+    const [photo, setPhoto] = useState(null);
+    const [loading, setLoading] = useState(false)
+     const [photoURL, setPhotoURL] = useState(
+         "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+     );
+    // console.log(userEmail);
+    // console.log(currentPassword);
+    // console.log(editPopupOpen);
+    console.log({photo});
+    console.log(user.photoURL)
     const handleUpdate = () => {
+        console.log("handling update");
         if (user.email !== userEmail) {
-            setAuthPopup(true);
-            console.log(authPopup);
-            console.log(user.email);
-            console.log(reAuthPassword);
-            console.log(user);
-
-            const credential = EmailAuthProvider.credential(
-                user.email,
-                reAuthPassword,
-                user.providerData.tenantId
-            );
-            console.log(credential);
-            reauthenticateWithCredential(user, credential).then(() => {
-                updateEmail(user, { userEmail })
-                    .then(() => {
-                        alert(`Email updated to : ${userEmail}`);
-                    })
-                    .catch((error) => {
-                        alert("something went wrong");
-                    });
-            });
+            setEditPopupOpen(true);
+            console.log(editPopupOpen + " this is email");
         }
         if (user.displayName !== `${userFirstName} ${userLastName}`) {
             updateProfile(user, {
                 displayName: `${userFirstName} ${userLastName}`,
                 // photoURL: "https://example.com/jane-q-user/profile.jpg", //maybe make it's own function for img
-            }).then(() => {alert(`Name updated to ${userFirstName} ${userLastName}`);})
-            .catch(
-                (error) => {
+            })
+                .then(() => {
+                    alert(`Name updated to ${userFirstName} ${userLastName}`);
+                })
+                .catch((error) => {
                     alert("something went wrong");
-                }
-            );
+                });
         }
         if (userNewPassword) {
-            setAuthPopup(true);
-            const credential = EmailAuthProvider.credential(
-                user.email,
-                reAuthPassword,
-                user.providerData.tenantId
-            );
-            console.log(credential);
-            reauthenticateWithCredential(user, credential).then(() => {
-                updatePassword(user, { userNewPassword })
-                    .then(() => {
-                        alert("Password Updated!");
-                    })
-                    .catch((error) => {
-                        alert("something went wrong");
-                    });
-            });
+            setEditPopupOpen(true);
+            console.log(editPopupOpen + "password");
         }
     };
-    const changeAuthPopupState = () => {
-        setAuthPopup(false);
+    const handleEmailUpdate = () => {
+        updateEmail(user, `${userEmail}`)
+            .then(() => {
+                alert(`Email updated to : ${userEmail}`);
+            })
+            .catch((error) => {
+                alert("something went wrong");
+            });
     };
+    const handlePasswordUpdate = () => {
+        updatePassword(user, `${userNewPassword}`)
+            .then(() => {
+                alert("Password Updated!");
+            })
+            .catch((error) => {
+                alert("something went wrong");
+            });
+    };
+    const handleAuthEdit = () => {
+        const credential = EmailAuthProvider.credential(
+            user.email,
+            currentPassword
+        );
+        reauthenticateWithCredential(user, credential)
+            .then(() => {
+                console.log("Auth succeeded");
+                if (user.email !== userEmail && userNewPassword) {
+                    handleEmailUpdate();
+                    handlePasswordUpdate();
+                } else if (user.email !== userEmail) {
+                    handleEmailUpdate();
+                } else if (userNewPassword) {
+                    handlePasswordUpdate();
+                }
+            })
+            .catch((error) => {
+                console.log("auth failed");
+            });
+    };
+    //bill@hotmail.com
+    //password1
+//************************************************************************************************* */
+    // const handleClick = async () => {
+    //     const handlePhotoChange = (e) => {
+    //         if (e.target.files[0]) {
+    //             setPhoto(e.target.files[0])
+    //         }
+    //     }
+    //     console.log(photo)
+    //    const handleUpload = async (photo, user) => {
+    //     console.log(photo)
+        
+    //         const fileRef = ref(storage, userUid + ".png");
+    //         console.log({fileRef})
+    //         setLoading(true);
+    //         const snapshot = await uploadBytes(fileRef, photo);
+    //         const photoURL = await getDownloadURL(fileRef);
+    //         updateProfile(user, {photoURL});
+    //         setLoading(false);
+    //         alert("image Uploaded!")
+    //     }
+    // // };
+    // useEffect(() => {
+    //     if (user?.photoURL) {
+    //         setPhotoURL(user.photoURL);
+    //     }
+    // }, [user]);
+    // console.log(user.uid)
+    function handlePhotoChange(e) {
+        if (e.target.files[0]) {
+            setPhoto(e.target.files[0]);
+        }
+    }
+
+    function handleUpload() {
+        upload(photo, user, setLoading);
+    }
+
+    useEffect(() => {
+        if (user?.photoURL) {
+            setPhotoURL(user.photoURL);
+        }
+    }, [user]);
+    // console.log(user)
+//*************************************************************************************************** */
+    const offsetPopup = {
+        right: 400,
+        bottom: 50,
+    };
+
     const reAuthPopup = (
-        <Popup open={authPopup} onClose={changeAuthPopupState} show={true}>
-            <div>
-                <label>
-                    this is for Reauth
-                    <span className="instructions">
-                        (Password must be a match)
-                    </span>
-                </label>
-                <input
-                    onChange={(event) => {
-                        setReAuthPassword(event.target.value);
-                    }}
-                    type="password"
-                    placeholder="re auth pass"
-                    //defaultValue={userPassword}
-                ></input>
-                <button>Edit</button>
-            </div>
+        <Popup
+            modal={true}
+            offset={offsetPopup}
+            show={true}
+            closeOnDocumentClick={false}
+            className="popup-main"
+            open={editPopupOpen}
+        >
+            {(close) => (
+                <div className="popup--container">
+                    <input
+                        onChange={(event) => {
+                            setCurrentPassword(event.target.value);
+                        }}
+                        type="password"
+                        placeholder="re auth pass"
+                    ></input>
+                    <button
+                        className="popup-add"
+                        onClick={() => {
+                            console.log("confirmed");
+                            handleAuthEdit();
+                            close();
+                            setEditPopupOpen(false);
+                        }}
+                    >
+                        Confirm
+                    </button>
+                    <button
+                        // className="popup-add"
+                        onClick={() => {
+                            console.log("canceled");
+                            close();
+                            setEditPopupOpen(false);
+                        }}
+                    >
+                        Cancel
+                    </button>
+                </div>
+            )}
         </Popup>
     );
+
     const userAccount = (
         <div>
             <Header headerTitle={"Settings"} />
@@ -175,6 +256,16 @@ export const Settings = () => {
                         placeholder={userMobile}
                     ></input>
                 </div>
+            </div>
+            {/* ******************************************************************************* */}
+            <div className="img-row">
+                <img src={photoURL} alt="Avatar" className="avatar"></img>
+                <input
+                    type="file"
+                    className="file-input"
+                    onChange={handlePhotoChange}
+                ></input>
+                <button disabled={loading || !photo} onClick={handleUpload}>upload</button>
             </div>
             <div className="email-row">
                 <label>
