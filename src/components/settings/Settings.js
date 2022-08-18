@@ -4,6 +4,7 @@ import Popup from "reactjs-popup";
 import "reactjs-popup/dist/index.css";
 import Header from "../header/Header";
 import userIcon from "../icons/userIcon.png";
+import transAppLogoTransparentNoText from "../images/transAppLogoTransparentNoText.png";
 import {
     updateProfile,
     updateEmail,
@@ -24,7 +25,7 @@ export const Settings = () => {
     const [userDisplayName, setUserDisplayName] = useState(user.displayName);
     const [userEmail, setUserEmail] = useState(user.email);
     const [userMobile, setUserMobile] = useState(user.phoneNumber);
-    
+
     const [userFirstName, setUserFirstName] = useState(
         user.displayName.substring(0, user.displayName.indexOf(" "))
     );
@@ -39,15 +40,21 @@ export const Settings = () => {
     const [currentPassword, setCurrentPassword] = useState("");
     // const storage = getStorage();
     const [photo, setPhoto] = useState(null);
-    const [loading, setLoading] = useState(false)
-     const [photoURL, setPhotoURL] = useState(
-         "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
-     );
+    const [loading, setLoading] = useState(false);
+    const [photoURL, setPhotoURL] = useState(
+        "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
+    );
     // console.log(userEmail);
     // console.log(currentPassword);
     // console.log(editPopupOpen);
-    console.log({photo});
-    console.log(user.photoURL)
+    console.log({ photo });
+    console.log(user.photoURL);
+    useEffect(() => {
+        if (user?.photoURL) {
+            setPhotoURL(user.photoURL);
+        }
+    }, [user]);
+
     const handleUpdate = () => {
         console.log("handling update");
         if (user.email !== userEmail) {
@@ -57,7 +64,6 @@ export const Settings = () => {
         if (user.displayName !== `${userFirstName} ${userLastName}`) {
             updateProfile(user, {
                 displayName: `${userFirstName} ${userLastName}`,
-                // photoURL: "https://example.com/jane-q-user/profile.jpg", //maybe make it's own function for img
             })
                 .then(() => {
                     alert(`Name updated to ${userFirstName} ${userLastName}`);
@@ -70,6 +76,12 @@ export const Settings = () => {
             setEditPopupOpen(true);
             console.log(editPopupOpen + "password");
         }
+        if (photo) {
+            handleUpload();
+        }
+    };
+    const handleUpload = () => {
+        upload(photo, user, setLoading);
     };
     const handleEmailUpdate = () => {
         updateEmail(user, `${userEmail}`)
@@ -112,50 +124,7 @@ export const Settings = () => {
     };
     //bill@hotmail.com
     //password1
-//************************************************************************************************* */
-    // const handleClick = async () => {
-    //     const handlePhotoChange = (e) => {
-    //         if (e.target.files[0]) {
-    //             setPhoto(e.target.files[0])
-    //         }
-    //     }
-    //     console.log(photo)
-    //    const handleUpload = async (photo, user) => {
-    //     console.log(photo)
-        
-    //         const fileRef = ref(storage, userUid + ".png");
-    //         console.log({fileRef})
-    //         setLoading(true);
-    //         const snapshot = await uploadBytes(fileRef, photo);
-    //         const photoURL = await getDownloadURL(fileRef);
-    //         updateProfile(user, {photoURL});
-    //         setLoading(false);
-    //         alert("image Uploaded!")
-    //     }
-    // // };
-    // useEffect(() => {
-    //     if (user?.photoURL) {
-    //         setPhotoURL(user.photoURL);
-    //     }
-    // }, [user]);
-    // console.log(user.uid)
-    function handlePhotoChange(e) {
-        if (e.target.files[0]) {
-            setPhoto(e.target.files[0]);
-        }
-    }
 
-    function handleUpload() {
-        upload(photo, user, setLoading);
-    }
-
-    useEffect(() => {
-        if (user?.photoURL) {
-            setPhotoURL(user.photoURL);
-        }
-    }, [user]);
-    // console.log(user)
-//*************************************************************************************************** */
     const offsetPopup = {
         right: 400,
         bottom: 50,
@@ -204,118 +173,139 @@ export const Settings = () => {
             )}
         </Popup>
     );
-
+ const handleHeaderIcon = () => {
+     if (user.photoURL == "https://example.com/jane-q-user/profile.jpg") {
+         return transAppLogoTransparentNoText;
+     } else {
+         return user.photoURL;
+     }
+ };
     const userAccount = (
-        <div>
-            <Header headerTitle={"Settings"} />
+        <form className="settings-info-container">
             <div className="account-info">
                 <h3>Account Information</h3>
                 <p>Update your account information</p>
             </div>
-            <div className="personal-info-editBtn-row">
-                <h4>Personal Information</h4>
-                {reAuthPopup}
-                <button onClick={handleUpdate}>Edit</button>
-            </div>
-            <div className="names-row">
-                <div className="first-name">
-                    <label type="text">First Name</label>
+            <div className="info-card">
+                <div className="img-row">
+                    <img src={handleHeaderIcon()} alt="Avatar" className="avatar"></img>
                     <input
+                        type="file"
+                        className="file-input"
                         onChange={(event) => {
-                            setUserFirstName(event.target.value);
+                            setPhoto(event.target.files[0]);
                         }}
-                        placeholder={userFirstName}
                     ></input>
                 </div>
-                <div className="last-name">
-                    <label type="text">Last Name</label>
-                    <input
-                        onChange={(event) => {
-                            setUserLastName(event.target.value);
+                <div className="user-details-container">
+                    <div className="names-row">
+                        <div className="first-name">
+                            <label type="text">First Name</label>
+                            <input
+                                onChange={(event) => {
+                                    setUserFirstName(event.target.value);
+                                }}
+                                placeholder={userFirstName}
+                            ></input>
+                        </div>
+                        <div className="last-name">
+                            <label type="text">Last Name</label>
+                            <input
+                                onChange={(event) => {
+                                    setUserLastName(event.target.value);
+                                }}
+                                placeholder={userLastName}
+                            ></input>
+                        </div>
+                    </div>
+                    <div className="DOB-mobile-row">
+                        <div className="DOB">
+                            <label>Date of Birth</label>
+                            <input
+                                onChange={(event) => {
+                                    setUserDOB(event.target.value);
+                                }}
+                                type="date"
+                            ></input>
+                        </div>
+                        <div className="mobile">
+                            <label>Mobile Phone</label>
+                            <input
+                                onChange={(event) => {
+                                    setUserMobile(event.target.value);
+                                }}
+                                placeholder={userMobile}
+                            ></input>
+                        </div>
+                    </div>
+                    <div className="email-password-container">
+                        <div className="email-password-div">
+                            <label>
+                                Email
+                                <span className="instructions">
+                                    (Must be a valid e-mail address)
+                                </span>
+                            </label>
+                            <input
+                                onChange={(event) => {
+                                    setUserEmail(event.target.value);
+                                }}
+                                type="email"
+                                placeholder={userEmail}
+                            ></input>
+                        </div>
+
+                        <div className="email-password-div">
+                            <label>
+                                Password
+                                <span className="instructions">
+                                    (Password must be a match)
+                                </span>
+                            </label>
+                            <input
+                                onChange={(event) => {
+                                    setUserNewPassword(event.target.value);
+                                }}
+                                type="password"
+                                placeholder="Password"
+                            ></input>
+                        </div>
+
+                        <div className="email-password-div">
+                            <label>
+                                Password Confirmation
+                                <span className="instructions">
+                                    (Password must be a match)
+                                </span>
+                            </label>
+                            <input
+                                onChange={(event) => {
+                                    setUserNewPassword(event.target.value);
+                                }}
+                                type="password"
+                                placeholder="Password Confirmation"
+                            ></input>
+                        </div>
+                    </div>
+
+                    {reAuthPopup}
+                    <button
+                        className="edit-btn"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleUpdate();
                         }}
-                        placeholder={userLastName}
-                    ></input>
+                    >
+                        Save
+                    </button>
                 </div>
             </div>
-            <div className="DOB-mobile-row">
-                <div className="DOB">
-                    <label>Date of Birth</label>
-                    <input
-                        onChange={(event) => {
-                            setUserDOB(event.target.value);
-                        }}
-                        type="date"
-                    ></input>
-                </div>
-                <div className="mobile">
-                    <label>Mobile</label>
-                    <input
-                        onChange={(event) => {
-                            setUserMobile(event.target.value);
-                        }}
-                        placeholder={userMobile}
-                    ></input>
-                </div>
-            </div>
-            {/* ******************************************************************************* */}
-            <div className="img-row">
-                <img src={photoURL} alt="Avatar" className="avatar"></img>
-                <input
-                    type="file"
-                    className="file-input"
-                    onChange={handlePhotoChange}
-                ></input>
-                <button disabled={loading || !photo} onClick={handleUpload}>upload</button>
-            </div>
-            <div className="email-row">
-                <label>
-                    Email
-                    <span className="instructions">
-                        (Must be a valid e-mail address)
-                    </span>
-                </label>
-                <input
-                    onChange={(event) => {
-                        setUserEmail(event.target.value);
-                    }}
-                    type="email"
-                    placeholder={userEmail}
-                    //defaultValue={data.email}
-                ></input>
-            </div>
-            <div className="email-row">
-                <label>
-                    Password
-                    <span className="instructions">
-                        (Password must be a match)
-                    </span>
-                </label>
-                <input
-                    onChange={(event) => {
-                        setUserNewPassword(event.target.value);
-                    }}
-                    type="password"
-                    placeholder="Password"
-                    //defaultValue={data.email}
-                ></input>
-            </div>
-            <div className="email-row">
-                <label>
-                    Password Confirmation
-                    <span className="instructions">
-                        (Password must be a match)
-                    </span>
-                </label>
-                <input
-                    onChange={(event) => {
-                        setUserNewPassword(event.target.value);
-                    }}
-                    type="password"
-                    placeholder="Password Confirmation"
-                    //defaultValue={userPassword}
-                ></input>
-            </div>
+        </form>
+    );
+    return (
+        <div className="settings--container">
+            <Header headerTitle={"Settings"} />
+            {userAccount}
         </div>
     );
-    return <div className="settings--container">{userAccount}</div>;
 };
