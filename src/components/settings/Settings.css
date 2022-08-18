@@ -15,12 +15,15 @@
     justify-content: center;
 }
 .account-info h3 {
+    margin-top: 5px;
+    font-size: 1.3rem;
     margin-bottom: 0px;
-    color: rgb(59, 1, 249);
-    text-shadow: 3px 3px 3px grey;
+    color: rgb(11, 232, 11);
+    text-shadow: 1px 1px 1px red;
 }
 .account-info p {
     margin-top: 2px;
+    font-size: 0.8rem;
     color: rgb(59, 1, 249);
     text-shadow: 3px 3px 3px grey;
 }

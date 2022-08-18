@@ -28,7 +28,6 @@ function Header(props) {
     const pageTitleListed = getPageTitle().map((letter) => (
         <li className={letterStyles}>{letter}</li>
     ));
-    console.log(user.photoURL)
      const handleHeaderIcon = () => {
         if (user.photoURL == "https://example.com/jane-q-user/profile.jpg" ) {
             return transAppLogoTransparentNoText;

@@ -93,7 +93,7 @@ export const Signin = () => {
                     Don't have an account? <Link to="/signup"> Create one</Link>
                 </h4>
 
-                <img src={transAppLogoTransparent} className="signin-logo" />
+                <img src={transAppLogoTransparent}alt="trans app logo" className="signin-logo" />
             </div>
             <img
                 className="bird-cage-img"

@@ -474,6 +474,8 @@ export const Transactions = () => {
         console.log("searching..");
         if (searchBar === "") {
             setDataForRows(expenseData);
+          
+            
         } else {
             let searchedData = [];
             expenseData.map((data) => {
@@ -494,27 +496,36 @@ export const Transactions = () => {
     };
 
     useEffect(() => {
-        const handleXDaysSearch = () => {
-            if (xDaysAgo === 0 || xDaysAgo === "") {
-                setDataForRows(expenseData);
-            } else {
-                let xDaysAgoData = [];
-                const days = xDaysAgo;
-                const xDaysBefore = moment()
-                    .subtract({ days }, "days")
-                    .format("YYYY-MM-DD");
-                expenseData.map((data) => {
-                    let expenseDate = new Date(data.date.slice(0, 10));
-                    let xDaysDate = new Date(xDaysBefore);
-                    if (xDaysDate - expenseDate <= 0) {
-                        xDaysAgoData.push(data);
-                    }
-                });
-                setDataForRows(xDaysAgoData);
-            }
+        const timer = setTimeout(() => {
+            handleXDaysSearch();
+        }, 350);
+
+        return () => {
+            clearTimeout(timer);
         };
-        handleXDaysSearch();
-    }, [xDaysAgo]);
+    }, [xDaysAgo, expenseData]);
+
+    const handleXDaysSearch = () => {
+        if (xDaysAgo === 0 || xDaysAgo === "") {
+            setDataForRows(expenseData);
+            handleSearch()
+        } else {
+            handleSearch()
+            let xDaysAgoData = [];
+            const days = xDaysAgo;
+            const xDaysBefore = moment()
+                .subtract({ days }, "days")
+                .format("YYYY-MM-DD");
+            dataForRows.map((data) => {
+                let expenseDate = new Date(data.date.slice(0, 10));
+                let xDaysDate = new Date(xDaysBefore);
+                if (xDaysDate - expenseDate <= 0) {
+                    xDaysAgoData.push(data);
+                }
+            });
+            setDataForRows(xDaysAgoData);
+        }
+    };
 
     dataForRows.sort((a, b) => {
         if (filterOption === "title") {

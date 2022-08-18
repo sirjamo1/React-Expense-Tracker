@@ -124,7 +124,7 @@ export const Settings = () => {
     };
     //bill@hotmail.com
     //password1
-
+console.log(user.photoURL);
     const offsetPopup = {
         right: 400,
         bottom: 50,
