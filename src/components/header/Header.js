@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import userIcon from "../icons/userIcon.png";
+import transAppLogoTransparentNoText from "../images/transAppLogoTransparentNoText.png" 
 import { useAuth } from "../../Auth";
 import "./Header.css";
 
@@ -27,13 +28,28 @@ function Header(props) {
     const pageTitleListed = getPageTitle().map((letter) => (
         <li className={letterStyles}>{letter}</li>
     ));
+    console.log(user.photoURL)
+     const handleHeaderIcon = () => {
+        if (user.photoURL == "https://example.com/jane-q-user/profile.jpg" ) {
+            return transAppLogoTransparentNoText;
+        }
+        else {
+            return user.photoURL
+        }
+    }
     return (
         <div className="dashboard-header">
             <ul className={titleStyles}>{pageTitleListed}</ul>
-            <h4 className={userNameStyles}>
-                <img src={user.photoURL ? user.photoURL : userIcon} alt="user icon" className="user-icon" />
-                {user.displayName}
-            </h4>
+            <div className={userNameStyles}>
+                <img
+                    src={
+                        handleHeaderIcon()
+                    }
+                    alt="user icon"
+                    className="user-icon"
+                />
+                <h4> {user.displayName}</h4>
+            </div>
         </div>
     );
 }

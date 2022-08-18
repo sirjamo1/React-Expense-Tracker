@@ -34,6 +34,7 @@ export const Signin = () => {
             navigate("/dashboard");
         } catch (error) {
             console.log(error.message);
+            alert(error.message)
         }
     };
 
