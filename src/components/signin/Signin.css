@@ -1,4 +1,4 @@
-.main--container {
+.signin-main--container {
     display: flex;
     flex-direction: row;
     background: aqua;
@@ -10,14 +10,18 @@
     margin: 15px;
     padding: 20px;
 }
+.signin-form {
+    display: flex;
+    flex-direction: column;
+}
 h1 {
     align-self: center;
     font-size: 3rem;
-    background-image: linear-gradient(90deg,#ff0000 0%, #00ff00 80%);
+    background-image: linear-gradient(90deg, #ff0000 0%, #00ff00 80%);
     background-clip: text;
     color: transparent;
     text-shadow: black 1px 1px -1px;
-    -webkit-text-stroke: red .3px;
+    -webkit-text-stroke: red 0.3px;
 }
 
 label {
@@ -47,6 +51,46 @@ input {
 }
 
 .signin-logo {
-    width: 280px;  
+    width: 280px;
     align-self: center;
+}
+
+@media screen and (max-width: 400px) {
+    .signin-main--container {
+        flex-direction: column;
+        height: 100vh;
+        width: 100vw;
+        background: aqua;
+        align-items: center;
+    }
+    .signin--container {
+        display: flex;
+        align-items: center;
+     /*👉   border: #ff0000 solid 1px;👈*/
+        width: 80%;
+    }
+    .signin-form {
+        width: 90%;
+    }
+    .signin-form input {
+        width:215px ;
+    }
+    .signin--container h1 {
+        width: 200px;
+        text-align: center;
+        margin-left:50%;
+        margin-right: 50%;
+        
+      /*👉  border: red solid 1px👈*/
+    }
+    .google-links {
+    }
+    .signin-logo {
+        width: 183px;
+        position: fixed;
+        bottom: 10px;
+    }
+    .bird-cage-img {
+        display: none;
+    }
 }

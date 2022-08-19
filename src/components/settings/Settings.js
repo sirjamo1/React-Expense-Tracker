@@ -20,7 +20,7 @@ import { upload } from "../../firebase-config";
 
 export const Settings = () => {
     const { user } = useAuth();
-    console.log(user.email);
+    console.log(user);
 
     const [userDisplayName, setUserDisplayName] = useState(user.displayName);
     const [userEmail, setUserEmail] = useState(user.email);
@@ -174,7 +174,10 @@ console.log(user.photoURL);
         </Popup>
     );
  const handleHeaderIcon = () => {
-     if (user.photoURL == "https://example.com/jane-q-user/profile.jpg") {
+     if (
+         user.photoURL === "https://example.com/jane-q-user/profile.jpg" ||
+         user.photoURL === null
+     ) {
          return transAppLogoTransparentNoText;
      } else {
          return user.photoURL;
@@ -290,6 +293,7 @@ console.log(user.photoURL);
 
                     {reAuthPopup}
                     <button
+                    type="submit"
                         className="edit-btn"
                         onClick={(e) => {
                             e.preventDefault();

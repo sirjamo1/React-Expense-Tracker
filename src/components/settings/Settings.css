@@ -73,7 +73,10 @@ form label {
 .user-details-container input {
     width: 90%;
 }
-
+.user-details-container input[type=date] {
+    width: 127%;
+    height: 15px;
+}
 .names-row {
     display: flex;
     justify-content: space-between;
@@ -85,6 +88,9 @@ form label {
     display: flex;
     justify-content: space-between;
 }
+/*👉.DOB {
+    width: 50%;
+}👈*/
 .email-password-container input {
     width: 95%;
 }

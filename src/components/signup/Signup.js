@@ -71,59 +71,64 @@ export function Signup() {
     };
 
     return (
-        <div className="main--container">
+        <div className="signup-main--container">
             <div className="signup--container">
                 <h1>Sign up</h1>
-                <label>
-                    Full Name<span className="asterisk"> * </span>
-                    <span className="instructions"></span>
-                </label>
-                <input
-                    onChange={(event) => {
-                        setRegisterFullName(event.target.value);
-                    }}
-                    type="text"
-                    placeholder="Full Name"
-                    required
-                ></input>
-                <label>
-                    Email<span className="asterisk"> * </span>
-                    <span className="instructions">
-                        (Must be a valid e-mail address)
-                    </span>
-                </label>
-                <input
-                    onChange={(event) => {
-                        setRegisterEmail(event.target.value);
-                    }}
-                    type="email"
-                    placeholder="Email"
-                    required
-                ></input>
-                <label>
-                    Password<span className="asterisk"> * </span>
-                    <span className="instructions">
-                        (Minimum eight characters, at least one letter and one
-                        number)
-                    </span>
-                </label>
-                <input
-                    onChange={(event) => {
-                        setRegisterPassword(event.target.value);
-                    }}
-                    type="password"
-                    placeholder="password"
-                    pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-                    required
-                ></input>
+                <form className="signup-form">
+                    <label>
+                        Full Name<span className="asterisk"> * </span>
+                        <span className="instructions"></span>
+                    </label>
+                    <input
+                        onChange={(event) => {
+                            setRegisterFullName(event.target.value);
+                        }}
+                        type="text"
+                        placeholder="Full Name"
+                        required
+                    ></input>
+                    <label>
+                        Email<span className="asterisk"> * </span>
+                        <span className="instructions">
+                            (Must be a valid e-mail address)
+                        </span>
+                    </label>
+                    <input
+                        onChange={(event) => {
+                            setRegisterEmail(event.target.value);
+                        }}
+                        type="email"
+                        placeholder="Email"
+                        required
+                    ></input>
+                    <label>
+                        Password<span className="asterisk"> * </span>
+                        <span className="instructions">
+                            (Minimum eight characters, at least one letter and
+                            one number)
+                        </span>
+                    </label>
+                    <input
+                        onChange={(event) => {
+                            setRegisterPassword(event.target.value);
+                        }}
+                        type="password"
+                        placeholder="password"
+                        pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                        required
+                    ></input>
 
-                <button
-                    onClick={handleRegister}
-                    className="signup--submit"
-                    type="submit"
-                >
-                    Sign Up
-                </button>
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleRegister();
+                        }}
+                        className="signup--submit"
+                        type="submit"
+                    >
+                        Sign Up
+                    </button>
+                </form>
                 <GoogleButton
                     className="google-btn"
                     type="dark"
@@ -133,11 +138,15 @@ export function Signup() {
                 <h4>
                     <Link to="/"> Back to sign in page</Link>
                 </h4>
-                <img className="signup-logo" src={transAppLogoTransparent} alt="trans app logo" />
+                <img
+                    className="signup-logo"
+                    src={transAppLogoTransparent}
+                    alt="trans app logo"
+                />
             </div>
             <img
                 className="bird-cage-img"
-                 src={dollarInBirdCage}
+                src={dollarInBirdCage}
                 alt="dollar bill in a bird cage"
             />
         </div>

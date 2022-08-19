@@ -52,48 +52,60 @@ export const Signin = () => {
     };
 
     return (
-        <div className="main--container">
+        <div className="signin-main--container">
             <div className="signin--container">
                 <h1>Sign in</h1>
-                <label>Email</label>
-                <input
-                    onChange={(event) => {
-                        setLoginEmail(event.target.value);
-                    }}
-                    type="email"
-                    placeholder="Email"
-                    required
-                ></input>
-                <label>Password</label>
-                <input
-                    onChange={(event) => {
-                        setLoginPassword(event.target.value);
-                    }}
-                    type="password"
-                    placeholder="password"
-                    pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
-                    required
-                ></input>
-                <button
-                    onClick={handleSignin}
-                    className="submit-btn"
-                    type="submit"
-                >
-                    Sign in
-                </button>
-                <GoogleButton
-                    className="google-btn"
-                    type="dark"
-                    onClick={handleGoogleSignIn}
-                />
-                <div>
-                    <Link to="/forgotPassword">Forgot Password?</Link>
+                <form className="signin-form">
+                    <label>Email</label>
+                    <input
+                        onChange={(event) => {
+                            setLoginEmail(event.target.value);
+                        }}
+                        type="email"
+                        placeholder="Email"
+                        required
+                    ></input>
+                    <label>Password</label>
+                    <input
+                        onChange={(event) => {
+                            setLoginPassword(event.target.value);
+                        }}
+                        type="password"
+                        placeholder="password"
+                        pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$"
+                        required
+                    ></input>
+                    <button
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleSignin();
+                        }}
+                        className="submit-btn"
+                        type="submit"
+                    >
+                        Sign in
+                    </button>
+                </form>
+                <div className="google-links">
+                    <GoogleButton
+                        className="google-btn"
+                        type="dark"
+                        onClick={handleGoogleSignIn}
+                    />
+                    <div>
+                        <Link to="/forgotPassword">Forgot Password?</Link>
+                    </div>
+                    <h4>
+                        Don't have an account?{" "}
+                        <Link to="/signup"> Create one</Link>
+                    </h4>
                 </div>
-                <h4>
-                    Don't have an account? <Link to="/signup"> Create one</Link>
-                </h4>
 
-                <img src={transAppLogoTransparent}alt="trans app logo" className="signin-logo" />
+                <img
+                    src={transAppLogoTransparent}
+                    alt="trans app logo"
+                    className="signin-logo"
+                />
             </div>
             <img
                 className="bird-cage-img"

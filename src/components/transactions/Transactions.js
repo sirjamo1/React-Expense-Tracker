@@ -100,6 +100,7 @@ export const Transactions = () => {
 
         changeExpense();
     }, [editBtnId]);
+    console.log(user)
     useEffect(() => {
         console.log("getting data");
         const userUid = user.uid;
@@ -261,7 +262,7 @@ export const Transactions = () => {
             }
         >
             {(close) => (
-                <div className="popup--container">
+                <form className="popup--container">
                     <input
                         onChange={(event) => {
                             setDataTitle(event.target.value);
@@ -350,14 +351,15 @@ export const Transactions = () => {
 
                     <button
                         className="popup-add"
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.preventDefault();
                             handleCreateData();
                             close();
                         }}
                     >
                         Add
                     </button>
-                </div>
+                </form>
             )}
         </Popup>
     );
@@ -373,7 +375,7 @@ export const Transactions = () => {
             trigger={<button className="edit-transaction-btn">Edit</button>}
         >
             {(close) => (
-                <div className="popup--container">
+                <form className="popup--container">
                     <input
                         onChange={(event) => {
                             setDataTitle(event.target.value);
@@ -420,7 +422,8 @@ export const Transactions = () => {
 
                     <button
                         className="popup-edit"
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.preventDefault();
                             handleEditData();
                             close();
                         }}
@@ -429,17 +432,24 @@ export const Transactions = () => {
                     </button>
                     <Popup
                         trigger={
-                            <button className="popup-delete">Delete</button>
+                            <button
+                            type="button"
+                                className="popup-delete"
+                                onClick={(e) => e.preventDefault()}
+                            >
+                                Delete
+                            </button>
                         }
                         position="top"
                     >
                         <div className="RUSure-container">
                             <p>Are you sure?</p>
                             <span>
-                                {" "}
                                 <button
+                                type="button"
                                     className="RUSure-yes-btn"
-                                    onClick={() => {
+                                    onClick={(e) => {
+                                        e.preventDefault();
                                         handleDeleteData();
                                         close();
                                     }}
@@ -448,14 +458,17 @@ export const Transactions = () => {
                                 </button>
                                 <button
                                     className="RUSure-no-btn"
-                                    onClick={close}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        close();
+                                    }}
                                 >
                                     No
                                 </button>
                             </span>
                         </div>
                     </Popup>
-                </div>
+                </form>
             )}
         </Popup>
     );
