@@ -123,14 +123,14 @@ export function Signup() {
                             e.preventDefault();
                             handleRegister();
                         }}
-                        className="signup--submit"
+                        className="signup-submit-btn"
                         type="submit"
                     >
                         Sign Up
                     </button>
                 </form>
                 <GoogleButton
-                    className="google-btn"
+                    className="google-btn-signup"
                     type="dark"
                     label="Sign Up with Google"
                     onClick={handleGoogleSignIn}

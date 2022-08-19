@@ -33,9 +33,16 @@ input {
     width: 60%;
     padding: 10px;
 }
-.submit-btn {
-    width: 70px;
-    margin-top: 25px;
+.signin-submit-btn {
+    background-color: var(--buttonGreen);
+    border: none;
+    height: 35px;
+    width: 90px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.signin-submit-btn:hover {
+    background-color: var(--highlightedGreen);
 }
 
 .bird-cage-img {
@@ -66,22 +73,22 @@ input {
     .signin--container {
         display: flex;
         align-items: center;
-     /*👉   border: #ff0000 solid 1px;👈*/
+        /*👉   border: #ff0000 solid 1px;👈*/
         width: 80%;
     }
     .signin-form {
         width: 90%;
     }
     .signin-form input {
-        width:215px ;
+        width: 215px;
     }
     .signin--container h1 {
         width: 200px;
         text-align: center;
-        margin-left:50%;
+        margin-left: 50%;
         margin-right: 50%;
-        
-      /*👉  border: red solid 1px👈*/
+
+        /*👉  border: red solid 1px👈*/
     }
     .google-links {
     }

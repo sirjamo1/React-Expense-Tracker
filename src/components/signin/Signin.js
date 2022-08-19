@@ -80,7 +80,7 @@ export const Signin = () => {
                             e.preventDefault();
                             handleSignin();
                         }}
-                        className="submit-btn"
+                        className="signin-submit-btn"
                         type="submit"
                     >
                         Sign in
