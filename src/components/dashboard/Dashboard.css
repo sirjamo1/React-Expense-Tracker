@@ -164,3 +164,9 @@
 .recurring-div-expense > p {
     margin: 10px 10px;
 }
+
+
+
+@media screen and (max-width: 400px) {
+   
+}

@@ -64,16 +64,18 @@
     position: absolute;
     top: 50px;
     z-index: 2;
-    
-    background-color: aqua;
+    /*👉background-color: aqua;👈*/
+        background: linear-gradient(90deg, #00ffff 0%, #ffff00 30%, #ffff00 99%);
     display: flex;
     flex-direction: column;
     align-items: center;
     box-shadow: 1px 3px 5px 0px rgba(250, 19, 19, 0.75);
+    border-radius: 0px 0px 3px 0px;
+    
 }
 .mobile-primary--nav > .links {
     padding: 10px;
-    border: 1px solid red;
+
 }
 
 
