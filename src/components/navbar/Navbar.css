@@ -46,3 +46,39 @@
 .logout-icon {
     width: 20px;
 }
+/* mobile */
+.mobile-nav-btn {
+    position: absolute;
+    width: 40px;
+    z-index: 2;
+    top: 5px;
+    left: 5px;
+    transition: all .5s ease;
+}
+
+.rotated {
+   transform: rotateZ(90deg);
+}
+.mobile-primary--nav {
+    height: 30vh;
+    position: absolute;
+    top: 50px;
+    z-index: 2;
+    
+    background-color: aqua;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 1px 3px 5px 0px rgba(250, 19, 19, 0.75);
+}
+.mobile-primary--nav > .links {
+    padding: 10px;
+    border: 1px solid red;
+}
+
+
+@media screen and (max-width: 400px) {
+    .primary--nav {
+    
+    }
+}
