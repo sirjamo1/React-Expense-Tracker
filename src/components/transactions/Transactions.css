@@ -72,6 +72,7 @@
     margin: 0px 10px 0px 10px;
     padding: 0;
     height: 35px;
+    width: 70px;
     background-color: var(--buttonGreen);
     border-radius: 6px;
     border: none;
@@ -209,7 +210,7 @@ select:focus {
     display: flex;
 }
 .recurring {
-    margin-top: 10px;
+    margin-top: 32px;
     width: 30px;
     align-self: flex-start;
 
@@ -225,7 +226,7 @@ select:focus {
 }
 .radio-btn-container > input[type="radio"],
 label {
-    margin-top: 0px;
+    margin-top: 20px;
     vertical-align: middle;
 }
 .radio-btn {
@@ -339,33 +340,11 @@ label {
 /* *********************************************************** */
 
 @media screen and (max-width: 400px) {
-    .transactions--container {
-        width: 100%;
-        position: relative;
-    }
-    .transactions-div {
-        margin: 0px 10px;
-        display: flex;
-        flex-direction: column;
-    }
-    .nav-line2 {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin: 15px 10px;
-    }
-    .nav-line2-left {
-        display: flex;
-    }
+
+ 
     .search-btn {
-        background-color: var(--buttonGreen);
-        border: none;
-        border-radius: 10px 0px 0px 10px;
         height: 30px;
         width: 15px;
-        margin: 0;
-        padding: 0;
-        cursor: pointer;
     }
     .magnifyingGlass {
         width: 10px;
@@ -376,18 +355,10 @@ label {
         width: 70px;
     }
 
-    .nav-line2-right {
-        display: flex;
-    }
-
     .create-transaction-btn {
-        margin: 0;
-        padding: 0;
+
         width: 100px;
         height: 30px;
-        color: white;
-        display: flex;
-        align-items: center;
         font-size: 0.6rem;
     }
     .create-icon {
@@ -397,13 +368,9 @@ label {
     }
 
     .filter-btn {
-        margin: 0px 10px 0px 10px;
-        padding: 0;
         width: 50px;
         height: 30px;
         font-size: 0.6rem;
-        display: flex;
-        align-items: center;
     }
     .filter-icon {
         width: 10px;
@@ -416,10 +383,8 @@ label {
     }
 
     .row-header {
-        background-color: rgba(0, 255, 255, 0.267);
-        box-shadow: 0px 2px 4px 0px rgba(0, 255, 255, 0.45);
-        display: grid;
-        font-size: 0.5rem;
+        height: 22px;
+        font-size: 0.4rem;
         grid-template-columns:
             minmax(75px, 1fr) minmax(40px, 1fr) minmax(40px, 1fr)
             minmax(40px, 1fr) minmax(40px, 1fr) minmax(40px, 0.7fr);
@@ -433,29 +398,12 @@ label {
         overflow-y: scroll;
     }
     .row-data {
-        display: grid;
         font-size: 0.5rem;
         grid-template-columns:
             minmax(75px, 1fr) minmax(40px, 1fr) minmax(40px, 1fr)
             minmax(40px, 1fr) minmax(40px, 1fr) minmax(40px, 0.7fr);
         margin-left: 10px;
-        border-bottom: 1px solid lightgrey;
-    }
-    .row-data div {
-        margin: 0;
-        display: flex;
-        align-items: center;
-        max-height: 40px;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-    .row-data div > p {
-        text-overflow: ellipsis;
-        overflow: hidden;
-    }
 
-    .row-data button {
-        margin: 0;
     }
     /*👉POPUPZONE👈*/
 
@@ -487,7 +435,6 @@ label {
         height: 40px;
         border-radius: 10px;
         margin-top: 20px;
-        background-color: white;
     }
     .popup-date {
         width: 280px;
@@ -503,7 +450,7 @@ label {
 
     /* ************************************************** */
     .recurring {
-        margin-top: 10px;
+        margin-top: 32px;
         width: 20px;
     }
     .recurring-label {

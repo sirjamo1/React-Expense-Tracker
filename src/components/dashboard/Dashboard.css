@@ -221,6 +221,9 @@
 .rightside-container {
 width: 100%;
 margin: 0px 0px;
+display: flex;
+flex-direction: column;
+align-items: center;
 
 }
 .rightside-container h4 {
@@ -232,9 +235,11 @@ margin-bottom: 2px;
 .recurring-data-container {
 overflow-y: scroll;
 height: 200px;
+width: 100%;
+margin-left: 15px;
 }
 .recurring-div-income {
-    width: 100%;
+    width: 95%;
 }
 .recurring-div-income:hover {
     background-color: aqua;
@@ -243,7 +248,7 @@ height: 200px;
     margin: 10px 10px;
 }
 .recurring-div-expense {
-    width: 100%;
+    width: 95%;
 }
 
 .recurring-div-expense > p {
