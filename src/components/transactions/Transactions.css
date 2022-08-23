@@ -27,7 +27,7 @@
     cursor: pointer;
 }
 .search-btn:hover {
-    background-color: var(--highlightedGreen) ;
+    background-color: var(--highlightedGreen);
 }
 .search {
     margin: 0;
@@ -41,7 +41,6 @@
 .search:hover {
     border: 2px solid var(--highlightedGreen);
 }
-
 
 .nav-line2-right {
     display: flex;
@@ -73,6 +72,7 @@
     margin: 0px 10px 0px 10px;
     padding: 0;
     height: 35px;
+    width: 70px;
     background-color: var(--buttonGreen);
     border-radius: 6px;
     border: none;
@@ -84,7 +84,6 @@
 .filter-icon {
     width: 16px;
     padding: 6px;
-    
 }
 .filter-btn:hover {
     background: var(--highlightedGreen);
@@ -105,7 +104,6 @@
     border-radius: 6px;
     border: 2px solid var(--buttonGreen);
     height: 12px;
-
 }
 .x-days-ago:hover {
     border: 2px solid var(--highlightedGreen);
@@ -209,32 +207,32 @@ select:focus {
     margin-top: 10px;
     margin-left: 53px;
     align-self: flex-start;
+    display: flex;
 }
 .recurring {
-    margin-top: 10px;
+    margin-top: 32px;
     width: 30px;
     align-self: flex-start;
+
 }
 .recurring-label > span {
     color: grey;
 }
 .radio-btn-container {
     display: flex;
-
     margin-top: 0px;
     margin-left: 59px;
     align-self: flex-start;
 }
 .radio-btn-container > input[type="radio"],
 label {
-    margin-top: 19px;
+    margin-top: 20px;
     vertical-align: middle;
 }
 .radio-btn {
     width: 15px;
     align-self: center;
     margin-right: 10px;
-
 }
 .popup-add {
     width: 400px;
@@ -274,6 +272,7 @@ label {
 .edit-transaction-btn {
     background-color: var(--buttonGreen);
     border-radius: 6px;
+    width: 60px;
     border: none;
     color: white;
     cursor: pointer;
@@ -319,6 +318,7 @@ label {
     border-radius: 6px;
     border: none;
     height: 25px;
+    width: 50px;
     margin-bottom: 10px;
     cursor: pointer;
 }
@@ -330,8 +330,214 @@ label {
     border-radius: 6px;
     border: none;
     height: 25px;
+    width: 50px;
     cursor: pointer;
 }
 .RUSure-no-btn:hover {
     background: var(--highlightedGreen);
+}
+
+/* *********************************************************** */
+
+@media screen and (max-width: 400px) {
+
+ 
+    .search-btn {
+        height: 30px;
+        width: 15px;
+    }
+    .magnifyingGlass {
+        width: 10px;
+    }
+
+    .search {
+        height: 26px;
+        width: 70px;
+    }
+
+    .create-transaction-btn {
+
+        width: 100px;
+        height: 30px;
+        font-size: 0.6rem;
+    }
+    .create-icon {
+        width: 10px;
+        padding: 0px;
+        margin-left: 3px;
+    }
+
+    .filter-btn {
+        width: 50px;
+        height: 30px;
+        font-size: 0.6rem;
+    }
+    .filter-icon {
+        width: 10px;
+        padding: 3px;
+    }
+    .x-days-ago {
+        width: 30px;
+        font-size: 0.35rem;
+        height: 6px;
+    }
+
+    .row-header {
+        height: 22px;
+        font-size: 0.4rem;
+        grid-template-columns:
+            minmax(75px, 1fr) minmax(40px, 1fr) minmax(40px, 1fr)
+            minmax(40px, 1fr) minmax(40px, 1fr) minmax(40px, 0.7fr);
+    }
+    .row-header p {
+        margin: 10px 10px;
+    }
+
+    .row-data-container {
+        max-height: 79vh;
+        overflow-y: scroll;
+    }
+    .row-data {
+        font-size: 0.5rem;
+        grid-template-columns:
+            minmax(75px, 1fr) minmax(40px, 1fr) minmax(40px, 1fr)
+            minmax(40px, 1fr) minmax(40px, 1fr) minmax(40px, 0.7fr);
+        margin-left: 10px;
+
+    }
+    /*👉POPUPZONE👈*/
+
+    .popup--container {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: rgba(236, 236, 236, 1);
+        width: 330px;
+        height: 530px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        border-radius: 10px;
+    }
+    .popup-title {
+        width: 280px;
+        border-radius: 10px;
+        margin-top: 50px;
+    }
+    .popup-amount {
+        width: 280px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+    .popup-select {
+        width: 300px;
+        height: 40px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+    .popup-date {
+        width: 280px;
+        border-radius: 10px;
+        margin-top: 20px;
+    }
+
+    .recurring-container {
+        margin-top: 10px;
+        margin-left: 13px;
+        
+    }
+
+    /* ************************************************** */
+    .recurring {
+        margin-top: 32px;
+        width: 20px;
+    }
+    .recurring-label {
+        font-size: 1rem;
+    }
+    .recurring-label > span {
+        font-size: 0.6rem;
+    }
+    .radio-btn-container {
+        display: flex;
+        margin-top: 0px;
+        margin-left: 15px;
+        align-self: flex-start;
+    }
+    .radio-btn-container > input[type="radio"],
+    label {
+        vertical-align: middle;
+    }
+    .radio-btn {
+        margin-right: 10px;
+        
+    }
+    .popup-add {
+        width: 290px;
+    }
+
+    /*👉********FILTER POPUP*********👈*/
+
+    .popup-filter {
+        border-radius: 20px;
+    }
+    .popup-filter-container {
+        align-items: center;
+    }
+    .popup-filter-container div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 40px;
+        width: 100%;
+        border-bottom: 1px lightblue solid;
+        cursor: pointer;
+    }
+
+    /*👉********EDIT POPUP*********👈*/
+
+    .edit-transaction-btn {
+        width: 35px;
+        height: 12px;
+        font-size: 0.6rem;
+        border-radius: 6px;
+        border: none;
+        color: white;
+        cursor: pointer;
+    }
+
+    .recurred-container {
+        margin-top: 10px;
+    }
+    .popup-edit {
+        width: 290px;
+    }
+
+    .popup-delete {
+        width: 290px;
+    }
+
+    .RUSure-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .RUSure-yes-btn {
+        background-color: rgb(243, 65, 65);
+        margin-right: 20px;
+        border-radius: 6px;
+        border: none;
+        height: 25px;
+        margin-bottom: 10px;
+        cursor: pointer;
+    }
+
+    .RUSure-no-btn {
+        background-color: var(--buttonGreen);
+        border-radius: 6px;
+        border: none;
+        height: 25px;
+        cursor: pointer;
+    }
 }

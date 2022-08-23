@@ -5,6 +5,7 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import { updateProfile } from "firebase/auth";
 import Header from "../header/Header";
+import { useMediaQuery } from "react-responsive";
 import {
     collection,
     getDocs,
@@ -40,6 +41,7 @@ const Dashboard = () => {
     const [dailyIncomeTotal, setDailyIncomeTotal] = useState();
     const [dailyMonthlyTotal, setDailyMonthlyTotal] = useState("total");
     const [lineOrBar, setLineOrBar] = useState("Bar");
+    const mobile = useMediaQuery({ query: `(max-width: 400px)` });
     const [chartData, setChartData] = useState({
         labels: "No Data",
         datasets: [
@@ -49,20 +51,35 @@ const Dashboard = () => {
             },
         ],
     });
-    const months = [
-        "January",
-        "February",
-        "March",
-        "April",
-        "May",
-        "June",
-        "July",
-        "August",
-        "September",
-        "October",
-        "November",
-        "December",
-    ];
+    const months = !mobile
+        ? [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+          ]
+        : [
+              "Jan",
+              "Feb",
+              "Mar",
+              "Apr",
+              "May",
+              "Jun",
+              "Jul",
+              "Aug",
+              "Sep",
+              "Oct",
+              "Nov",
+              "Dec",
+          ];
     const time = [
         "01",
         "02",
@@ -204,7 +221,7 @@ const Dashboard = () => {
     }, [expenseData]);
     const recurring = recurringData.map((data) =>
         data.recurring ? (
-            <div
+            <div key={data.key}
                 className={
                     data.incomeOrExpense === "income"
                         ? "recurring-div-income"
@@ -220,6 +237,7 @@ const Dashboard = () => {
             </div>
         )
     );
+
     const threeMostRecent = threeRecent.slice(0, 3).map((data) => (
         <div key={data.key}
             className={
@@ -231,9 +249,9 @@ const Dashboard = () => {
             <div>
                 <p>{data.title}</p>
             </div>
-            <div>
+            {!mobile ? <div>
                 <p>{data.type}</p>
-            </div>
+            </div> : <></>}
             <div>
                 {data.incomeOrExpense === "income" ? (
                     <p>${data.amount}</p>
@@ -565,7 +583,7 @@ const Dashboard = () => {
 
                     <div className="recent-transactions-header">
                         <p>NAME/BUSINESS</p>
-                        <p>TYPE</p>
+                        {!mobile ? <p>TYPE</p> : <></>}
                         <p>AMOUNT</p>
                         <p>DATE</p>
                     </div>
@@ -573,7 +591,7 @@ const Dashboard = () => {
                 </div>
                 <div className="rightside-container">
                     <h4>Recurring Transactions</h4>
-                    {recurring}
+                    <div className="recurring-data-container">{recurring}</div>
                 </div>
             </div>
         </div>

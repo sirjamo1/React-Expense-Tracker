@@ -100,6 +100,7 @@ export const Transactions = () => {
 
         changeExpense();
     }, [editBtnId]);
+    console.log(user);
     useEffect(() => {
         console.log("getting data");
         const userUid = user.uid;
@@ -222,7 +223,7 @@ export const Transactions = () => {
         bottom: 50,
     };
     const hasItRecurred = !currentExpense.hasRecurred ? (
-        <span>
+        <div className="recurring-container">
             <input
                 className="recurring"
                 name="recurring"
@@ -233,7 +234,7 @@ export const Transactions = () => {
                 defaultChecked={currentExpense.recurring}
             ></input>
             <label>Recurring</label>
-        </span>
+        </div>
     ) : (
         <span>
             {currentExpense.title} recurred on {currentExpense.recurredDate}
@@ -261,7 +262,7 @@ export const Transactions = () => {
             }
         >
             {(close) => (
-                <div className="popup--container">
+                <form className="popup--container">
                     <input
                         onChange={(event) => {
                             setDataTitle(event.target.value);
@@ -307,20 +308,18 @@ export const Transactions = () => {
                         placeholder="Title"
                     ></input>
                     <div className="recurring-container">
-                        <span>
-                            <input
-                                className="recurring"
-                                name="recurring"
-                                onChange={(event) => {
-                                    setDataRecurring(event.target.checked);
-                                }}
-                                type="checkbox"
-                            ></input>
+                        <input
+                            className="recurring"
+                            name="recurring"
+                            onChange={(event) => {
+                                setDataRecurring(event.target.checked);
+                            }}
+                            type="checkbox"
+                        ></input>
 
-                            <label className="recurring-label">
-                                Recurring <span>(up to 2 years prior)</span>
-                            </label>
-                        </span>
+                        <label className="recurring-label">
+                            Recurring <span>(up to 2 years prior)</span>
+                        </label>
                     </div>
                     <div className="radio-btn-container">
                         <input
@@ -350,14 +349,15 @@ export const Transactions = () => {
 
                     <button
                         className="popup-add"
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.preventDefault();
                             handleCreateData();
                             close();
                         }}
                     >
                         Add
                     </button>
-                </div>
+                </form>
             )}
         </Popup>
     );
@@ -373,7 +373,7 @@ export const Transactions = () => {
             trigger={<button className="edit-transaction-btn">Edit</button>}
         >
             {(close) => (
-                <div className="popup--container">
+                <form className="popup--container">
                     <input
                         onChange={(event) => {
                             setDataTitle(event.target.value);
@@ -420,7 +420,8 @@ export const Transactions = () => {
 
                     <button
                         className="popup-edit"
-                        onClick={() => {
+                        onClick={(e) => {
+                            e.preventDefault();
                             handleEditData();
                             close();
                         }}
@@ -429,17 +430,24 @@ export const Transactions = () => {
                     </button>
                     <Popup
                         trigger={
-                            <button className="popup-delete">Delete</button>
+                            <button
+                                type="button"
+                                className="popup-delete"
+                                onClick={(e) => e.preventDefault()}
+                            >
+                                Delete
+                            </button>
                         }
                         position="top"
                     >
                         <div className="RUSure-container">
                             <p>Are you sure?</p>
                             <span>
-                                {" "}
                                 <button
+                                    type="button"
                                     className="RUSure-yes-btn"
-                                    onClick={() => {
+                                    onClick={(e) => {
+                                        e.preventDefault();
                                         handleDeleteData();
                                         close();
                                     }}
@@ -448,14 +456,17 @@ export const Transactions = () => {
                                 </button>
                                 <button
                                     className="RUSure-no-btn"
-                                    onClick={close}
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        close();
+                                    }}
                                 >
                                     No
                                 </button>
                             </span>
                         </div>
                     </Popup>
-                </div>
+                </form>
             )}
         </Popup>
     );
@@ -474,8 +485,6 @@ export const Transactions = () => {
         console.log("searching..");
         if (searchBar === "") {
             setDataForRows(expenseData);
-          
-            
         } else {
             let searchedData = [];
             expenseData.map((data) => {
@@ -508,9 +517,9 @@ export const Transactions = () => {
     const handleXDaysSearch = () => {
         if (xDaysAgo === 0 || xDaysAgo === "") {
             setDataForRows(expenseData);
-            handleSearch()
+            handleSearch();
         } else {
-            handleSearch()
+            handleSearch();
             let xDaysAgoData = [];
             const days = xDaysAgo;
             const xDaysBefore = moment()
@@ -732,6 +741,7 @@ export const Transactions = () => {
                             onClick={() => handleSearch()}
                         >
                             <img
+                                className="magnifyingGlass"
                                 src={magnifyingGlass}
                                 alt="magnifying glass icon"
                             />

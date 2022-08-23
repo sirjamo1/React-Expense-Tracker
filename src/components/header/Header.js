@@ -4,6 +4,7 @@ import transAppLogoTransparentNoText from "../images/transAppLogoTransparentNoTe
 import { useAuth } from "../../Auth";
 import "./Header.css";
 
+
 function Header(props) {
     const { user } = useAuth();
     const [titleStyles, setTitleStyles] = useState("title-list");
@@ -26,14 +27,18 @@ function Header(props) {
         }, 200);
     }, []);
     const pageTitleListed = getPageTitle().map((letter) => (
-        <li className={letterStyles}>{letter}</li>
+        <li  className={letterStyles}>
+            {letter}
+        </li>
     ));
      const handleHeaderIcon = () => {
-        if (user.photoURL == "https://example.com/jane-q-user/profile.jpg" ) {
+        if (
+            user.photoURL === "https://example.com/jane-q-user/profile.jpg" ||
+            user.photoURL
+      === null  ) {
             return transAppLogoTransparentNoText;
-        }
-        else {
-            return user.photoURL
+        } else {
+            return user.photoURL;
         }
     }
     return (

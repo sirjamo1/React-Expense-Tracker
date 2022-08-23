@@ -46,3 +46,36 @@
 .logout-icon {
     width: 20px;
 }
+/* mobile */
+.mobile-nav-btn {
+    position: absolute;
+    width: 40px;
+    z-index: 2;
+    top: 5px;
+    left: 5px;
+    transition: all .5s ease;
+}
+
+.rotated {
+   transform: rotateZ(90deg);
+}
+.mobile-primary--nav {
+    height: 30vh;
+    position: absolute;
+    top: 50px;
+    z-index: 2;
+    /*👉background-color: aqua;👈*/
+        background: linear-gradient(90deg, #00ffff 0%, #ffff00 30%, #ffff00 99%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 1px 3px 5px 0px rgba(250, 19, 19, 0.75);
+    border-radius: 0px 0px 3px 0px;
+    
+}
+.mobile-primary--nav > .links {
+    padding: 10px;
+
+}
+
+

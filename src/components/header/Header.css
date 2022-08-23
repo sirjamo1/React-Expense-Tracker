@@ -12,11 +12,10 @@
     margin-right: 10px;
 }
 .user-icon {
- width: 40px;
- height: 40px;
- border: 2px grey solid;
- border-radius: 50%;
-
+    width: 40px;
+    height: 40px;
+    border: 2px grey solid;
+    border-radius: 50%;
 }
 .title-list {
     text-decoration: none;
@@ -33,9 +32,6 @@
     font-size: 2.4rem;
 }
 
-.letter-moved {
-    font-size: 2.4rem;
-}
 .moved {
     opacity: 1;
 }
@@ -120,4 +116,47 @@
 .user-name.name-moved {
     transition: all 1.8s ease-in;
     opacity: 1;
+}
+
+@media screen and (max-width: 400px) {
+    .dashboard-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background: linear-gradient(
+            90deg,
+            #00ffff 0%,
+            #ffff00 10%,
+            #ffff00 99%
+        );
+        margin-bottom: 5px;
+        box-shadow: 0px 3px 5px 0px rgba(250, 19, 19, 0.75);
+        height: 50px;
+    }
+
+    .dashboard-header h4 {
+        margin-right: 10px;
+        font-size: 0.8rem;
+    }
+    .title-list-letter {
+        font-size: 1.2rem;
+    }
+    .title-list {
+        transform: translateX(-445px);
+    }
+    .user-icon {
+        width: 30px;
+        height: 30px;
+        border: 2px grey solid;
+        border-radius: 50%;
+    }
+    .user-name {
+        color: aqua;
+        opacity: 0;
+        font-size: 1rem;
+        text-shadow: 1px 1px 1px red;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
 }

@@ -22,8 +22,7 @@ function App() {
   onAuthStateChanged(auth, (user) => {
     setUser(user);
   });
-  //See Navbar.js for details about hiding nav
-  //If user == null the only page able to be viewed is Signin.js and Signup.js
+
   return (
     <AuthProvider>
       <main>

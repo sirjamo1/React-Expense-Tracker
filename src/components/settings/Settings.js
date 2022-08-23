@@ -12,15 +12,12 @@ import {
     reauthenticateWithCredential,
     EmailAuthProvider,
 } from "firebase/auth";
-// import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
-
 import { useAuth } from "../../Auth";
 import { upload } from "../../firebase-config";
-// import { upload } from "@testing-library/user-event/dist/upload";
 
 export const Settings = () => {
     const { user } = useAuth();
-    console.log(user.email);
+    console.log(user);
 
     const [userDisplayName, setUserDisplayName] = useState(user.displayName);
     const [userEmail, setUserEmail] = useState(user.email);
@@ -174,19 +171,22 @@ console.log(user.photoURL);
         </Popup>
     );
  const handleHeaderIcon = () => {
-     if (user.photoURL == "https://example.com/jane-q-user/profile.jpg") {
+     if (
+         user.photoURL === "https://example.com/jane-q-user/profile.jpg" ||
+         user.photoURL === null
+     ) {
          return transAppLogoTransparentNoText;
      } else {
          return user.photoURL;
      }
  };
     const userAccount = (
-        <form className="settings-info-container">
+        <div className="settings-info-container">
             <div className="account-info">
                 <h3>Account Information</h3>
                 <p>Update your account information</p>
             </div>
-            <div className="info-card">
+            <form className="info-card">
                 <div className="img-row">
                     <img src={handleHeaderIcon()} alt="Avatar" className="avatar"></img>
                     <input
@@ -290,6 +290,7 @@ console.log(user.photoURL);
 
                     {reAuthPopup}
                     <button
+                    type="submit"
                         className="edit-btn"
                         onClick={(e) => {
                             e.preventDefault();
@@ -299,8 +300,8 @@ console.log(user.photoURL);
                         Save
                     </button>
                 </div>
-            </div>
-        </form>
+            </form>
+        </div>
     );
     return (
         <div className="settings--container">

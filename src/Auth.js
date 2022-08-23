@@ -10,6 +10,7 @@ import React, { useState, createContext, useContext } from "react";
 const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [mobileView, setMobileView] = useState(false)
   const auth = getAuth();
   React.useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -26,8 +27,9 @@ export const AuthProvider = ({ children }) => {
   function resetPassword(email) {
     return sendPasswordResetEmail(auth, email);
   }
+
   return (
-    <AuthContext.Provider value={{ user, resetPassword, googleSignIn }}>
+    <AuthContext.Provider value={{ user, resetPassword, googleSignIn}}>
       {children}
     </AuthContext.Provider>
   );
