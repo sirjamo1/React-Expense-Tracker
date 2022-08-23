@@ -6,9 +6,6 @@ import logoutIcon from "../icons/logoutIcon.png";
 import transAppLogoTransparent from "../images/transAppLogoTransparent.png"
 import transAppLogoTransparentNoText from "../images/transAppLogoTransparentNoText.png";
 import "./Navbar.css";
-import Popup from "reactjs-popup";
-import "reactjs-popup/dist/index.css";
-import { useEffect } from "react";
 import { useMediaQuery } from "react-responsive";
 export const Navbar = () => {
 
@@ -30,48 +27,6 @@ console.log({mobile})
 console.log({rotateIcon})
 console.log({hideNav})
 
-    // const mobileNav = (
-        // <Popup
-        //     closeOnDocumentClick
-        //     show={true}
-        //     className="popup-main"
-        //     // onOpen={(event) => {
-        //     //     setRotateIcon(true);
-        //     // }}
-        //     // onClose={setRotateIcon(false)}
-        //     trigger={
-        //         <img
-        //             src={transAppLogoTransparentNoText}
-        //             alt="trans app icon"
-        //             className={rotateIcon ? "mobile-nav-btn rotated" : "mobile-nav-btn"}
-                  
-        //         />
-        //     }
-        //     position="bottom left"
-        // >
-        //     {(close) => (
-                // <nav className="mobile-primary--nav">
-                //         <NavLink className="links" to="/dashboard">
-                //             Dashboard
-                //         </NavLink>
-                //     <NavLink className="links" to="/transactions">
-                //         Transactions
-                //     </NavLink>
-                //     <NavLink className="links" to="/settings">
-                //         Settings
-                //     </NavLink>
-                //     <div className="links logout" onClick={handleLogout}>
-                //         <img
-                //             src={logoutIcon}
-                //             alt="logout icon"
-                //             className="logout-icon"
-                //         />
-                //         Log out
-                //     </div>
-                // </nav>
-        //     )}
-        // </Popup>
-    // );
     const navbar = (
         <nav className="mobile-primary--nav">
             <NavLink

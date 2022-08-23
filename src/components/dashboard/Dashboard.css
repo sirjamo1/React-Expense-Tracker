@@ -87,7 +87,7 @@
 .recent-transactions-header {
     background-color: rgba(0, 255, 255, 0.267);
     display: grid;
-
+    text-indent: 10px;
     grid-template-columns:
         minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
         minmax(80px, 1fr);
@@ -98,7 +98,7 @@
     grid-template-columns:
         minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr)
         minmax(80px, 1fr);
-    margin-left: 10px;
+    text-indent: 10px;
     border-bottom: 1px solid lightgrey;
 }
 
@@ -165,8 +165,88 @@
     margin: 10px 10px;
 }
 
-
-
 @media screen and (max-width: 400px) {
-   
+   .dashboard-container {
+    width: 100vw;
+    height: 100vh;
+    position: relative;
+}
+/*👉*********HEADER*********👈*/
+
+.left-and-right-container {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    margin-top: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+}
+/*👉************Leftside************👈*/
+.leftside-container {
+    width: 100%;
+}
+.three-totals > div {
+    height: 70px;  
+    flex-basis: 100px;
+}
+
+.three-totals h5 {
+    font-size: 1.0rem;
+}
+.three-totals h6 {
+    font-size: 0.5rem;
+}
+.recent-transactions-title h4 {
+    font-size: 1rem;
+}
+.recent-transactions-title h5 {
+    font-size: 0.6rem;
+}
+.recent-transactions-title button {
+    font-size: 0.7rem;
+}
+.recent-transactions-header {
+    grid-template-columns:
+        minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr);
+        font-size: 0.8rem;
+}
+.recent-transactions-data {
+    grid-template-columns:
+        minmax(150px, 1fr) minmax(80px, 1fr) minmax(80px, 1fr);
+    border-bottom: 1px solid lightgrey;
+}
+.recent-transactions-data div > p {
+    font-size: 0.8rem;
+}
+.rightside-container {
+width: 100%;
+margin: 0px 0px;
+
+}
+.rightside-container h4 {
+    color: rgb(59, 1, 249);
+    font-size: 1rem;
+    width: 90vw;
+margin-bottom: 2px;
+}
+.recurring-data-container {
+overflow-y: scroll;
+height: 200px;
+}
+.recurring-div-income {
+    width: 100%;
+}
+.recurring-div-income:hover {
+    background-color: aqua;
+}
+.recurring-div-income > p {
+    margin: 10px 10px;
+}
+.recurring-div-expense {
+    width: 100%;
+}
+
+.recurring-div-expense > p {
+    margin: 10px 10px;
+}
 }
