@@ -219,17 +219,40 @@ const Dashboard = () => {
         };
         getRecurring();
     }, [expenseData]);
+    //NOTE: need to format properley and add one month to dates
+    const nextRecur = (date) => {
+        let year = parseInt(date.substring(2, 4))
+        let month = parseInt(date.substring(5, 7)) + 1;
+        let day = parseInt(date.substring(8, 10))
+        if (month < 12) {
+            return `${year}-${month < 10 ? `0${month}` : month}-${day < 10 ? `0${day}` : day}`
+        } else if (month === 13){
+            month = 1     
+            return `${year + 1}-${month < 10 ? `0${month}` : month}-${
+                day < 10 ? `0${day}` : day
+            }`;
+        }
+    }
     const recurring = recurringData.map((data) =>
         data.recurring ? (
-            <div key={data.key}
+            <div
+                key={data.key}
                 className={
                     data.incomeOrExpense === "income"
-                        ? "recurring-div-income"
-                        : "recurring-div-expense"
+                        ? "recurring-div rec-income"
+                        : "recurring-div rec-expense"
                 }
             >
-                <p>{data.title}</p>
-                <p>${data.amount}</p>
+                <div>
+                    <p>{data.title}</p>
+                </div>
+                <div>
+                    <p>Recurs: {nextRecur(data.date)}</p>
+                </div>
+                <div>
+                    <p className={data.incomeOrExpense === "income"
+                        ? "income" : "expense"}>${data.amount}</p>
+                </div>
             </div>
         ) : (
             <div className="recurring-div-income">

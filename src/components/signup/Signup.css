@@ -37,6 +37,7 @@ input {
     width: 90px;
     margin-top: 10px;
     cursor: pointer;
+    margin-bottom: 20px;
 }
 .signup-submit-btn:hover {
     background-color: var(--highlightedGreen);
@@ -89,7 +90,7 @@ input {
       margin-top: 20px;
     }
     .signup-logo {
-        width: 150px;
+        width: 100px;
         position: fixed;
         bottom: 10px;
     }
