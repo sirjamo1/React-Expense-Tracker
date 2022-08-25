@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/react-expense-tracker/static/css/main.a4d33618.css",
-    "main.js": "/react-expense-tracker/static/js/main.847fbe6c.js",
-    "static/css/896.ea09fe56.chunk.css": "/react-expense-tracker/static/css/896.ea09fe56.chunk.css",
-    "static/js/896.ad4f9b7a.chunk.js": "/react-expense-tracker/static/js/896.ad4f9b7a.chunk.js",
-    "static/js/742.9d690501.chunk.js": "/react-expense-tracker/static/js/742.9d690501.chunk.js",
-    "static/media/dollarInBirdCage.png": "/react-expense-tracker/static/media/dollarInBirdCage.b33d8ea329e4080fdf57.png",
-    "static/media/transAppLogoTransparent.png": "/react-expense-tracker/static/media/transAppLogoTransparent.d6818a139ca7435ebbb4.png",
-    "static/media/transAppLogoTransparentNoText.png": "/react-expense-tracker/static/media/transAppLogoTransparentNoText.16f7b4712c3a6f29d4ce.png",
-    "index.html": "/react-expense-tracker/index.html",
-    "main.a4d33618.css.map": "/react-expense-tracker/static/css/main.a4d33618.css.map",
-    "main.847fbe6c.js.map": "/react-expense-tracker/static/js/main.847fbe6c.js.map",
-    "896.ea09fe56.chunk.css.map": "/react-expense-tracker/static/css/896.ea09fe56.chunk.css.map",
-    "896.ad4f9b7a.chunk.js.map": "/react-expense-tracker/static/js/896.ad4f9b7a.chunk.js.map",
-    "742.9d690501.chunk.js.map": "/react-expense-tracker/static/js/742.9d690501.chunk.js.map"
+    "main.css": "/React-Expense-Tracker/static/css/main.a4d33618.css",
+    "main.js": "/React-Expense-Tracker/static/js/main.9a0f8095.js",
+    "static/css/896.ea09fe56.chunk.css": "/React-Expense-Tracker/static/css/896.ea09fe56.chunk.css",
+    "static/js/896.ad4f9b7a.chunk.js": "/React-Expense-Tracker/static/js/896.ad4f9b7a.chunk.js",
+    "static/js/742.9d690501.chunk.js": "/React-Expense-Tracker/static/js/742.9d690501.chunk.js",
+    "static/media/dollarInBirdCage.png": "/React-Expense-Tracker/static/media/dollarInBirdCage.b33d8ea329e4080fdf57.png",
+    "static/media/transAppLogoTransparent.png": "/React-Expense-Tracker/static/media/transAppLogoTransparent.d6818a139ca7435ebbb4.png",
+    "static/media/transAppLogoTransparentNoText.png": "/React-Expense-Tracker/static/media/transAppLogoTransparentNoText.16f7b4712c3a6f29d4ce.png",
+    "index.html": "/React-Expense-Tracker/index.html",
+    "main.a4d33618.css.map": "/React-Expense-Tracker/static/css/main.a4d33618.css.map",
+    "main.9a0f8095.js.map": "/React-Expense-Tracker/static/js/main.9a0f8095.js.map",
+    "896.ea09fe56.chunk.css.map": "/React-Expense-Tracker/static/css/896.ea09fe56.chunk.css.map",
+    "896.ad4f9b7a.chunk.js.map": "/React-Expense-Tracker/static/js/896.ad4f9b7a.chunk.js.map",
+    "742.9d690501.chunk.js.map": "/React-Expense-Tracker/static/js/742.9d690501.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a4d33618.css",
-    "static/js/main.847fbe6c.js"
+    "static/js/main.9a0f8095.js"
   ]
 }
