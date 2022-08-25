@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/react-expense-tracker/static/css/main.a4d33618.css",
-    "main.js": "/react-expense-tracker/static/js/main.509e766f.js",
+    "main.js": "/react-expense-tracker/static/js/main.c24b121a.js",
     "static/css/896.ea09fe56.chunk.css": "/react-expense-tracker/static/css/896.ea09fe56.chunk.css",
     "static/js/896.ad4f9b7a.chunk.js": "/react-expense-tracker/static/js/896.ad4f9b7a.chunk.js",
     "static/js/742.9d690501.chunk.js": "/react-expense-tracker/static/js/742.9d690501.chunk.js",
@@ -10,13 +10,13 @@
     "static/media/transAppLogoTransparentNoText.png": "/react-expense-tracker/static/media/transAppLogoTransparentNoText.16f7b4712c3a6f29d4ce.png",
     "index.html": "/react-expense-tracker/index.html",
     "main.a4d33618.css.map": "/react-expense-tracker/static/css/main.a4d33618.css.map",
-    "main.509e766f.js.map": "/react-expense-tracker/static/js/main.509e766f.js.map",
+    "main.c24b121a.js.map": "/react-expense-tracker/static/js/main.c24b121a.js.map",
     "896.ea09fe56.chunk.css.map": "/react-expense-tracker/static/css/896.ea09fe56.chunk.css.map",
     "896.ad4f9b7a.chunk.js.map": "/react-expense-tracker/static/js/896.ad4f9b7a.chunk.js.map",
     "742.9d690501.chunk.js.map": "/react-expense-tracker/static/js/742.9d690501.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.a4d33618.css",
-    "static/js/main.509e766f.js"
+    "static/js/main.c24b121a.js"
   ]
 }
