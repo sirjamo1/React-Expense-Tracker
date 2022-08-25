@@ -2,7 +2,7 @@
 <br />
 <div align="center">
 <!-- change this href to github pages when done -->
-  <a href="https://github.com/sirjamo1/React-Expense-Tracker">
+  <a href="https://sirjamo1.github.io/React-Expense-Tracker/">
     <img src="src/components/images/transAppLogoTransparent.png" alt="Logo" width="80" height="80">
   </a>
 
@@ -34,6 +34,9 @@
     </li>
     <li>
       <a href="#getting-started">Getting Started</a>
+    </li>
+     <li>
+      <a href="#need-to-do">Need To Do</a>
     </li>
     <li>
       <a href="#screenshots">Screenshots</a>
@@ -68,7 +71,7 @@ Expense/income tracking app created for Betterway React bootcamp
 ## Getting Started
 
 Click the Trans-App logo to preview the app. </br> A John Doe account has been set up for you. </br>
-<a href="https://github.com/sirjamo1/React-Expense-Tracker">
+<a href="https://sirjamo1.github.io/React-Expense-Tracker/">
     <img src="src/components/images/transAppLogoTransparent.png" alt="Logo" width="80" height="80">
   </a>
 </br>
@@ -116,6 +119,17 @@ Password : password123
 See the [open issues](https://github.com/sirjamo1/React-Expense-Tracker/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+## Need To Do
+
+-   Mobile
+    -   Signin/up logo moves to middle of screen when keyboard is active (because it is fixed to bottom)
+    -   Create/edit trans popup gets moved by mobile keyboard (same with settings confirm password) 
+    -   Need more testing for signin with google 
+    -   Refresh (reloading page) redirectes user to signin page (this also happens on desktop)
+    -   
+    -   
+    -   
 
 ## Screenshots
 ### Desktop

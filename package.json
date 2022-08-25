@@ -1,51 +1,55 @@
 {
-  "name": "react-expense-tracker",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@testing-library/jest-dom": "^5.16.4",
-    "@testing-library/react": "^13.3.0",
-    "@testing-library/user-event": "^13.5.0",
-    "chart.js": "^3.8.2",
-    "firebase": "^9.9.0",
-    "moment": "^2.29.4",
-    "nanoid": "^4.0.0",
-    "react": "^18.2.0",
-    "react-chartjs-2": "^4.3.1",
-    "react-dom": "^18.2.0",
-    "react-google-button": "^0.7.2",
-    "react-lazy": "^1.1.0",
-    "react-lazy-load": "^3.1.14",
-    "react-native-vector-icons": "^9.2.0",
-    "react-responsive": "^9.0.0-beta.10",
-    "react-router-dom": "^6.3.0",
-    "react-schedule-job": "^1.2.0",
-    "react-scripts": "5.0.1",
-    "reactjs-popup": "^2.0.5",
-    "web-vitals": "^2.1.4"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  }
+    "name": "react-expense-tracker",
+    "homepage": "http://sirjamo1.github.io/React-Expense-Tracker/",
+    "version": "0.1.0",
+    "private": true,
+    "dependencies": {
+        "@testing-library/jest-dom": "^5.16.4",
+        "@testing-library/react": "^13.3.0",
+        "@testing-library/user-event": "^13.5.0",
+        "chart.js": "^3.8.2",
+        "firebase": "^9.9.0",
+        "gh-pages": "^4.0.0",
+        "moment": "^2.29.4",
+        "nanoid": "^4.0.0",
+        "react": "^18.2.0",
+        "react-chartjs-2": "^4.3.1",
+        "react-dom": "^18.2.0",
+        "react-google-button": "^0.7.2",
+        "react-lazy": "^1.1.0",
+        "react-lazy-load": "^3.1.14",
+        "react-native-vector-icons": "^9.2.0",
+        "react-responsive": "^9.0.0-beta.10",
+        "react-router-dom": "^6.3.0",
+        "react-schedule-job": "^1.2.0",
+        "react-scripts": "5.0.1",
+        "reactjs-popup": "^2.0.5",
+        "web-vitals": "^2.1.4"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d build",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    }
 }
