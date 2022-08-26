@@ -35,15 +35,11 @@ export const Settings = () => {
     const userUid = user.uid;
 
     const [currentPassword, setCurrentPassword] = useState("");
-    // const storage = getStorage();
     const [photo, setPhoto] = useState(null);
     const [loading, setLoading] = useState(false);
     const [photoURL, setPhotoURL] = useState(
         "https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
     );
-    // console.log(userEmail);
-    // console.log(currentPassword);
-    // console.log(editPopupOpen);
     console.log({ photo });
     console.log(user.photoURL);
     useEffect(() => {
@@ -119,12 +115,10 @@ export const Settings = () => {
                 console.log("auth failed");
             });
     };
-    //bill@hotmail.com
-    //password1
-console.log(user.photoURL);
+
     const offsetPopup = {
-        right: 400,
-        bottom: 50,
+        right: 200,
+        bottom: 20,
     };
 
     const reAuthPopup = (
@@ -137,16 +131,17 @@ console.log(user.photoURL);
             open={editPopupOpen}
         >
             {(close) => (
-                <div className="popup--container">
+                <div className="reauth-popup--container">
+                    <label>Enter old password</label>
                     <input
                         onChange={(event) => {
                             setCurrentPassword(event.target.value);
                         }}
                         type="password"
-                        placeholder="re auth pass"
+                        placeholder="password"
                     ></input>
                     <button
-                        className="popup-add"
+                        className="reauth-popup-add-btn"
                         onClick={() => {
                             console.log("confirmed");
                             handleAuthEdit();
@@ -157,14 +152,14 @@ console.log(user.photoURL);
                         Confirm
                     </button>
                     <button
-                        // className="popup-add"
+                        className="reauth-popup-cancel-btn"
                         onClick={() => {
                             console.log("canceled");
                             close();
                             setEditPopupOpen(false);
                         }}
                     >
-                        Cancel
+                        X
                     </button>
                 </div>
             )}
