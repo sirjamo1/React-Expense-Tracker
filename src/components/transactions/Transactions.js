@@ -218,10 +218,7 @@ export const Transactions = () => {
         addRecurring();
     }, [redoRecurring]);
 
-    const offsetPopup = {
-        right: 400,
-        bottom: 50,
-    };
+
     const hasItRecurred = !currentExpense.hasRecurred ? (
         <div className="recurring-container">
             <input
@@ -240,11 +237,11 @@ export const Transactions = () => {
             {currentExpense.title} recurred on {currentExpense.recurredDate}
         </span>
     );
+
     const createPopup = (
         <Popup
             modal={true}
             closeOnDocumentClick
-            offset={offsetPopup}
             show={true}
             className="popup-main"
             onOpen={(event) => {
@@ -365,7 +362,6 @@ export const Transactions = () => {
     const editPopup = (
         <Popup
             modal={true}
-            offset={offsetPopup}
             show={false}
             closeOnDocumentClick
             className="popup-main"

@@ -123,8 +123,7 @@ See the [open issues](https://github.com/sirjamo1/React-Expense-Tracker/issues) 
 ## Need To Do
 
 -   Mobile
-    -   Signin/up logo moves to middle of screen when keyboard is active (because it is fixed to bottom)
-    -   Create/edit trans popup gets moved by mobile keyboard (same with settings confirm password) 
+    -   Create/edit trans popup gets moved by mobile keyboard 
     -   
     -   Refresh (reloading page) redirectes user to signin page (this also happens on desktop)
     -   

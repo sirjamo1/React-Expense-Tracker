@@ -116,15 +116,12 @@ export const Settings = () => {
             });
     };
 
-    const offsetPopup = {
-        right: 200,
-        bottom: 20,
-    };
+
 
     const reAuthPopup = (
         <Popup
             modal={true}
-            offset={offsetPopup}
+
             show={true}
             closeOnDocumentClick={false}
             className="popup-main"

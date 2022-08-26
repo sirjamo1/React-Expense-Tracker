@@ -6,7 +6,6 @@ import { Signin } from "./components/signin/Signin";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { AuthProvider } from "./Auth";
 import { Signup } from "./components/signup/Signup.js";
-//import { Dashboard } from "./components/dashboard/Dashboard.js";
 import { Transactions } from "./components/transactions/Transactions.js";
 import { Settings } from "./components/settings/Settings.js";
 import { NoMatch } from "./NoMatch";
