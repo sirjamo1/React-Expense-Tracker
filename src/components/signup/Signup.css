@@ -1,34 +1,34 @@
 .signup-main--container {
-  display: flex;
-  flex-direction: row;
-  background-color: aqua;
+    display: flex;
+    flex-direction: row;
+    background-color: aqua;
 }
 .signup--container {
-  display: flex;
-  flex-direction: column;
-  width: 40vw;
-  margin: 15px;
-  padding: 20px;
+    display: flex;
+    flex-direction: column;
+    width: 40vw;
+    margin: 15px;
+    padding: 20px;
 }
 .signup-form {
-  display: flex;
-  flex-direction: column;
+    display: flex;
+    flex-direction: column;
 }
 h1 {
-  align-self: center;
+    align-self: center;
 }
 .instructions {
-  color: rgb(102, 98, 98);
-  font-size: 0.7rem;
+    color: rgb(102, 98, 98);
+    font-size: 0.7rem;
 }
 label {
-  padding: 10px;
-  padding-left: 0px;
-  margin-top: 20px;
+    padding: 10px;
+    padding-left: 0px;
+    margin-top: 20px;
 }
 input {
-  width: 60%;
-  padding: 10px;
+    width: 60%;
+    padding: 10px;
 }
 .signup-submit-btn {
     background-color: var(--buttonGreen);
@@ -48,24 +48,19 @@ input {
 }
 
 .google-btn-signup {
-  width: 100%;
-  height: 40px;
-  line-height: 40px;
-  font-size: 15px;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 15px;
 }
 .signup-logo {
-    width: 260px; 
-    align-self: center; 
+    width: 260px;
+    align-self: center;
 }
-
-
 
 @media screen and (max-width: 400px) {
     .signup-main--container {
-        flex-direction: column;
         height: 100vh;
-        width: 100vw;
-        background: aqua;
         align-items: center;
     }
     .signup--container {
@@ -77,22 +72,22 @@ input {
         width: 90%;
     }
     .signup-form input {
-        width:215px ;
+        width: 215px;
     }
     .signup--container h1 {
         width: 200px;
-        margin-left:50%;
+        margin-left: 50%;
         margin-right: 50%;
         text-align: center;
     }
- .google-btn-signup {
-      margin-right: 20px;
-      margin-top: 20px;
+    .google-btn-signup {
+        margin-right: 20px;
+        margin-top: 20px;
     }
     .signup-logo {
-        width: 100px;
-        position: fixed;
-        bottom: 10px;
+        width: 95px;
+        position: bottom;
+        margin-top: -10px;
     }
     .bird-cage-img {
         display: none;
